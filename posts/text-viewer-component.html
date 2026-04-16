@@ -11,121 +11,189 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            background: #fff;
-            color: #222;
+            background: #0f0f0f;
+            color: #e8e8e8;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.65;
+            line-height: 1.6;
             font-size: 16px;
         }
 
         a {
-            color: #0066cc;
+            color: #58a6ff;
             text-decoration: none;
+            transition: color 0.2s;
         }
 
         a:hover {
-            text-decoration: underline;
+            color: #79c0ff;
         }
 
         .container {
-            max-width: 680px;
+            max-width: 720px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 0 20px;
         }
 
         header {
-            margin-bottom: 60px;
+            padding: 60px 0 80px 0;
+            border-bottom: 1px solid #30363d;
         }
 
         nav {
             display: flex;
-            gap: 24px;
-            margin-bottom: 40px;
-            font-size: 14px;
+            gap: 32px;
+            margin-bottom: 48px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         nav a {
-            font-weight: 500;
+            color: #8b949e;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #58a6ff;
         }
 
         .back-link {
-            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
             margin-bottom: 40px;
+            padding: 8px 0;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .back-link:hover {
+            border-bottom-color: #58a6ff;
         }
 
         h1 {
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 12px;
+            font-size: 42px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            letter-spacing: -1px;
+            color: #f0f6fc;
+            line-height: 1.2;
         }
 
         .post-meta {
-            color: #999;
-            font-size: 14px;
-            margin-bottom: 40px;
+            color: #8b949e;
+            font-size: 13px;
+            margin-bottom: 60px;
         }
 
         article {
-            line-height: 1.65;
+            padding: 60px 0;
         }
 
         p {
-            margin-bottom: 16px;
+            margin-bottom: 20px;
+            line-height: 1.8;
+            color: #c9d1d9;
         }
 
         h2 {
-            font-size: 20px;
+            font-size: 28px;
             font-weight: 600;
-            margin-top: 40px;
-            margin-bottom: 16px;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            color: #f0f6fc;
+            letter-spacing: -0.5px;
         }
 
         h3 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
-            margin-top: 32px;
-            margin-bottom: 12px;
+            margin-top: 36px;
+            margin-bottom: 16px;
+            color: #f0f6fc;
         }
 
         code {
-            background: #f5f5f5;
+            background: #161b22;
             padding: 2px 6px;
-            border-radius: 3px;
+            border-radius: 4px;
             font-family: "Monaco", "Courier New", monospace;
             font-size: 14px;
+            color: #79c0ff;
+            border: 1px solid #30363d;
         }
 
         pre {
-            background: #f5f5f5;
+            background: #0d1117;
             padding: 16px;
-            border-radius: 4px;
+            border-radius: 6px;
             overflow-x: auto;
-            margin-bottom: 16px;
+            margin: 24px 0;
             font-size: 13px;
+            border: 1px solid #30363d;
         }
 
         pre code {
             background: none;
             padding: 0;
             border-radius: 0;
+            border: none;
+            color: #79c0ff;
         }
 
         blockquote {
-            border-left: 3px solid #ddd;
-            padding-left: 16px;
-            margin: 24px 0;
-            color: #666;
+            border-left: 3px solid #58a6ff;
+            padding-left: 20px;
+            margin: 32px 0;
+            color: #8b949e;
             font-style: italic;
+            font-size: 15px;
         }
 
         ul, ol {
-            margin-left: 20px;
-            margin-bottom: 16px;
+            margin-left: 24px;
+            margin-bottom: 20px;
         }
 
         li {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            color: #c9d1d9;
+        }
+
+        strong {
+            color: #f0f6fc;
+            font-weight: 600;
+        }
+
+        footer {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid #30363d;
+            text-align: center;
+            color: #8b949e;
+            font-size: 13px;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 32px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+
+            nav {
+                gap: 20px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -134,12 +202,12 @@
         <header>
             <nav>
                 <a href="/">home</a>
-                <a href="https://github.com" target="_blank" rel="noopener">github</a>
-                <a href="/#about">about</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">github</a>
+                <a href="/#contact">contact</a>
             </nav>
 
             <div class="back-link">
-                <a href="/">← back to all posts</a>
+                <a href="/">← back</a>
             </div>
 
             <h1>Building a Text Viewer Component</h1>
@@ -229,6 +297,10 @@
 
             <p>The best part? No dependencies. Just vanilla JavaScript and a bit of math. Sometimes the simplest solution is the right one.</p>
         </article>
+
+        <footer>
+            <p>© 2026. <a href="/">back home</a></p>
+        </footer>
     </div>
 </body>
 </html>
