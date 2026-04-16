@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Blog</title>
+    <title>Builds</title>
     <style>
         * {
             margin: 0;
@@ -16,21 +16,21 @@
         }
 
         body {
-            background: #0f0f0f;
-            color: #e8e8e8;
+            background: #0a0a0a;
+            color: #e0e0e0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             line-height: 1.6;
             font-size: 16px;
         }
 
         a {
-            color: #58a6ff;
+            color: #ff6b35;
             text-decoration: none;
             transition: color 0.2s;
         }
 
         a:hover {
-            color: #79c0ff;
+            color: #ff8555;
         }
 
         .container {
@@ -40,46 +40,48 @@
         }
 
         header {
-            padding: 60px 0 80px 0;
-            border-bottom: 1px solid #30363d;
+            padding: 80px 0 100px 0;
+            border-bottom: 1px solid #1a1a1a;
         }
 
         nav {
             display: flex;
             gap: 32px;
-            margin-bottom: 48px;
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
+            margin-bottom: 60px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
             text-transform: uppercase;
         }
 
         nav a {
-            color: #8b949e;
+            color: #888;
             transition: color 0.2s;
         }
 
         nav a:hover {
-            color: #58a6ff;
+            color: #ff6b35;
         }
 
         h1 {
-            font-size: 42px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            letter-spacing: -1px;
-            color: #f0f6fc;
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -2px;
+            color: #fff;
+            font-family: "Monaco", monospace;
         }
 
         .subtitle {
-            color: #8b949e;
-            font-size: 15px;
-            line-height: 1.6;
-            max-width: 500px;
+            color: #aaa;
+            font-size: 16px;
+            line-height: 1.7;
+            max-width: 520px;
+            font-weight: 300;
         }
 
         main {
-            padding: 60px 0;
+            padding: 80px 0;
         }
 
         .post-list {
@@ -87,8 +89,8 @@
         }
 
         .post-item {
-            padding: 32px 0;
-            border-bottom: 1px solid #30363d;
+            padding: 40px 0;
+            border-bottom: 1px solid #1a1a1a;
             transition: transform 0.2s, opacity 0.2s;
         }
 
@@ -97,56 +99,69 @@
         }
 
         .post-item:hover {
-            transform: translateX(4px);
+            transform: translateX(6px);
         }
 
         .post-title {
-            font-size: 24px;
-            font-weight: 600;
-            margin-bottom: 8px;
+            font-size: 26px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
         }
 
         .post-title a {
-            color: #f0f6fc;
+            color: #fff;
             transition: color 0.2s;
         }
 
         .post-title a:hover {
-            color: #58a6ff;
+            color: #ff6b35;
         }
 
         .post-meta {
-            color: #8b949e;
-            font-size: 13px;
-            margin-bottom: 12px;
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 14px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         .post-excerpt {
-            color: #c9d1d9;
-            line-height: 1.65;
+            color: #b0b0b0;
+            line-height: 1.75;
         }
 
         footer {
             margin-top: 120px;
-            padding: 40px 0;
-            border-top: 1px solid #30363d;
+            padding: 50px 0;
+            border-top: 1px solid #1a1a1a;
             text-align: center;
-            color: #8b949e;
-            font-size: 13px;
+            color: #666;
+            font-size: 12px;
+            letter-spacing: 0.5px;
         }
 
         @media (max-width: 640px) {
             h1 {
-                font-size: 32px;
+                font-size: 42px;
+                letter-spacing: -1px;
             }
 
             nav {
-                gap: 20px;
-                font-size: 12px;
+                gap: 24px;
+                font-size: 11px;
             }
 
             .post-title {
-                font-size: 20px;
+                font-size: 22px;
+            }
+
+            header {
+                padding: 60px 0 80px 0;
+            }
+
+            main {
+                padding: 60px 0;
             }
         }
     </style>
@@ -159,8 +174,8 @@
                 <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">github</a>
                 <a href="#contact">contact</a>
             </nav>
-            <h1>Blog</h1>
-            <p class="subtitle">Writing about building, code, and things that matter. Essays on technology, product, and the craft of making things.</p>
+            <h1>builds</h1>
+            <p class="subtitle">Writing about shipping products, iterating fast, and the craft of building things that matter.</p>
         </header>
 
         <main>
@@ -170,7 +185,7 @@
                         <a href="posts/hello-world.html">Hello, World</a>
                     </div>
                     <div class="post-meta">April 15, 2026</div>
-                    <div class="post-excerpt">A brief introduction to this blog and what you can expect to find here. Why I'm writing in public and what this space is for.</div>
+                    <div class="post-excerpt">Starting this space to document what I'm building and what I learn along the way. No schedule, just shipping.</div>
                 </li>
 
                 <li class="post-item">
@@ -178,7 +193,7 @@
                         <a href="posts/how-to-build-things.html">How to Build Things</a>
                     </div>
                     <div class="post-meta">April 14, 2026</div>
-                    <div class="post-excerpt">Practical advice for building products, from planning to shipping. Lessons on staying simple, shipping fast, and what actually matters.</div>
+                    <div class="post-excerpt">The fundamentals of shipping. Start simple, get feedback, iterate. Everything else is details.</div>
                 </li>
 
                 <li class="post-item">
@@ -186,13 +201,13 @@
                         <a href="posts/text-viewer-component.html">Building a Text Viewer Component</a>
                     </div>
                     <div class="post-meta">April 13, 2026</div>
-                    <div class="post-excerpt">A technical deep-dive into building a lightweight text viewer that handles huge files without breaking performance. Virtual scrolling explained.</div>
+                    <div class="post-excerpt">Virtual scrolling in production. Handling huge files without breaking performance, no dependencies.</div>
                 </li>
             </ul>
         </main>
 
         <footer id="contact">
-            <p>© 2026. Made by <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">ninjahawk</a>.</p>
+            <p>© 2026 by <a href="https://github.com/ninjahawk">ninjahawk</a></p>
         </footer>
     </div>
 </body>

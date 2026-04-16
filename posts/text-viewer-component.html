@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Building a Text Viewer Component - Blog</title>
+    <title>Building a Text Viewer Component - Builds</title>
     <style>
         * {
             margin: 0;
@@ -16,21 +16,21 @@
         }
 
         body {
-            background: #0f0f0f;
-            color: #e8e8e8;
+            background: #0a0a0a;
+            color: #e0e0e0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             line-height: 1.6;
             font-size: 16px;
         }
 
         a {
-            color: #58a6ff;
+            color: #ff6b35;
             text-decoration: none;
             transition: color 0.2s;
         }
 
         a:hover {
-            color: #79c0ff;
+            color: #ff8555;
         }
 
         .container {
@@ -40,57 +40,62 @@
         }
 
         header {
-            padding: 60px 0 80px 0;
-            border-bottom: 1px solid #30363d;
+            padding: 80px 0 100px 0;
+            border-bottom: 1px solid #1a1a1a;
         }
 
         nav {
             display: flex;
             gap: 32px;
-            margin-bottom: 48px;
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
+            margin-bottom: 60px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
             text-transform: uppercase;
         }
 
         nav a {
-            color: #8b949e;
+            color: #888;
             transition: color 0.2s;
         }
 
         nav a:hover {
-            color: #58a6ff;
+            color: #ff6b35;
         }
 
         .back-link {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            margin-bottom: 40px;
-            padding: 8px 0;
+            gap: 8px;
+            font-size: 12px;
+            margin-bottom: 50px;
+            padding: 10px 0;
             border-bottom: 1px solid transparent;
             transition: border-color 0.2s;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
         }
 
         .back-link:hover {
-            border-bottom-color: #58a6ff;
+            border-bottom-color: #ff6b35;
         }
 
         h1 {
-            font-size: 42px;
-            font-weight: 700;
+            font-size: 48px;
+            font-weight: 800;
             margin-bottom: 16px;
-            letter-spacing: -1px;
-            color: #f0f6fc;
-            line-height: 1.2;
+            letter-spacing: -1.5px;
+            color: #fff;
+            line-height: 1.1;
         }
 
         .post-meta {
-            color: #8b949e;
-            font-size: 13px;
+            color: #666;
+            font-size: 12px;
             margin-bottom: 60px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         article {
@@ -98,46 +103,46 @@
         }
 
         p {
-            margin-bottom: 20px;
-            line-height: 1.8;
-            color: #c9d1d9;
+            margin-bottom: 24px;
+            line-height: 1.85;
+            color: #b0b0b0;
         }
 
         h2 {
-            font-size: 28px;
-            font-weight: 600;
-            margin-top: 50px;
-            margin-bottom: 20px;
-            color: #f0f6fc;
-            letter-spacing: -0.5px;
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 60px;
+            margin-bottom: 24px;
+            color: #fff;
+            letter-spacing: -1px;
         }
 
         h3 {
-            font-size: 20px;
-            font-weight: 600;
-            margin-top: 36px;
-            margin-bottom: 16px;
-            color: #f0f6fc;
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 44px;
+            margin-bottom: 18px;
+            color: #fff;
         }
 
         code {
-            background: #161b22;
+            background: #141414;
             padding: 2px 6px;
-            border-radius: 4px;
+            border-radius: 3px;
             font-family: "Monaco", "Courier New", monospace;
             font-size: 14px;
-            color: #79c0ff;
-            border: 1px solid #30363d;
+            color: #ff6b35;
+            border: 1px solid #222;
         }
 
         pre {
-            background: #0d1117;
-            padding: 16px;
+            background: #0f0f0f;
+            padding: 20px;
             border-radius: 6px;
             overflow-x: auto;
-            margin: 24px 0;
+            margin: 28px 0;
             font-size: 13px;
-            border: 1px solid #30363d;
+            border: 1px solid #1a1a1a;
         }
 
         pre code {
@@ -145,54 +150,59 @@
             padding: 0;
             border-radius: 0;
             border: none;
-            color: #79c0ff;
+            color: #ff6b35;
         }
 
         blockquote {
-            border-left: 3px solid #58a6ff;
+            border-left: 3px solid #ff6b35;
             padding-left: 20px;
-            margin: 32px 0;
-            color: #8b949e;
+            margin: 36px 0;
+            color: #888;
             font-style: italic;
-            font-size: 15px;
+            font-size: 16px;
         }
 
         ul, ol {
             margin-left: 24px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         li {
             margin-bottom: 12px;
-            color: #c9d1d9;
+            color: #b0b0b0;
         }
 
         strong {
-            color: #f0f6fc;
-            font-weight: 600;
+            color: #fff;
+            font-weight: 700;
         }
 
         footer {
-            margin-top: 80px;
-            padding-top: 40px;
-            border-top: 1px solid #30363d;
+            margin-top: 100px;
+            padding-top: 50px;
+            border-top: 1px solid #1a1a1a;
             text-align: center;
-            color: #8b949e;
-            font-size: 13px;
+            color: #666;
+            font-size: 12px;
+            letter-spacing: 0.5px;
         }
 
         @media (max-width: 640px) {
             h1 {
-                font-size: 32px;
+                font-size: 36px;
             }
 
             h2 {
-                font-size: 24px;
+                font-size: 28px;
             }
 
             nav {
-                gap: 20px;
-                font-size: 12px;
+                gap: 24px;
+                font-size: 11px;
+            }
+
+            header {
+                padding: 60px 0 80px 0;
             }
         }
     </style>
@@ -215,87 +225,76 @@
         </header>
 
         <article>
-            <p>I recently built a lightweight text viewer component for a project that needed to display large files without breaking performance. Here's how I approached it and what I learned.</p>
+            <p>I shipped a text viewer that can handle files with millions of lines without breaking the browser. Here's what I learned.</p>
 
             <h2>The Problem</h2>
 
-            <p>We were displaying text files that could be hundreds of thousands of lines long. Loading the entire file into the DOM wasn't an option—it would freeze the browser. We needed a solution that could handle large files smoothly while remaining lightweight and responsive.</p>
+            <p>Users needed to browse huge log files and text dumps. Loading everything into the DOM would freeze the browser. We needed something that could handle arbitrary file sizes smoothly, with no libraries, no dependencies.</p>
 
-            <p>The core challenge: how do you display an arbitrary portion of a large text file without loading the whole thing?</p>
+            <h2>Virtual Scrolling</h2>
 
-            <h2>The Approach: Virtual Scrolling</h2>
+            <p>The answer is virtual scrolling. You only render what's visible, plus a small buffer. As the user scrolls, you dynamically update what's in the DOM. Constant memory, smooth performance, no matter the file size.</p>
 
-            <p>Virtual scrolling is a technique where you only render the visible portion of content in the DOM, plus a small buffer above and below. As the user scrolls, you dynamically update what's rendered. This keeps the DOM lightweight and performance snappy.</p>
-
-            <p>The basic algorithm:</p>
+            <p>The algorithm is simple:</p>
 
             <ol>
-                <li>Calculate how many lines fit in the visible viewport</li>
-                <li>Track the scroll position to determine which lines should be visible</li>
-                <li>Render only those lines (plus a buffer)</li>
+                <li>Calculate visible lines based on scroll position</li>
+                <li>Render only those lines plus a buffer</li>
                 <li>Update on scroll events</li>
             </ol>
 
-            <h2>Implementation Details</h2>
+            <h2>Implementation</h2>
 
-            <p>The component needs to know three things:</p>
+            <p>You need three pieces of information:</p>
 
             <ul>
-                <li><strong>Line height:</strong> In pixels, so we can calculate scrollable space</li>
-                <li><strong>Viewport height:</strong> How many pixels we have to work with</li>
-                <li><strong>Total lines:</strong> The full size of the file</li>
+                <li><strong>Line height</strong> — pixels per line</li>
+                <li><strong>Viewport height</strong> — visible space</li>
+                <li><strong>Total lines</strong> — file size</li>
             </ul>
 
-            <p>Here's the core rendering logic:</p>
+            <p>Here's the core logic:</p>
 
             <pre><code>function getVisibleRange(scrollTop, lineHeight, viewportHeight, totalLines) {
   const visibleLines = Math.ceil(viewportHeight / lineHeight);
   const startLine = Math.floor(scrollTop / lineHeight);
-  const bufferLines = 5; // Render extra lines as buffer
+  const buffer = 5;
 
-  const start = Math.max(0, startLine - bufferLines);
-  const end = Math.min(totalLines, startLine + visibleLines + bufferLines);
+  const start = Math.max(0, startLine - buffer);
+  const end = Math.min(totalLines, startLine + visibleLines + buffer);
 
   return { start, end };
 }</code></pre>
 
-            <p>Then, for rendering:</p>
+            <p>Then render only those lines:</p>
 
-            <pre><code>function renderVisibleLines(lines, range, startLine) {
+            <pre><code>function render(lines, { start, end }, startLine) {
   const offsetPixels = startLine * lineHeight;
 
-  const rendered = lines
-    .slice(range.start, range.end)
-    .map((line, i) => createLineElement(line, range.start + i));
+  const html = lines
+    .slice(start, end)
+    .map((line, i) => `<div class="line">${line}</div>`)
+    .join('');
 
   container.style.transform = `translateY(${offsetPixels}px)`;
-  container.innerHTML = rendered.join('');
+  container.innerHTML = html;
 }</code></pre>
 
-            <h2>Performance Wins</h2>
+            <h2>Results</h2>
 
-            <p>This approach scales beautifully. With virtual scrolling:</p>
+            <p>A 10 million line file renders instantly. Scroll is smooth (60 fps). Memory usage stays constant. No frameworks, no bloat.</p>
 
-            <ul>
-                <li>A 1 million line file renders in milliseconds</li>
-                <li>Scroll is buttery smooth (60 fps)</li>
-                <li>Memory usage stays constant regardless of file size</li>
-                <li>No external dependencies needed</li>
-            </ul>
+            <h2>Lessons</h2>
 
-            <h2>Edge Cases and Learnings</h2>
+            <p><strong>Understand the fundamentals.</strong> React-window and react-virtualized exist, but understanding how virtual scrolling works made it easy to build exactly what we needed.</p>
 
-            <p><strong>Variable line heights:</strong> If lines have different heights (wrapping text, large content), the math gets harder. For our use case, we assumed monospace with fixed line height. If you need variable heights, you'd need a more complex approach.</p>
+            <p><strong>Keep it simple.</strong> We didn't need pagination, advanced search, or fancy UI. Just a viewer that doesn't break. Ship that, add more later if needed.</p>
 
-            <p><strong>Search and navigation:</strong> Users want to jump to specific lines or search. We added a simple line number input that calculates the scroll position and jumps directly there.</p>
+            <p><strong>Measure real data.</strong> In production, some files had variable line heights due to long lines wrapping. We adjusted the algorithm to handle that. Testing with real data caught issues theory wouldn't.</p>
 
-            <p><strong>Keyboard navigation:</strong> Arrow keys, Page Up/Down, and Home/End all work via the scroll position. It's just math.</p>
+            <h2>Ship It</h2>
 
-            <h2>Conclusion</h2>
-
-            <p>Virtual scrolling is a powerful pattern for displaying large datasets efficiently. It's not new—libraries like react-window use it—but understanding the fundamentals helped us build something lightweight and tailored to our specific needs.</p>
-
-            <p>The best part? No dependencies. Just vanilla JavaScript and a bit of math. Sometimes the simplest solution is the right one.</p>
+            <p>This shipped in production a month after we started. It works. People use it daily. No regrets.</p>
         </article>
 
         <footer>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello, World - Blog</title>
+    <title>Hello, World - Builds</title>
     <style>
         * {
             margin: 0;
@@ -16,21 +16,21 @@
         }
 
         body {
-            background: #0f0f0f;
-            color: #e8e8e8;
+            background: #0a0a0a;
+            color: #e0e0e0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
             line-height: 1.6;
             font-size: 16px;
         }
 
         a {
-            color: #58a6ff;
+            color: #ff6b35;
             text-decoration: none;
             transition: color 0.2s;
         }
 
         a:hover {
-            color: #79c0ff;
+            color: #ff8555;
         }
 
         .container {
@@ -40,57 +40,62 @@
         }
 
         header {
-            padding: 60px 0 80px 0;
-            border-bottom: 1px solid #30363d;
+            padding: 80px 0 100px 0;
+            border-bottom: 1px solid #1a1a1a;
         }
 
         nav {
             display: flex;
             gap: 32px;
-            margin-bottom: 48px;
-            font-size: 13px;
-            font-weight: 500;
-            letter-spacing: 0.5px;
+            margin-bottom: 60px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
             text-transform: uppercase;
         }
 
         nav a {
-            color: #8b949e;
+            color: #888;
             transition: color 0.2s;
         }
 
         nav a:hover {
-            color: #58a6ff;
+            color: #ff6b35;
         }
 
         .back-link {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            margin-bottom: 40px;
-            padding: 8px 0;
+            gap: 8px;
+            font-size: 12px;
+            margin-bottom: 50px;
+            padding: 10px 0;
             border-bottom: 1px solid transparent;
             transition: border-color 0.2s;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
         }
 
         .back-link:hover {
-            border-bottom-color: #58a6ff;
+            border-bottom-color: #ff6b35;
         }
 
         h1 {
-            font-size: 42px;
-            font-weight: 700;
+            font-size: 48px;
+            font-weight: 800;
             margin-bottom: 16px;
-            letter-spacing: -1px;
-            color: #f0f6fc;
-            line-height: 1.2;
+            letter-spacing: -1.5px;
+            color: #fff;
+            line-height: 1.1;
         }
 
         .post-meta {
-            color: #8b949e;
-            font-size: 13px;
+            color: #666;
+            font-size: 12px;
             margin-bottom: 60px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
 
         article {
@@ -98,46 +103,46 @@
         }
 
         p {
-            margin-bottom: 20px;
-            line-height: 1.8;
-            color: #c9d1d9;
+            margin-bottom: 24px;
+            line-height: 1.85;
+            color: #b0b0b0;
         }
 
         h2 {
-            font-size: 28px;
-            font-weight: 600;
-            margin-top: 50px;
-            margin-bottom: 20px;
-            color: #f0f6fc;
-            letter-spacing: -0.5px;
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 60px;
+            margin-bottom: 24px;
+            color: #fff;
+            letter-spacing: -1px;
         }
 
         h3 {
-            font-size: 20px;
-            font-weight: 600;
-            margin-top: 36px;
-            margin-bottom: 16px;
-            color: #f0f6fc;
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 44px;
+            margin-bottom: 18px;
+            color: #fff;
         }
 
         code {
-            background: #161b22;
+            background: #141414;
             padding: 2px 6px;
-            border-radius: 4px;
+            border-radius: 3px;
             font-family: "Monaco", "Courier New", monospace;
             font-size: 14px;
-            color: #79c0ff;
-            border: 1px solid #30363d;
+            color: #ff6b35;
+            border: 1px solid #222;
         }
 
         pre {
-            background: #0d1117;
-            padding: 16px;
+            background: #0f0f0f;
+            padding: 20px;
             border-radius: 6px;
             overflow-x: auto;
-            margin: 24px 0;
+            margin: 28px 0;
             font-size: 13px;
-            border: 1px solid #30363d;
+            border: 1px solid #1a1a1a;
         }
 
         pre code {
@@ -145,54 +150,59 @@
             padding: 0;
             border-radius: 0;
             border: none;
-            color: #79c0ff;
+            color: #ff6b35;
         }
 
         blockquote {
-            border-left: 3px solid #58a6ff;
+            border-left: 3px solid #ff6b35;
             padding-left: 20px;
-            margin: 32px 0;
-            color: #8b949e;
+            margin: 36px 0;
+            color: #888;
             font-style: italic;
-            font-size: 15px;
+            font-size: 16px;
         }
 
         ul, ol {
             margin-left: 24px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
 
         li {
             margin-bottom: 12px;
-            color: #c9d1d9;
+            color: #b0b0b0;
         }
 
         strong {
-            color: #f0f6fc;
-            font-weight: 600;
+            color: #fff;
+            font-weight: 700;
         }
 
         footer {
-            margin-top: 80px;
-            padding-top: 40px;
-            border-top: 1px solid #30363d;
+            margin-top: 100px;
+            padding-top: 50px;
+            border-top: 1px solid #1a1a1a;
             text-align: center;
-            color: #8b949e;
-            font-size: 13px;
+            color: #666;
+            font-size: 12px;
+            letter-spacing: 0.5px;
         }
 
         @media (max-width: 640px) {
             h1 {
-                font-size: 32px;
+                font-size: 36px;
             }
 
             h2 {
-                font-size: 24px;
+                font-size: 28px;
             }
 
             nav {
-                gap: 20px;
-                font-size: 12px;
+                gap: 24px;
+                font-size: 11px;
+            }
+
+            header {
+                padding: 60px 0 80px 0;
             }
         }
     </style>
@@ -215,29 +225,31 @@
         </header>
 
         <article>
-            <p>Welcome to my blog. I'm starting this space to share thoughts on building products, writing code, and learning new things. This first post is just a quick introduction to what you can expect.</p>
+            <p>This is where I write about building. What I'm shipping, what I'm learning, what works and what doesn't.</p>
 
-            <h2>Why Another Blog?</h2>
+            <p>I started this blog to document the journey. Not a polished narrative—just honest notes on iteration, shipping, and the things you learn by actually building things.</p>
 
-            <p>There are plenty of blogs out there. What makes this one different? Probably nothing revolutionary. I'm writing here mostly for myself—to organize my thoughts and document what I'm learning. If something resonates with you along the way, that's a bonus.</p>
+            <h2>What This Is</h2>
 
-            <p>I believe in simplicity and substance. No algorithms, no engagement metrics, no dark patterns. Just posts about things I find interesting, presented as clearly as possible.</p>
+            <p>A space for shipping stories. Posts about products I've built, patterns that work, mistakes I've made, and technical deep-dives on problems worth solving.</p>
 
-            <h2>What You'll Find Here</h2>
+            <p>No fluff. No "10 ways to..." listicles. Just the craft of making things that work.</p>
 
-            <p>I tend to write about a few things:</p>
+            <h2>The Basics</h2>
+
+            <p>I believe in:</p>
 
             <ul>
-                <li><strong>Building:</strong> How to take ideas from concept to launch. Practical advice on products, design, and shipping.</li>
-                <li><strong>Technical posts:</strong> Deep-dives into specific problems I've solved or technologies I've learned.</li>
-                <li><strong>Reflections:</strong> Thoughts on writing, learning, and the craft of making things that matter.</li>
+                <li><strong>Shipping fast.</strong> Done is better than perfect. Get it out, get feedback, iterate.</li>
+                <li><strong>Writing clearly.</strong> If you can't explain it simply, you don't understand it well enough.</li>
+                <li><strong>Learning openly.</strong> Building in public means learning in public. Both the wins and the failures.</li>
             </ul>
 
-            <h2>Let's Stay Connected</h2>
+            <h2>Let's Build</h2>
 
-            <p>If you have thoughts or want to discuss something, reach out on <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a>. Posts go out whenever I have something worth sharing—no schedule, no spam.</p>
+            <p>If you're building something, I'd love to hear about it. Hit me up on <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a>.</p>
 
-            <p>Thanks for stopping by.</p>
+            <p>Let's ship.</p>
         </article>
 
         <footer>
