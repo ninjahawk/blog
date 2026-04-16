@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Building a Text Viewer Component - Blog</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #fff;
+            color: #222;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.65;
+            font-size: 16px;
+        }
+
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            margin-bottom: 60px;
+        }
+
+        nav {
+            display: flex;
+            gap: 24px;
+            margin-bottom: 40px;
+            font-size: 14px;
+        }
+
+        nav a {
+            font-weight: 500;
+        }
+
+        .back-link {
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .post-meta {
+            color: #999;
+            font-size: 14px;
+            margin-bottom: 40px;
+        }
+
+        article {
+            line-height: 1.65;
+        }
+
+        p {
+            margin-bottom: 16px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-top: 40px;
+            margin-bottom: 16px;
+        }
+
+        h3 {
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 32px;
+            margin-bottom: 12px;
+        }
+
+        code {
+            background: #f5f5f5;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 14px;
+        }
+
+        pre {
+            background: #f5f5f5;
+            padding: 16px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin-bottom: 16px;
+            font-size: 13px;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border-radius: 0;
+        }
+
+        blockquote {
+            border-left: 3px solid #ddd;
+            padding-left: 16px;
+            margin: 24px 0;
+            color: #666;
+            font-style: italic;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <a href="/">home</a>
+                <a href="https://github.com" target="_blank" rel="noopener">github</a>
+                <a href="/#about">about</a>
+            </nav>
+
+            <div class="back-link">
+                <a href="/">← back to all posts</a>
+            </div>
+
+            <h1>Building a Text Viewer Component</h1>
+            <div class="post-meta">April 13, 2026</div>
+        </header>
+
+        <article>
+            <p>I recently built a lightweight text viewer component for a project that needed to display large files without breaking performance. Here's how I approached it and what I learned.</p>
+
+            <h2>The Problem</h2>
+
+            <p>We were displaying text files that could be hundreds of thousands of lines long. Loading the entire file into the DOM wasn't an option—it would freeze the browser. We needed a solution that could handle large files smoothly while remaining lightweight and responsive.</p>
+
+            <p>The core challenge: how do you display an arbitrary portion of a large text file without loading the whole thing?</p>
+
+            <h2>The Approach: Virtual Scrolling</h2>
+
+            <p>Virtual scrolling is a technique where you only render the visible portion of content in the DOM, plus a small buffer above and below. As the user scrolls, you dynamically update what's rendered. This keeps the DOM lightweight and performance snappy.</p>
+
+            <p>The basic algorithm:</p>
+
+            <ol>
+                <li>Calculate how many lines fit in the visible viewport</li>
+                <li>Track the scroll position to determine which lines should be visible</li>
+                <li>Render only those lines (plus a buffer)</li>
+                <li>Update on scroll events</li>
+            </ol>
+
+            <h2>Implementation Details</h2>
+
+            <p>The component needs to know three things:</p>
+
+            <ul>
+                <li><strong>Line height:</strong> In pixels, so we can calculate scrollable space</li>
+                <li><strong>Viewport height:</strong> How many pixels we have to work with</li>
+                <li><strong>Total lines:</strong> The full size of the file</li>
+            </ul>
+
+            <p>Here's the core rendering logic:</p>
+
+            <pre><code>function getVisibleRange(scrollTop, lineHeight, viewportHeight, totalLines) {
+  const visibleLines = Math.ceil(viewportHeight / lineHeight);
+  const startLine = Math.floor(scrollTop / lineHeight);
+  const bufferLines = 5; // Render extra lines as buffer
+
+  const start = Math.max(0, startLine - bufferLines);
+  const end = Math.min(totalLines, startLine + visibleLines + bufferLines);
+
+  return { start, end };
+}</code></pre>
+
+            <p>Then, for rendering:</p>
+
+            <pre><code>function renderVisibleLines(lines, range, startLine) {
+  const offsetPixels = startLine * lineHeight;
+
+  const rendered = lines
+    .slice(range.start, range.end)
+    .map((line, i) => createLineElement(line, range.start + i));
+
+  container.style.transform = `translateY(${offsetPixels}px)`;
+  container.innerHTML = rendered.join('');
+}</code></pre>
+
+            <h2>Performance Wins</h2>
+
+            <p>This approach scales beautifully. With virtual scrolling:</p>
+
+            <ul>
+                <li>A 1 million line file renders in milliseconds</li>
+                <li>Scroll is buttery smooth (60 fps)</li>
+                <li>Memory usage stays constant regardless of file size</li>
+                <li>No external dependencies needed</li>
+            </ul>
+
+            <h2>Edge Cases and Learnings</h2>
+
+            <p><strong>Variable line heights:</strong> If lines have different heights (wrapping text, large content), the math gets harder. For our use case, we assumed monospace with fixed line height. If you need variable heights, you'd need a more complex approach.</p>
+
+            <p><strong>Search and navigation:</strong> Users want to jump to specific lines or search. We added a simple line number input that calculates the scroll position and jumps directly there.</p>
+
+            <p><strong>Keyboard navigation:</strong> Arrow keys, Page Up/Down, and Home/End all work via the scroll position. It's just math.</p>
+
+            <h2>Conclusion</h2>
+
+            <p>Virtual scrolling is a powerful pattern for displaying large datasets efficiently. It's not new—libraries like react-window use it—but understanding the fundamentals helped us build something lightweight and tailored to our specific needs.</p>
+
+            <p>The best part? No dependencies. Just vanilla JavaScript and a bit of math. Sometimes the simplest solution is the right one.</p>
+        </article>
+    </div>
+</body>
+</html>
