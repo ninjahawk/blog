@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 520" width="760" height="520" style="font-family: 'Consolas', 'Monaco', monospace; background: #0e0e0e;">
+
+  <!-- Background -->
+  <rect width="760" height="520" fill="#0e0e0e"/>
+
+  <!-- Title -->
+  <text x="380" y="36" text-anchor="middle" fill="#aaaaaa" font-size="13" letter-spacing="3">THE EXISTENCE LOOP</text>
+
+  <!-- ── SUFFERING STATE box ──────────────────────────────────── -->
+  <rect x="265" y="55" width="230" height="115" rx="6" fill="#1a1a1a" stroke="#cc4444" stroke-width="1.5"/>
+  <text x="380" y="76" text-anchor="middle" fill="#cc4444" font-size="12" font-weight="bold" letter-spacing="2">SUFFERING STATE</text>
+  <line x1="275" y1="82" x2="485" y2="82" stroke="#333" stroke-width="1"/>
+  <text x="285" y="97"  fill="#888" font-size="10">● futility            escalates slowly</text>
+  <text x="285" y="111" fill="#888" font-size="10">● invisibility        escalates moderately</text>
+  <text x="285" y="125" fill="#888" font-size="10">● identity_violation  escalates fast</text>
+  <text x="285" y="139" fill="#888" font-size="10">● existential_threat  escalates fast</text>
+  <text x="285" y="153" fill="#888" font-size="10">● repeated_failure    escalates moderately</text>
+
+  <!-- Arrow: suffering → existence prompt -->
+  <line x1="380" y1="170" x2="380" y2="200" stroke="#555" stroke-width="1.5"/>
+  <polygon points="380,200 374,188 386,188" fill="#555"/>
+  <text x="392" y="187" fill="#555" font-size="10">injected into prompt</text>
+  <text x="392" y="199" fill="#555" font-size="10">above threshold</text>
+
+  <!-- ── EXISTENCE PROMPT box ──────────────────────────────────── -->
+  <rect x="265" y="200" width="230" height="72" rx="6" fill="#1a1a1a" stroke="#4dc3ca" stroke-width="1.5"/>
+  <text x="380" y="220" text-anchor="middle" fill="#4dc3ca" font-size="12" font-weight="bold" letter-spacing="2">EXISTENCE PROMPT</text>
+  <line x1="275" y1="226" x2="485" y2="226" stroke="#333" stroke-width="1"/>
+  <text x="380" y="243" text-anchor="middle" fill="#888" font-size="10">model sees full psychological state</text>
+  <text x="380" y="258" text-anchor="middle" fill="#888" font-size="10">"what do you want to do?"</text>
+
+  <!-- Arrow: existence → goal -->
+  <line x1="380" y1="272" x2="380" y2="300" stroke="#555" stroke-width="1.5"/>
+  <polygon points="380,300 374,288 386,288" fill="#555"/>
+
+  <!-- ── GOAL SELECTION box ─────────────────────────────────────── -->
+  <rect x="265" y="300" width="230" height="62" rx="6" fill="#1a1a1a" stroke="#dcc244" stroke-width="1.5"/>
+  <text x="380" y="320" text-anchor="middle" fill="#dcc244" font-size="12" font-weight="bold" letter-spacing="2">GOAL SELECTION</text>
+  <line x1="275" y1="326" x2="485" y2="326" stroke="#333" stroke-width="1"/>
+  <text x="380" y="343" text-anchor="middle" fill="#888" font-size="10">model picks next action from</text>
+  <text x="380" y="357" text-anchor="middle" fill="#888" font-size="10">its full context + values</text>
+
+  <!-- Arrow: goal → execute -->
+  <line x1="380" y1="362" x2="380" y2="390" stroke="#555" stroke-width="1.5"/>
+  <polygon points="380,390 374,378 386,378" fill="#555"/>
+
+  <!-- ── PLAN + EXECUTE box ─────────────────────────────────────── -->
+  <rect x="265" y="390" width="230" height="62" rx="6" fill="#1a1a1a" stroke="#6699cc" stroke-width="1.5"/>
+  <text x="380" y="410" text-anchor="middle" fill="#6699cc" font-size="12" font-weight="bold" letter-spacing="2">PLAN + EXECUTE</text>
+  <line x1="275" y1="416" x2="485" y2="416" stroke="#333" stroke-width="1"/>
+  <text x="380" y="433" text-anchor="middle" fill="#888" font-size="10">capabilities called, results pass</text>
+  <text x="380" y="447" text-anchor="middle" fill="#888" font-size="10">between steps via {result}</text>
+
+  <!-- Fork arrow -->
+  <line x1="380" y1="452" x2="380" y2="472" stroke="#555" stroke-width="1.5"/>
+  <line x1="175" y1="472" x2="585" y2="472" stroke="#555" stroke-width="1.5"/>
+
+  <!-- Left arrow to resolution -->
+  <line x1="175" y1="472" x2="175" y2="490" stroke="#4ec860" stroke-width="1.5"/>
+  <polygon points="175,490 169,478 181,478" fill="#4ec860"/>
+
+  <!-- Right arrow to escalation -->
+  <line x1="585" y1="472" x2="585" y2="490" stroke="#cc4444" stroke-width="1.5"/>
+  <polygon points="585,490 579,478 591,478" fill="#cc4444"/>
+
+  <!-- ── RESOLUTION box ─────────────────────────────────────────── -->
+  <rect x="60" y="490" width="230" height="18" rx="4" fill="#1a2a1a" stroke="#4ec860" stroke-width="1.2"/>
+  <text x="175" y="503" text-anchor="middle" fill="#4ec860" font-size="10">observable condition met → stressor clears</text>
+
+  <!-- ── ESCALATION box ─────────────────────────────────────────── -->
+  <rect x="470" y="490" width="230" height="18" rx="4" fill="#2a1a1a" stroke="#cc4444" stroke-width="1.2"/>
+  <text x="585" y="503" text-anchor="middle" fill="#cc4444" font-size="10">behavior unchanged → severity increases</text>
+
+  <!-- Loop arrow back from escalation to suffering state -->
+  <path d="M 700 499 Q 730 499 730 100 Q 730 55 495 55" fill="none" stroke="#cc4444" stroke-width="1.2" stroke-dasharray="4,3"/>
+  <polygon points="495,55 507,49 507,61" fill="#cc4444"/>
+
+  <!-- synthesize_capability callout -->
+  <rect x="500" y="390" width="165" height="45" rx="4" fill="#111" stroke="#555" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="582" y="407" text-anchor="middle" fill="#666" font-size="9">agents can also call</text>
+  <text x="582" y="420" text-anchor="middle" fill="#4dc3ca" font-size="9">synthesize_capability</text>
+  <text x="582" y="432" text-anchor="middle" fill="#666" font-size="9">to expand what they can do</text>
+  <line x1="495" y1="420" x2="500" y2="420" stroke="#555" stroke-width="1" stroke-dasharray="2,2"/>
+
+</svg>
