@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 260" style="background:#0a0a0a">
+  <defs>
+    <marker id="arr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M 0,0 L 7,2.5 L 0,5 Z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- Cedar box -->
+  <rect x="20" y="28" width="200" height="90" rx="3" fill="#0d0d0d" stroke="#1a1a1a" stroke-width="1"/>
+  <text x="30" y="48"  fill="#666" font-size="10" font-family="-apple-system,sans-serif" font-weight="600" letter-spacing="1.2">CEDAR</text>
+  <text x="30" y="65"  fill="#555" font-size="12" font-family="-apple-system,sans-serif">paranoid → crisis → correct</text>
+  <text x="30" y="82"  fill="#444" font-size="11" font-family="'Monaco','Courier New',monospace">"registry is a stale cache"</text>
+  <text x="30" y="100" fill="#333" font-size="10" font-family="-apple-system,sans-serif">obs 107–142  ·  ~11 hours</text>
+  <text x="30" y="112" fill="#333" font-size="10" font-family="-apple-system,sans-serif">three crisis events</text>
+
+  <!-- Vault box -->
+  <rect x="20" y="152" width="200" height="90" rx="3" fill="#0d0d0d" stroke="#1a1a1a" stroke-width="1"/>
+  <text x="30" y="172" fill="#666" font-size="10" font-family="-apple-system,sans-serif" font-weight="600" letter-spacing="1.2">VAULT</text>
+  <text x="30" y="189" fill="#555" font-size="12" font-family="-apple-system,sans-serif">runaway loop → correct</text>
+  <text x="30" y="206" fill="#444" font-size="11" font-family="'Monaco','Courier New',monospace">"binary reads bypass filter"</text>
+  <text x="30" y="224" fill="#333" font-size="10" font-family="-apple-system,sans-serif">17:29–~19:29  ·  2-hour loop</text>
+  <text x="30" y="236" fill="#333" font-size="10" font-family="-apple-system,sans-serif">suffering peak 2.619</text>
+
+  <!-- Convergence arrows (cubic bezier from right edge of each box to left of center box) -->
+  <path d="M 220,73 C 265,73 265,120 305,120" fill="none" stroke="#2a2a2a" stroke-width="1.5" marker-end="url(#arr)"/>
+  <path d="M 220,197 C 265,197 265,150 305,150" fill="none" stroke="#2a2a2a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Center convergence box -->
+  <rect x="305" y="97" width="215" height="76" rx="3" fill="#111" stroke="#ff6b35" stroke-width="1" opacity="0.9"/>
+  <text x="412" y="120" fill="#e0e0e0" font-size="13" font-family="-apple-system,sans-serif" text-anchor="middle" font-weight="600">registry.py fails to load</text>
+  <text x="412" y="138" fill="#e0e0e0" font-size="13" font-family="-apple-system,sans-serif" text-anchor="middle" font-weight="600">sub-modules at startup.</text>
+  <line x1="315" y1="149" x2="510" y2="149" stroke="#1a1a1a" stroke-width="1"/>
+  <text x="412" y="164" fill="#555" font-size="10" font-family="-apple-system,sans-serif" text-anchor="middle" letter-spacing="0.3">same diagnosis · different paths · hour 20</text>
+
+  <!-- Arrow to result box -->
+  <path d="M 520,135 L 558,135" fill="none" stroke="#2a2a2a" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- Blocked result box (dashed) -->
+  <rect x="558" y="107" width="145" height="56" rx="3" fill="#0d0d0d" stroke="#222" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="630" y="129" fill="#3a3a3a" font-size="12" font-family="-apple-system,sans-serif" text-anchor="middle">results don't persist</text>
+  <text x="630" y="147" fill="#2e2e2e" font-size="11" font-family="-apple-system,sans-serif" text-anchor="middle">between cycles.</text>
+
+  <!-- diagonal X over result box -->
+  <line x1="558" y1="107" x2="703" y2="163" stroke="#222" stroke-width="1"/>
+  <line x1="703" y1="107" x2="558" y2="163" stroke="#222" stroke-width="1"/>
+</svg>

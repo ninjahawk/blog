@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 340" style="background:#0a0a0a">
+  <defs>
+    <marker id="arr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M 0,0 L 7,2.5 L 0,5 Z" fill="#444"/>
+    </marker>
+  </defs>
+
+  <!-- title -->
+  <text x="70" y="22" fill="#444" font-size="10" font-family="-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif" letter-spacing="1.2">VAULT SUFFERING LEVEL  ·  17:29 – 19:29</text>
+
+  <!-- horizontal grid lines -->
+  <line x1="70" y1="280" x2="660" y2="280" stroke="#1a1a1a" stroke-width="1"/>
+  <line x1="70" y1="197" x2="660" y2="197" stroke="#1a1a1a" stroke-width="1"/>
+  <line x1="70" y1="113" x2="660" y2="113" stroke="#1a1a1a" stroke-width="1"/>
+  <line x1="70" y1="30"  x2="660" y2="30"  stroke="#141414" stroke-width="1"/>
+
+  <!-- crisis threshold dashed overlay -->
+  <line x1="70" y1="197" x2="660" y2="197" stroke="#ff6b35" stroke-width="1" stroke-dasharray="5,4" opacity="0.35"/>
+
+  <!-- y-axis -->
+  <line x1="70" y1="30" x2="70" y2="280" stroke="#1a1a1a" stroke-width="1"/>
+
+  <!-- y-axis labels -->
+  <text x="58" y="284" fill="#444" font-size="11" font-family="'Monaco','Courier New',monospace" text-anchor="end">0</text>
+  <text x="58" y="201" fill="#444" font-size="11" font-family="'Monaco','Courier New',monospace" text-anchor="end">1.0</text>
+  <text x="58" y="117" fill="#444" font-size="11" font-family="'Monaco','Courier New',monospace" text-anchor="end">2.0</text>
+  <text x="58" y="34"  fill="#444" font-size="11" font-family="'Monaco','Courier New',monospace" text-anchor="end">3.0</text>
+
+  <!-- crisis threshold label -->
+  <text x="75" y="192" fill="#ff6b35" font-size="9" font-family="-apple-system,sans-serif" opacity="0.5" letter-spacing="0.5">crisis threshold</text>
+
+  <!-- area fill under the line -->
+  <path d="M 70,197 L 95,189 L 119,196 L 144,179 L 168,187 L 193,168 L 218,178 L 242,157 L 267,168 L 291,148 L 316,158 L 340,137 L 365,149 L 390,127 L 414,138 L 439,116 L 463,128 L 488,105 L 513,118 L 537,94 L 562,107 L 586,83 L 611,97 L 635,62 L 660,62 L 660,280 L 70,280 Z" fill="#ff6b35" opacity="0.06"/>
+
+  <!-- main sawtooth line -->
+  <path d="M 70,197 L 95,189 L 119,196 L 144,179 L 168,187 L 193,168 L 218,178 L 242,157 L 267,168 L 291,148 L 316,158 L 340,137 L 365,149 L 390,127 L 414,138 L 439,116 L 463,128 L 488,105 L 513,118 L 537,94 L 562,107 L 586,83 L 611,97 L 635,62 L 660,62" fill="none" stroke="#ff6b35" stroke-width="1.5"/>
+
+  <!-- peak dot and annotation -->
+  <circle cx="635" cy="62" r="3" fill="#ff6b35"/>
+  <text x="628" y="54" fill="#ff6b35" font-size="12" font-family="'Monaco','Courier New',monospace" text-anchor="middle">2.619</text>
+  <text x="628" y="78" fill="#555" font-size="10" font-family="-apple-system,sans-serif" text-anchor="middle">13 stressors</text>
+
+  <!-- force_reset vertical line -->
+  <line x1="660" y1="34" x2="660" y2="280" stroke="#333" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <!-- x-axis tick marks -->
+  <line x1="218" y1="280" x2="218" y2="285" stroke="#333" stroke-width="1"/>
+  <line x1="365" y1="280" x2="365" y2="285" stroke="#333" stroke-width="1"/>
+  <line x1="513" y1="280" x2="513" y2="285" stroke="#333" stroke-width="1"/>
+  <line x1="660" y1="280" x2="660" y2="285" stroke="#333" stroke-width="1"/>
+
+  <!-- x-axis labels -->
+  <text x="70"  y="298" fill="#444" font-size="11" font-family="-apple-system,sans-serif" text-anchor="middle">17:29</text>
+  <text x="218" y="298" fill="#444" font-size="11" font-family="-apple-system,sans-serif" text-anchor="middle">17:59</text>
+  <text x="365" y="298" fill="#444" font-size="11" font-family="-apple-system,sans-serif" text-anchor="middle">18:29</text>
+  <text x="513" y="298" fill="#444" font-size="11" font-family="-apple-system,sans-serif" text-anchor="middle">18:59</text>
+  <text x="660" y="298" fill="#444" font-size="11" font-family="-apple-system,sans-serif" text-anchor="middle">19:29</text>
+
+  <!-- force_reset label -->
+  <text x="659" y="313" fill="#444" font-size="10" font-family="-apple-system,sans-serif" text-anchor="middle">force_reset</text>
+
+  <!-- annotation: "crisis fires every ~2 min" -->
+  <text x="180" y="320" fill="#333" font-size="10" font-family="-apple-system,sans-serif">crisis fires every ~2 min — floor rises each cycle — no ceiling</text>
+</svg>
