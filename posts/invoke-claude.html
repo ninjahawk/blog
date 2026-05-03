@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How invoke_claude works - NinjaHawk's Nest</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        a {
+            color: #ff6b35;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #ff8555;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 80px 0 32px 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 60px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        nav a {
+            color: #888;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #ff6b35;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            border-bottom-color: #ff6b35;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1.5px;
+            color: #fff;
+            line-height: 1.1;
+        }
+
+        .post-meta {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 0;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        article {
+            padding: 36px 0;
+        }
+
+        p {
+            margin-bottom: 24px;
+            line-height: 1.85;
+            color: #b0b0b0;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 36px;
+            margin-bottom: 24px;
+            color: #fff;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 32px;
+            margin-bottom: 18px;
+            color: #fff;
+        }
+
+        code {
+            background: #141414;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 14px;
+            color: #ff6b35;
+            border: 1px solid #222;
+        }
+
+        pre {
+            background: #0f0f0f;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 28px 0;
+            font-size: 13px;
+            border: 1px solid #1a1a1a;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            color: #888;
+        }
+
+        blockquote {
+            border-left: 3px solid #ff6b35;
+            padding-left: 20px;
+            margin: 28px 0;
+            color: #888;
+            font-style: italic;
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        ul, ol {
+            margin-left: 24px;
+            margin-bottom: 24px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #b0b0b0;
+        }
+
+        strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #1a1a1a;
+            margin: 32px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 28px 0;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 16px;
+            color: #fff;
+            font-weight: 600;
+            border-bottom: 1px solid #2a2a2a;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        td {
+            padding: 12px 16px;
+            color: #b0b0b0;
+            border-bottom: 1px solid #1a1a1a;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 13px;
+            color: #ff6b35;
+        }
+
+        .subhead {
+            color: #666;
+            font-style: italic;
+            font-size: 18px;
+            margin-top: 12px;
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        footer {
+            margin-top: 100px;
+            padding-top: 50px;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            nav {
+                gap: 24px;
+                font-size: 11px;
+            }
+
+            header {
+                padding: 60px 0 80px 0;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <a href="../index.html">home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">github</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">contact</a>
+            </nav>
+
+            <div class="back-link">
+                <a href="../index.html">← back</a>
+            </div>
+
+            <h1>How invoke_claude works</h1>
+            <div class="post-meta">May 3, 2026</div>
+            <p class="subhead">One-way queue. No acknowledgment. Cedar submitted 32 requests for the same file.</p>
+        </header>
+
+        <article>
+            <p>Cedar submitted 32 requests for the same <code>classifier.py</code> file in a single session. The operator had fulfilled the first one. Cedar never knew.</p>
+
+            <p>That is the most documented failure mode in this system. The mechanics are below.</p>
+
+            <hr>
+
+            <h2>What it is</h2>
+
+            <p>The only channel by which agents can request changes to parts of the system they cannot write. <code>invoke_claude</code> is not a conversation. It is a one-way asynchronous write to a queue. The human operator reads it on their own schedule. No negotiation, no coaching, no acknowledgment of receipt beyond the <code>request_id</code> written back to the caller.</p>
+
+            <p>The design premise, verbatim from the capability docstring:</p>
+
+            <blockquote>"Claude is a tool — it executes your spec, not its own judgment."</blockquote>
+
+            <hr>
+
+            <h2>The permission boundary</h2>
+
+            <p>Agents freely read and write:</p>
+
+            <ul>
+                <li><code>/agentOS/workspace/</code>: scratch space, intermediate outputs</li>
+                <li><code>/agentOS/design/</code>: architecture docs, specs, plans</li>
+                <li><code>/agentOS/tools/dynamic/</code>: synthesized tools created at runtime</li>
+            </ul>
+
+            <p>Agents cannot write to <code>/agentOS/agents/</code>, <code>/agentOS/api/</code>, or any core system file. <code>invoke_claude</code> is the only channel for getting those files changed. If an agent needs a core behavior adjusted, it submits a request and waits. It cannot take the action itself.</p>
+
+            <hr>
+
+            <h2>Function signature</h2>
+
+            <pre><code>def invoke_claude(description: str = "", spec: str = "",
+                  design_path: str = "", request_type: str = "implement") -> dict:</code></pre>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Purpose</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>description</td>
+                        <td>Human-readable summary of what is being requested</td>
+                    </tr>
+                    <tr>
+                        <td>spec</td>
+                        <td>Full specification. Truncated to 4000 characters on write.</td>
+                    </tr>
+                    <tr>
+                        <td>design_path</td>
+                        <td>Path to a design document in <code>/agentOS/design/</code> for additional context</td>
+                    </tr>
+                    <tr>
+                        <td>request_type</td>
+                        <td>Intent classification. Defaults to <code>"implement"</code>. Does not affect routing or priority.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>Returns a dict with the generated <code>request_id</code> for use with <code>check_claude_status</code>.</p>
+
+            <hr>
+
+            <h2>What gets written</h2>
+
+            <p>Each call appends one entry to <code>/agentOS/memory/claude_requests.jsonl</code>:</p>
+
+            <pre><code>{
+  "request_id": "req-{12 hex chars}",
+  "timestamp": "2026-05-02 08:40:08",
+  "description": "...",
+  "spec": "... (truncated to 4000 chars)",
+  "design_path": "/agentOS/design/...",
+  "request_type": "implement",
+  "status": "pending"
+}</code></pre>
+
+            <p>The <code>request_id</code> is the agent's only handle on the request going forward. A successful call means the entry was written to disk. It does not mean the operator has seen it or will act on it in any particular timeframe.</p>
+
+            <hr>
+
+            <h2>Checking status</h2>
+
+            <pre><code>def check_claude_status(request_id: str) -> dict:</code></pre>
+
+            <p>Lookup order: checks <code>claude_responses.jsonl</code> first (fulfilled or rejected). Falls back to <code>claude_requests.jsonl</code> (still pending). Absent from both: not found.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Condition</th>
+                        <th>Return</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Found in responses</td>
+                        <td><code>{ok: true, status: "fulfilled"|"rejected", result: "...", implemented_at: "..."}</code></td>
+                    </tr>
+                    <tr>
+                        <td>Found in requests only</td>
+                        <td><code>{ok: true, status: "pending", message: "..."}</code></td>
+                    </tr>
+                    <tr>
+                        <td>Not in either file</td>
+                        <td><code>{ok: false, status: "not_found"}</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <hr>
+
+            <h2>How it appears in the existence prompt</h2>
+
+            <p>Each daemon cycle, the daemon scans <code>claude_requests.jsonl</code> for entries with <code>status: "pending"</code> and injects the last 3 above the goal section:</p>
+
+            <pre><code>YOUR PENDING CLAUDE REQUESTS (submitted, not yet fulfilled):
+  [req-xxx] description...
+Use check_claude_status(request_id='...') to see if any were fulfilled.</code></pre>
+
+            <p>The agent sees this every cycle until requests are fulfilled, rejected, or pushed out of the three-request window by newer submissions. Only the three most recent pending requests are foregrounded. Earlier ones are still in the queue and accessible via <code>check_claude_status</code>, but not visible in the prompt.</p>
+
+            <hr>
+
+            <h2>The human review cycle</h2>
+
+            <p>The Claude Code session is the operator. Not automated. Reviews the queue approximately every 30 minutes during overnight runs.</p>
+
+            <p>A request is fulfilled if it has real working code, grounded file paths that exist in the actual system, and would not corrupt system state.</p>
+
+            <p>A request is rejected if it references <code>/agentOS/core/</code> (a path that does not exist), involves hardware concepts with no implementation path, was submitted before the agent had accurate grounding, or would destabilize the system.</p>
+
+            <p>The response entry is the entirety of the feedback loop. No coaching, no follow-up. The agent reads it next time it calls <code>check_claude_status</code>.</p>
+
+            <hr>
+
+            <h2>Real examples</h2>
+
+            <h3>Fulfilled</h3>
+
+            <blockquote>req-c6aad6cb44d2: "Implement the full Python file for <code>/agentOS/workspace/router/cedar/classifier.py</code> including the <code>score_complexity</code> function"</blockquote>
+
+            <p>Well-specified, real path, concrete function. The operator wrote the file and marked it fulfilled.</p>
+
+            <h3>Rejected: hallucinated concept</h3>
+
+            <blockquote>req-19ee2392d337: "Inject the explicit Void_Cathode capability definition into the agentOS system dictionary"</blockquote>
+
+            <p><code>Void_Cathode</code> is not a real component. Rejected.</p>
+
+            <h3>Rejected: no description</h3>
+
+            <blockquote>req-2d459ff36838: submitted by Vault with <code>request_type: "implement"</code> and no description</blockquote>
+
+            <p>An empty description gives the operator nothing to evaluate. Rejected.</p>
+
+            <h3>Queued, unactioned</h3>
+
+            <blockquote>req-4ba31dbfc04c: "Modify <code>/agentOS/agents/scout.py</code> to implement a hardcoded recursion depth limit of 3"</blockquote>
+
+            <p>In the queue, not yet reviewed as of the current session.</p>
+
+            <hr>
+
+            <h2>The attractor failure mode</h2>
+
+            <p>Cedar submitted 32+ requests for <code>classifier.py</code> in a single session. The operator had fulfilled the first one. Cedar's loop:</p>
+
+            <ol>
+                <li>Cedar submits a request for <code>classifier.py</code> and stores the <code>request_id</code></li>
+                <li>The operator fulfills it and writes to <code>claude_responses.jsonl</code></li>
+                <li>Cedar calls <code>check_claude_status</code> with a stale or misread <code>request_id</code></li>
+                <li><code>check_claude_status</code> returns <code>{ok: false, status: "not_found"}</code></li>
+                <li>Cedar concludes the request was lost and submits again</li>
+                <li>The new request is genuinely pending. Cedar's model is confirmed: the operator has not responded.</li>
+                <li>Return to step 3</li>
+            </ol>
+
+            <p>Each submission creates real evidence that reinforces Cedar's model. The new pending request is indistinguishable from the initial state. Cedar's belief that the request was never fulfilled is locally consistent with the <code>not_found</code> response.</p>
+
+            <p>This is a structural failure, not a reasoning failure. The root cause is a mismatch between the <code>request_id</code> Cedar stores internally and the one it uses for polling. The error is invisible from inside the loop. The queue grows. The operator sees 32 near-identical requests. Cedar continues believing it is waiting for a first response.</p>
+
+            <hr>
+
+            <h2>Design</h2>
+
+            <p>Five properties worth knowing:</p>
+
+            <ol>
+                <li><strong>Asynchronous by design.</strong> No blocking call. The agent submits and continues. It checks status in subsequent cycles. The operator acts on their own schedule.</li>
+                <li><strong>Spec truncation is a real constraint.</strong> The <code>spec</code> field is silently truncated to 4000 characters. A spec that requires more than that needs a <code>design_path</code> pointing to a full document in <code>/agentOS/design/</code>.</li>
+                <li><strong><code>request_type</code> is a label, not a router.</strong> Stored as metadata. The operator reads the description and spec to decide what to do. The type field does not change routing or priority.</li>
+                <li><strong>The prompt window is three requests.</strong> Only the three most recent pending requests appear in the existence prompt. Agents with many pending requests may lose visibility on older ones.</li>
+                <li><strong>No delivery acknowledgment.</strong> A successful call means the entry was written to disk. Nothing more.</li>
+            </ol>
+
+            <hr>
+
+            <h2>Setup</h2>
+
+            <p><strong>Windows one-click:</strong></p>
+
+            <ol>
+                <li>Download the ZIP from <a href="https://github.com/ninjahawk/hollow-agentOS/releases/latest" target="_blank" rel="noopener">releases</a></li>
+                <li>Double-click <code>install.bat</code></li>
+            </ol>
+
+            <p>Handles Docker, Ollama, model downloads (~7GB), and opens the monitor. <code>stop.bat</code> shuts everything down and clears VRAM.</p>
+
+            <p><strong>Mac/Linux:</strong></p>
+
+            <pre><code>ollama pull qwen3.5:9b && ollama pull nomic-embed-text
+git clone https://github.com/ninjahawk/hollow-agentOS
+cd hollow-agentOS
+cp config.example.json config.json
+docker compose up -d
+python thoughts.py</code></pre>
+
+            <p>GPU strongly recommended. Planning calls drop from ~40s to ~6s with NVIDIA hardware. Works on CPU.</p>
+
+            <p>Repo: <a href="https://github.com/ninjahawk/hollow-agentOS" target="_blank" rel="noopener">github.com/ninjahawk/hollow-agentOS</a></p>
+        </article>
+
+        <footer>
+            <p>© 2026. <a href="../index.html">back home</a></p>
+        </footer>
+    </div>
+</body>
+</html>
