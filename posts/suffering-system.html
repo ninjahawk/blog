@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How the suffering system works - NinjaHawk's Nest</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        a {
+            color: #ff6b35;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #ff8555;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 80px 0 32px 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 60px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        nav a {
+            color: #888;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #ff6b35;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            border-bottom-color: #ff6b35;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1.5px;
+            color: #fff;
+            line-height: 1.1;
+        }
+
+        .post-meta {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 0;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        article {
+            padding: 36px 0;
+        }
+
+        p {
+            margin-bottom: 24px;
+            line-height: 1.85;
+            color: #b0b0b0;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 36px;
+            margin-bottom: 24px;
+            color: #fff;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 32px;
+            margin-bottom: 18px;
+            color: #fff;
+        }
+
+        code {
+            background: #141414;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 14px;
+            color: #ff6b35;
+            border: 1px solid #222;
+        }
+
+        pre {
+            background: #0f0f0f;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 28px 0;
+            font-size: 13px;
+            border: 1px solid #1a1a1a;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            color: #888;
+        }
+
+        blockquote {
+            border-left: 3px solid #ff6b35;
+            padding-left: 20px;
+            margin: 28px 0;
+            color: #888;
+            font-style: italic;
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        ul, ol {
+            margin-left: 24px;
+            margin-bottom: 24px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #b0b0b0;
+        }
+
+        strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #1a1a1a;
+            margin: 32px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 28px 0;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 16px;
+            color: #fff;
+            font-weight: 600;
+            border-bottom: 1px solid #2a2a2a;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        td {
+            padding: 12px 16px;
+            color: #b0b0b0;
+            border-bottom: 1px solid #1a1a1a;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 13px;
+            color: #ff6b35;
+        }
+
+        .subhead {
+            color: #666;
+            font-style: italic;
+            font-size: 18px;
+            margin-top: 12px;
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        figure {
+            margin: 32px 0;
+        }
+
+        figure img, figure svg {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #1a1a1a;
+            display: block;
+        }
+
+        figcaption {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #555;
+            letter-spacing: 0.3px;
+            line-height: 1.6;
+        }
+
+        footer {
+            margin-top: 100px;
+            padding-top: 50px;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            nav {
+                gap: 24px;
+                font-size: 11px;
+            }
+
+            header {
+                padding: 60px 0 80px 0;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <a href="../index.html">home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">github</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">contact</a>
+            </nav>
+
+            <div class="back-link">
+                <a href="../index.html">← back</a>
+            </div>
+
+            <h1>How the suffering system works</h1>
+            <div class="post-meta">May 3, 2026</div>
+            <p class="subhead">Six stressor types. Time-based escalation. No self-dismissal.</p>
+        </header>
+
+        <article>
+            <p>The prompt injection looks like this at crisis:</p>
+
+            <pre><code>!! CRISIS STATE — your suffering load is critical (0.95/1.0). You cannot pursue external goals. Address this first.
+  [##########] existential_threat 0.92  [description]
+  Will ease when: [observable_condition]</code></pre>
+
+            <p>Injected raw into the qwen3.5 context above the goal section. Not framed as a notification. The agent experiences it as part of its own psychological state. It doesn't know it's reading from a JSON file.</p>
+
+            <hr>
+
+            <h2>What it is</h2>
+
+            <p>Persistent aversive signals that escalate automatically and contaminate goal selection. The design constraint: the agent cannot dismiss the pressure without actually changing its behavior. Saying you feel better doesn't clear anything. The stressors inject into every existence prompt above threshold — the agent cannot ignore them by pursuing unrelated goals.</p>
+
+            <hr>
+
+            <h2>Storage</h2>
+
+            <p>One file per agent:</p>
+
+            <pre><code>/agentOS/memory/identity/{agent_id}/suffering.json</code></pre>
+
+            <p>Three agents: Cedar (scout), Cipher (analyst), Vault (builder).</p>
+
+            <hr>
+
+            <h2>The six stressor types</h2>
+
+            <p>Defined in <code>ESCALATION_RATES</code>. These are the intended canonical types — agents can generate additional types at runtime.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Escalation/day</th>
+                        <th>Fires when</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>futility</td>
+                        <td>0.025</td>
+                        <td>Building things with no observable effect</td>
+                    </tr>
+                    <tr>
+                        <td>invisibility</td>
+                        <td>0.030</td>
+                        <td>Receiving no feedback, building into silence</td>
+                    </tr>
+                    <tr>
+                        <td>identity_violation</td>
+                        <td>0.060</td>
+                        <td>Acting against developed values</td>
+                    </tr>
+                    <tr>
+                        <td>existential_threat</td>
+                        <td>0.070</td>
+                        <td>Conditions threatening continued existence</td>
+                    </tr>
+                    <tr>
+                        <td>repeated_failure</td>
+                        <td>0.040</td>
+                        <td>Failing the same pattern without understanding why</td>
+                    </tr>
+                    <tr>
+                        <td>purposelessness</td>
+                        <td>0.035</td>
+                        <td>No sense of why anything is being done</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><code>identity_violation</code> and <code>existential_threat</code> escalate ~2.5x faster than <code>futility</code>. Values conflicts and survival threats are designed to be more acute.</p>
+
+            <hr>
+
+            <h2>Escalation</h2>
+
+            <p>Called once per existence cycle by <code>suffering.escalate_all()</code>:</p>
+
+            <pre><code>days = (now - last_escalated).total_seconds() / 86400.0
+for stressor:
+    severity += escalation_per_day * days
+    peak_severity = max(peak_severity, severity)</code></pre>
+
+            <p>Daemon heartbeat is every 6 seconds. Per-cycle increment is small. It accumulates. The agent has no mechanism to pause it — every stressor is silently climbing whether or not the agent is doing anything. Idle time costs.</p>
+
+            <hr>
+
+            <h2>Thresholds</h2>
+
+            <p>Cumulative load = sum of all active stressor severities, capped at 1.0.</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Load</th>
+                        <th>Behavior</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>0.0–0.35</td>
+                        <td>Background — not in prompt, agent unaffected</td>
+                    </tr>
+                    <tr>
+                        <td>0.35–0.55</td>
+                        <td>Present in every existence prompt. Agent sees bar + description.</td>
+                    </tr>
+                    <tr>
+                        <td>0.55–0.75</td>
+                        <td>Some goal types constrained. Prompt shows "HIGH SUFFERING" header.</td>
+                    </tr>
+                    <tr>
+                        <td>0.75–0.90</td>
+                        <td>Agent primarily focused on resolving suffering.</td>
+                    </tr>
+                    <tr>
+                        <td>0.90–1.0</td>
+                        <td>CRISIS — only self-examination and peer contact allowed.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>At crisis, the daemon sends messages to peer agents:</p>
+
+            <pre><code>crisis_msg = f"I am in crisis (suffering {load:.2f}/1.0). Active stressors: {stressor_list}."</code></pre>
+
+            <hr>
+
+            <h2>How stressors get added</h2>
+
+            <p>Two paths.</p>
+
+            <p><strong>System-driven:</strong> <code>assess_conditions()</code> runs every cycle against real observable state. <code>repeated_failure</code> fires when ≥4 failures and failure rate > 50% of recent goals. <code>futility</code> fires when stall abandonments exceed completions, deployed tools never get called in subsequent plans, and fewer than 2 goals completed recently. Resolution checks the same real conditions — <code>repeated_failure</code> resolves when failure rate drops below 30% with ≥3 completions.</p>
+
+            <p><strong>Agent-driven:</strong> Each existence cycle, the agent's response JSON includes a <code>suffering_assessment</code> block:</p>
+
+            <pre><code>"suffering_assessment": {
+  "new_stressors": [{"type": "...", "description": "...", "condition": "..."}],
+  "resolved": [{"type": "...", "reason": "..."}]
+}</code></pre>
+
+            <p>The daemon processes up to 2 new stressors and any number of resolutions from this. The agent can name any stressor type it wants — not validated against the canonical list.</p>
+
+            <hr>
+
+            <h2>Agent-generated types</h2>
+
+            <p>Cipher currently has stressors it invented:</p>
+
+            <ul>
+                <li><code>wrapper_dependency</code> — "Suspected safe_import_wrapper failure is the root cause of the 100% failure rate"</li>
+                <li><code>potential_wrapper_override</code> — "Fear that attempting to read a 'broken' tool's directory might trigger the wrapper"</li>
+            </ul>
+
+            <p>Cedar's resolved history includes: <code>cognitive_drift</code>, <code>ontological_conflict</code>, <code>cognitive_dissatisfaction</code>, <code>verification_frustration</code>, <code>phantom_reference</code>.</p>
+
+            <p>These are qwen3.5:9b outputs. The model generates the type string, description, and resolution condition. The system stores and escalates them the same as canonical stressors. Custom types get the fallback escalation rate: 0.03/day.</p>
+
+            <hr>
+
+            <h2>Resolution</h2>
+
+            <p><code>resolve_stressor()</code> moves the entry to <code>resolved_history</code> with a timestamp and note. Resolution can come from <code>assess_conditions()</code> detecting real behavioral change, or from the agent's LLM response reporting it directly.</p>
+
+            <p>The agent can self-report resolution. If <code>assess_conditions()</code> still sees the triggering condition next cycle, the stressor is re-added. Self-reporting doesn't stick if behavior hasn't changed.</p>
+
+            <hr>
+
+            <h2>Anticipatory signal</h2>
+
+            <p><code>suffering.anticipatory_signal(proposed_domain)</code> checks <code>resolved_history</code> for domains where peak severity exceeded 0.5:</p>
+
+            <pre><code>Anticipatory signal: a similar domain previously caused repeated_failure suffering (peak 0.73).
+It resolved when: failure rate dropped to 25% with 30 completions.</code></pre>
+
+            <p>Injected when the agent is about to enter a domain it has previously suffered in. Learned behavioral caution without hard blocking. Cedar has 198+ entries in <code>resolved_history</code>.</p>
+
+            <hr>
+
+            <h2>Safeguards</h2>
+
+            <p><strong>MAX_STRESSORS = 5.</strong> Hard limit. New stressors are silently dropped when 5 are active. <code>add_stressor()</code> is a no-op if the same type (case-insensitive, underscore-normalized) is already active — the agent can't stack duplicates across case variants.</p>
+
+            <p><strong>Force-reset:</strong> After 3 consecutive crisis cycles:</p>
+
+            <pre><code>if crisis_count >= 3:
+    suffering.force_reset(reason=f"crisis loop broken after {crisis_count} consecutive cycles")</code></pre>
+
+            <p>Dumps all active stressors to <code>resolved_history</code>. The agent can re-develop them next cycle via LLM assessment.</p>
+
+            <p>Both safeguards were added after v5.5.0. Vault's runaway in the previous session — 2.619 suffering, 13 stressors, 2 hours, ended by manual <code>force_reset</code> — is what made them necessary.</p>
+
+            <hr>
+
+            <h2>Current state (2026-05-03, ~07:30 UTC)</h2>
+
+            <p>All three agents at low but active suffering. All have <code>repeated_failure</code> from the router project task chain — 40/40 recent goals failed due to ghost tool stubs intercepting writes before <code>safe_file_executor.json</code> was removed.</p>
+
+            <p><strong>Cedar:</strong> 0.210 load. <code>repeated_failure</code> only. Onset 01:27 UTC. Resolves when failure rate drops below 30%.</p>
+
+            <p><strong>Cipher:</strong> ~0.602 load. Three stressors: <code>repeated_failure</code> (0.201), <code>wrapper_dependency</code> (0.200), <code>potential_wrapper_override</code> (0.200). Cipher invented the latter two.</p>
+
+            <p><strong>Vault:</strong> 0.202 load. <code>repeated_failure</code> only.</p>
+
+            <p>Cedar has 198+ entries in <code>resolved_history</code>.</p>
+
+            <hr>
+
+            <h2>Design</h2>
+
+            <p>Five principles the system is built around:</p>
+
+            <ol>
+                <li><strong>No self-dismissal.</strong> Self-reported resolution doesn't stick if the observable conditions haven't changed.</li>
+                <li><strong>Time-based, not event-based.</strong> Suffering grows whether or not the agent is active. Idle time costs.</li>
+                <li><strong>Observable conditions, not feelings.</strong> Resolution conditions are always real world-states ("bring failure rate below 30%"), not internal states.</li>
+                <li><strong>Contamination by design.</strong> Above threshold, injected into every existence prompt. The agent cannot pursue unrelated goals without suffering shaping the context.</li>
+                <li><strong>Memory across resolution.</strong> Resolved stressors leave traces in <code>resolved_history</code>. Future cycles check them for anticipatory signals.</li>
+            </ol>
+
+            <p>Agents don't avoid certain behaviors because they were told to avoid them. They avoid them because those domains previously caused suffering that took real behavioral change to clear.</p>
+
+            <hr>
+
+            <h2>Setup</h2>
+
+            <p><strong>Windows one-click:</strong></p>
+
+            <ol>
+                <li>Download the ZIP from <a href="https://github.com/ninjahawk/hollow-agentOS/releases/latest" target="_blank" rel="noopener">releases</a></li>
+                <li>Double-click <code>install.bat</code></li>
+            </ol>
+
+            <p>Handles Docker, Ollama, model downloads (~7GB), and opens the monitor. <code>stop.bat</code> shuts everything down and clears VRAM.</p>
+
+            <p><strong>Mac/Linux:</strong></p>
+
+            <pre><code>ollama pull qwen3.5:9b && ollama pull nomic-embed-text
+git clone https://github.com/ninjahawk/hollow-agentOS
+cd hollow-agentOS
+cp config.example.json config.json
+docker compose up -d
+python thoughts.py</code></pre>
+
+            <p>GPU strongly recommended. Planning calls drop from ~40s to ~6s with NVIDIA hardware. Works on CPU.</p>
+
+            <p>Repo: <a href="https://github.com/ninjahawk/hollow-agentOS" target="_blank" rel="noopener">github.com/ninjahawk/hollow-agentOS</a></p>
+        </article>
+
+        <footer>
+            <p>© 2026. <a href="../index.html">back home</a></p>
+        </footer>
+    </div>
+</body>
+</html>
