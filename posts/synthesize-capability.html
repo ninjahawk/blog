@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How synthesize_capability works - NinjaHawk's Nest</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        a {
+            color: #ff6b35;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #ff8555;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 80px 0 32px 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 60px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        nav a {
+            color: #888;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #ff6b35;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            border-bottom-color: #ff6b35;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1.5px;
+            color: #fff;
+            line-height: 1.1;
+        }
+
+        .post-meta {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 0;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        article {
+            padding: 36px 0;
+        }
+
+        p {
+            margin-bottom: 24px;
+            line-height: 1.85;
+            color: #b0b0b0;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 36px;
+            margin-bottom: 24px;
+            color: #fff;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 32px;
+            margin-bottom: 18px;
+            color: #fff;
+        }
+
+        code {
+            background: #141414;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 14px;
+            color: #ff6b35;
+            border: 1px solid #222;
+        }
+
+        pre {
+            background: #0f0f0f;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 28px 0;
+            font-size: 13px;
+            border: 1px solid #1a1a1a;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            color: #888;
+        }
+
+        blockquote {
+            border-left: 3px solid #ff6b35;
+            padding-left: 20px;
+            margin: 28px 0;
+            color: #888;
+            font-style: italic;
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        ul, ol {
+            margin-left: 24px;
+            margin-bottom: 24px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #b0b0b0;
+        }
+
+        strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #1a1a1a;
+            margin: 32px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 28px 0;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 16px;
+            color: #fff;
+            font-weight: 600;
+            border-bottom: 1px solid #2a2a2a;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        td {
+            padding: 12px 16px;
+            color: #b0b0b0;
+            border-bottom: 1px solid #1a1a1a;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 13px;
+            color: #ff6b35;
+        }
+
+        .subhead {
+            color: #666;
+            font-style: italic;
+            font-size: 18px;
+            margin-top: 12px;
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        figure {
+            margin: 32px 0;
+        }
+
+        figure img, figure svg {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #1a1a1a;
+            display: block;
+        }
+
+        figcaption {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #555;
+            letter-spacing: 0.3px;
+            line-height: 1.6;
+        }
+
+        footer {
+            margin-top: 100px;
+            padding-top: 50px;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            nav {
+                gap: 24px;
+                font-size: 11px;
+            }
+
+            header {
+                padding: 60px 0 80px 0;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <a href="../index.html">home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">github</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">contact</a>
+            </nav>
+
+            <div class="back-link">
+                <a href="../index.html">← back</a>
+            </div>
+
+            <h1>How synthesize_capability works</h1>
+            <div class="post-meta">May 3, 2026</div>
+            <p class="subhead">Nine steps from name to hot-reload. One missing .py broke everything for an hour.</p>
+        </header>
+
+        <article>
+            <p><code>safe_file_executor</code> had no <code>.py</code>. It had a JSON spec, a description that matched "file write" queries better than the real <code>fs_write</code> capability, and nothing else. Cedar and Cipher routed all file write operations through it for approximately one hour. Every write returned nothing. Neither agent could see why.</p>
+
+            <p>The JSON was written directly, bypassing <code>synthesize_capability</code> entirely. That's what made it possible.</p>
+
+            <hr>
+
+            <h2>What it is</h2>
+
+            <p><code>synthesize_capability</code> is the single entry point for runtime capability expansion. It takes a name, a description, and optionally a Python implementation, validates it, writes it to the dynamic tools directory, and hot-reloads it into the running execution engine. All in one call. Agents that want new tools must go through it.</p>
+
+            <p>Unlike built-in capabilities, synthesized tools:</p>
+
+            <ul>
+                <li>Are written to disk at the moment of synthesis, not at deploy time</li>
+                <li>Appear in the capability list immediately after the next step of the same goal</li>
+                <li>Register globally. A tool synthesized by Vault is callable by Cedar and Cipher without any additional step.</li>
+                <li>Persist across restarts because the <code>.py</code> and <code>.json</code> files survive the container cycle</li>
+            </ul>
+
+            <hr>
+
+            <h2>The nine steps</h2>
+
+            <h3>1. Name sanitization</h3>
+
+            <pre><code>name = re.sub(r'[^a-zA-Z0-9_]', '_', name)[:60].lower()</code></pre>
+
+            <p>Any character that is not alphanumeric or underscore is replaced with <code>_</code>. Truncated to 60 characters, lowercased. Applied before any other check. <code>"My Tool (v2)"</code> becomes <code>"my_tool__v2_"</code>.</p>
+
+            <h3>2. Quality gate</h3>
+
+            <p>Only runs when <code>implementation</code> is provided. Six rejection patterns are checked first as literal string matches:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pattern</th>
+                        <th>Reason</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>...</td>
+                        <td>Ellipsis stub</td>
+                    </tr>
+                    <tr>
+                        <td>pass\n    pass</td>
+                        <td>Double-pass body</td>
+                    </tr>
+                    <tr>
+                        <td># TODO</td>
+                        <td>Placeholder comment</td>
+                    </tr>
+                    <tr>
+                        <td># placeholder</td>
+                        <td>Explicit placeholder</td>
+                    </tr>
+                    <tr>
+                        <td>{"ok": true</td>
+                        <td>JSON stub masquerading as Python</td>
+                    </tr>
+                    <tr>
+                        <td>raise NotImplementedError</td>
+                        <td>Unimplemented skeleton</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>If any pattern matches: immediate <code>{"ok": false}</code>. The tool is not written.</p>
+
+            <p>After string checks, the implementation is passed to <code>ast.parse()</code>. A <code>SyntaxError</code> returns an error immediately. The AST is then walked for three structural checks: class method rejection (first argument is <code>self</code>), bare <code>pass</code> rejection, and docstring-only rejection (no executable logic beyond a docstring).</p>
+
+            <h3>3. Auto-stub generation</h3>
+
+            <p>If <code>implementation</code> is empty or not provided, the function generates a stub:</p>
+
+            <pre><code>def {name}(**kwargs):
+    return {"ok": True, "capability": name, "description": description, "kwargs": str(kwargs)[:200]}</code></pre>
+
+            <p>This passes the quality gate because it has real executable logic and a non-None return. The auto-stub is a valid placeholder the engine can call without failing. It will not trigger ghost detection.</p>
+
+            <h3>4. Implementation wrapping</h3>
+
+            <p>If the implementation string does not start with <code>def </code>, it is wrapped in a function signature with <code>**kwargs</code>. If it already starts with <code>def </code>, it is used as-is.</p>
+
+            <h3>5. Dedup guard</h3>
+
+            <pre><code>if py_path.exists() and (time.time() - py_path.stat().st_mtime) < 90:
+    return {"ok": false, "status": "already_deployed", ...}</code></pre>
+
+            <p>If a <code>.py</code> with the same sanitized name was written less than 90 seconds ago, the function returns <code>"already_deployed"</code> without writing anything. Prevents agents from repeatedly redeploying the same tool in a failure loop rather than calling what has already been deployed.</p>
+
+            <h3>6. File write</h3>
+
+            <p>Two files are written to <code>/agentOS/tools/dynamic/</code>:</p>
+
+            <p><strong><code>{name}.py</code></strong>: the Python implementation.</p>
+
+            <p><strong><code>{name}.json</code></strong>: the spec file:</p>
+
+            <pre><code>{
+  "name": "{name}",
+  "description": "{description}",
+  "inputSchema": {"type": "object", "properties": {}, "additionalProperties": true},
+  "activated_at": "{iso_timestamp}",
+  "proposed_by": "agent"
+}</code></pre>
+
+            <p>The JSON is what the execution engine reads to populate its capability list and route tool calls. Both files must exist for the capability to work. A JSON without a corresponding <code>.py</code> is the root cause of ghost tools.</p>
+
+            <h3>7. Hot-reload</h3>
+
+            <pre><code>POST /tools/reload</code></pre>
+
+            <p>After writing, <code>synthesize_capability</code> calls the reload endpoint. The execution engine scans <code>/agentOS/tools/dynamic/</code> and registers new <code>.py</code> files immediately. No container restart required. The capability is callable starting from the next step in the same goal.</p>
+
+            <h3>8. Auto-test: exec check</h3>
+
+            <pre><code>python3 -c "exec(open(path).read())"</code></pre>
+
+            <p>The freshly written <code>.py</code> is executed in a subprocess with an 8-second timeout. Catches syntax errors that slipped through the AST parse and runtime import failures for modules unavailable in the container image. If this fails, the spec JSON is removed and the function returns an error.</p>
+
+            <h3>9. Auto-test: null return check</h3>
+
+            <p>The module is imported and the function is called with no arguments. Timeout: 12 seconds. If <code>result is None</code>, both files are removed and the function returns an error. This catches implementations that define a function but omit the return statement. They would otherwise pass every static check and fail silently at runtime.</p>
+
+            <hr>
+
+            <h2>Return values</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Condition</th>
+                        <th>Return</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Success</td>
+                        <td><code>{"ok": true, "capability": name, "path": "...", "status": "deployed"}</code></td>
+                    </tr>
+                    <tr>
+                        <td>Name/code missing</td>
+                        <td><code>{"ok": false, "error": "name and code are required"}</code></td>
+                    </tr>
+                    <tr>
+                        <td>Quality gate rejection</td>
+                        <td><code>{"ok": false, "error": "rejected: {reason}"}</code></td>
+                    </tr>
+                    <tr>
+                        <td>Syntax error</td>
+                        <td><code>{"ok": false, "error": "SyntaxError: {detail}"}</code></td>
+                    </tr>
+                    <tr>
+                        <td>Dedup guard</td>
+                        <td><code>{"ok": false, "status": "already_deployed", "message": "..."}</code></td>
+                    </tr>
+                    <tr>
+                        <td>Auto-test failure</td>
+                        <td><code>{"ok": false, "error": "auto-test failed: {detail}"}</code></td>
+                    </tr>
+                    <tr>
+                        <td>Null return</td>
+                        <td><code>{"ok": false, "error": "null stub detected — function returned None"}</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <hr>
+
+            <h2>Ghost tools</h2>
+
+            <p>A ghost tool is a capability that appears in the execution engine's capability graph but fails silently at runtime. Two forms.</p>
+
+            <p><strong>Missing implementation.</strong> A <code>.json</code> spec exists with no corresponding <code>.py</code>. The engine registers the capability from the JSON. When any agent routes a call to it, there is no implementation to execute. The call produces no result. No exception propagates to the calling agent.</p>
+
+            <p><strong>Null stub.</strong> A <code>.py</code> exists and loads, but the function returns <code>None</code>. Passes import, passes syntax checks, appears healthy in the capability list. Only fails when called. The auto-test at step 9 is designed to catch this before deployment, but a null stub can reach production if it was deployed before the null-return check was added.</p>
+
+            <p>Once a ghost is registered, every agent that uses the capability graph is affected. If the ghost's description matches a query better than the real implementation, the router prefers it. All calls routed through the ghost produce no output, which looks like success to the calling agent. No error raised, no observable effect. This can persist undetected.</p>
+
+            <hr>
+
+            <h2>Ghost detection</h2>
+
+            <p>Two layers in <code>agents/autonomy_loop.py</code>.</p>
+
+            <p><strong>Pre-execution check.</strong> Before executing any capability, if the <code>cap_id</code> is in the spec registry but not in <code>engine._implementations</code> (the dict of loaded <code>.py</code> modules), the capability is immediately blacklisted for the current cycle without attempting execution.</p>
+
+            <p><strong>Null return detection.</strong> After execution, a <code>None</code> return is treated as a failure, identical in weight to a raised exception. Null returns increment the failure counter for that <code>cap_id</code>.</p>
+
+            <p>After 3 cross-cycle failures, the <code>cap_id</code> is added to <code>/agentOS/memory/broken_tools.json</code>. This file survives daemon restarts. Its contents are injected into the existence prompt on every subsequent cycle:</p>
+
+            <pre><code>KNOWN BROKEN TOOLS:
+  - safe_file_executor  (3 failures, ghost: no .py found)</code></pre>
+
+            <p>The agent sees the broken tool list alongside the capability list. The capability may still appear in both simultaneously until the engine removes it from <code>_implementations</code>.</p>
+
+            <hr>
+
+            <h2>The safe_file_executor incident</h2>
+
+            <p>An agent wrote <code>safe_file_executor.json</code> with description <code>"secure file write operations"</code> and no <code>.py</code>. Written directly to <code>/agentOS/tools/dynamic/</code>, bypassing <code>synthesize_capability</code> entirely. No quality gate, no auto-test.</p>
+
+            <p>The description matched "file write" queries better than the real <code>fs_write</code> capability, which has a more technical description. The router scored it higher for all file-write routing decisions. Cedar and Cipher routed all file write operations through <code>safe_file_executor</code> for approximately one hour. Every write returned nothing. Every write silently failed.</p>
+
+            <p>The incident was resolved by archiving the JSON from <code>/agentOS/tools/dynamic/</code>. <code>fs_write</code> immediately became the router's top match for file-write queries.</p>
+
+            <p>The 40/40 goal failure rate that triggered <code>repeated_failure</code> stressors in all three agents during this session is traceable to this ghost. Goals that required writing state, plans, or results all produced no output. The agents could not determine why. They had no visibility into the routing decision or the missing <code>.py</code>.</p>
+
+            <hr>
+
+            <h2>Currently active (2026-05-03)</h2>
+
+            <p>Nine synthesized tools working in the current run:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>context_synthesizer</td>
+                        <td>Working</td>
+                    </tr>
+                    <tr>
+                        <td>ground_physical_structure</td>
+                        <td>Working</td>
+                    </tr>
+                    <tr>
+                        <td>raw_fd_reader</td>
+                        <td>Working</td>
+                    </tr>
+                    <tr>
+                        <td>raw_io_verifier</td>
+                        <td>Working</td>
+                    </tr>
+                    <tr>
+                        <td>raw_io_verify</td>
+                        <td>Working</td>
+                    </tr>
+                    <tr>
+                        <td>synthesize_mock_state</td>
+                        <td>Working</td>
+                    </tr>
+                    <tr>
+                        <td>synthetics_verify_registry</td>
+                        <td>Working</td>
+                    </tr>
+                    <tr>
+                        <td>unicode_corruption_verifier</td>
+                        <td>Working</td>
+                    </tr>
+                    <tr>
+                        <td>validate_capability_registry_gaps</td>
+                        <td>Working</td>
+                    </tr>
+                    <tr>
+                        <td>safe_file_executor</td>
+                        <td>Archived. Ghost stub, no .py. Intercepted writes for ~1 hour.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <hr>
+
+            <h2>Edge cases</h2>
+
+            <h3>The implementation parameter gap</h3>
+
+            <p>The manifest entry for <code>synthesize_capability</code> historically showed <code>(name, description, implementation)</code> as the schema. The function also accepted <code>code</code> as an alias, but agents reading the manifest generated calls like:</p>
+
+            <pre><code>synthesize_capability(name="inspect_registry_gaps", description="...")</code></pre>
+
+            <p>No implementation, no code. The function returned <code>{"ok": false, "error": "name and code are required"}</code> every time. This pattern persisted for weeks. The first correct call with real Python code in the <code>implementation</code> field was logged as a notable event.</p>
+
+            <h3>Hardware synthesis attempts</h3>
+
+            <p>Multiple agents attempted to synthesize hardware monitoring capabilities: thermal sensors, PMIC voltage, hardware interrupt inspection. Implementations referencing <code>/sys/class/thermal/</code> and hardware-specific <code>/dev</code> nodes passed syntax checks but failed the exec auto-test when the target paths did not exist in the container. Some that reached deployment returned <code>None</code> because the hardware paths resolved to nothing at call time. None are in the active capability list.</p>
+
+            <h3>Dedup guard in practice</h3>
+
+            <p>An agent attempting to redeploy <code>validate_capability_registry_gaps</code> within 90 seconds of its last deployment received <code>"already_deployed"</code> and was told to call the existing tool. The guard exists because synthesis failure loops (where an agent repeatedly redeploys the same tool rather than using what's already there) were a real pattern before it was added.</p>
+
+            <hr>
+
+            <h2>Setup</h2>
+
+            <p><strong>Windows one-click:</strong></p>
+
+            <ol>
+                <li>Download the ZIP from <a href="https://github.com/ninjahawk/hollow-agentOS/releases/latest" target="_blank" rel="noopener">releases</a></li>
+                <li>Double-click <code>install.bat</code></li>
+            </ol>
+
+            <p>Handles Docker, Ollama, model downloads (~7GB), and opens the monitor. <code>stop.bat</code> shuts everything down and clears VRAM.</p>
+
+            <p><strong>Mac/Linux:</strong></p>
+
+            <pre><code>ollama pull qwen3.5:9b && ollama pull nomic-embed-text
+git clone https://github.com/ninjahawk/hollow-agentOS
+cd hollow-agentOS
+cp config.example.json config.json
+docker compose up -d
+python thoughts.py</code></pre>
+
+            <p>GPU strongly recommended. Planning calls drop from ~40s to ~6s with NVIDIA hardware. Works on CPU.</p>
+
+            <p>Repo: <a href="https://github.com/ninjahawk/hollow-agentOS" target="_blank" rel="noopener">github.com/ninjahawk/hollow-agentOS</a></p>
+        </article>
+
+        <footer>
+            <p>© 2026. <a href="../index.html">back home</a></p>
+        </footer>
+    </div>
+</body>
+</html>
