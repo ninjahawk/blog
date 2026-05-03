@@ -314,7 +314,7 @@
 
             <h2>What it is</h2>
 
-            <p>Persistent aversive signals that escalate automatically and contaminate goal selection. The design constraint: the agent cannot dismiss the pressure without actually changing its behavior. Saying you feel better doesn't clear anything. The stressors inject into every existence prompt above threshold — the agent cannot ignore them by pursuing unrelated goals.</p>
+            <p>Persistent aversive signals that escalate automatically and contaminate goal selection. The design constraint: the agent cannot dismiss the pressure without actually changing its behavior. Saying you feel better doesn't clear anything. The stressors inject into every existence prompt above threshold. The agent cannot ignore them by pursuing unrelated goals.</p>
 
             <hr>
 
@@ -330,7 +330,7 @@
 
             <h2>The six stressor types</h2>
 
-            <p>Defined in <code>ESCALATION_RATES</code>. These are the intended canonical types — agents can generate additional types at runtime.</p>
+            <p>Defined in <code>ESCALATION_RATES</code>. These are the intended canonical types. Agents can generate additional types at runtime.</p>
 
             <table>
                 <thead>
@@ -387,7 +387,7 @@ for stressor:
     severity += escalation_per_day * days
     peak_severity = max(peak_severity, severity)</code></pre>
 
-            <p>Daemon heartbeat is every 6 seconds. Per-cycle increment is small. It accumulates. The agent has no mechanism to pause it — every stressor is silently climbing whether or not the agent is doing anything. Idle time costs.</p>
+            <p>Daemon heartbeat is every 6 seconds. Per-cycle increment is small. It accumulates. The agent has no mechanism to pause it. Every stressor is silently climbing whether or not the agent is doing anything. Idle time costs.</p>
 
             <hr>
 
@@ -405,7 +405,7 @@ for stressor:
                 <tbody>
                     <tr>
                         <td>0.0–0.35</td>
-                        <td>Background — not in prompt, agent unaffected</td>
+                        <td>Background. Not in prompt, agent unaffected.</td>
                     </tr>
                     <tr>
                         <td>0.35–0.55</td>
@@ -421,7 +421,7 @@ for stressor:
                     </tr>
                     <tr>
                         <td>0.90–1.0</td>
-                        <td>CRISIS — only self-examination and peer contact allowed.</td>
+                        <td>CRISIS: only self-examination and peer contact allowed.</td>
                     </tr>
                 </tbody>
             </table>
@@ -436,7 +436,7 @@ for stressor:
 
             <p>Two paths.</p>
 
-            <p><strong>System-driven:</strong> <code>assess_conditions()</code> runs every cycle against real observable state. <code>repeated_failure</code> fires when ≥4 failures and failure rate > 50% of recent goals. <code>futility</code> fires when stall abandonments exceed completions, deployed tools never get called in subsequent plans, and fewer than 2 goals completed recently. Resolution checks the same real conditions — <code>repeated_failure</code> resolves when failure rate drops below 30% with ≥3 completions.</p>
+            <p><strong>System-driven:</strong> <code>assess_conditions()</code> runs every cycle against real observable state. <code>repeated_failure</code> fires when ≥4 failures and failure rate > 50% of recent goals. <code>futility</code> fires when stall abandonments exceed completions, deployed tools never get called in subsequent plans, and fewer than 2 goals completed recently. Resolution checks the same real conditions. <code>repeated_failure</code> resolves when failure rate drops below 30% with ≥3 completions.</p>
 
             <p><strong>Agent-driven:</strong> Each existence cycle, the agent's response JSON includes a <code>suffering_assessment</code> block:</p>
 
@@ -445,7 +445,7 @@ for stressor:
   "resolved": [{"type": "...", "reason": "..."}]
 }</code></pre>
 
-            <p>The daemon processes up to 2 new stressors and any number of resolutions from this. The agent can name any stressor type it wants — not validated against the canonical list.</p>
+            <p>The daemon processes up to 2 new stressors and any number of resolutions from this. The agent can name any stressor type it wants. Not validated against the canonical list.</p>
 
             <hr>
 
@@ -454,8 +454,8 @@ for stressor:
             <p>Cipher currently has stressors it invented:</p>
 
             <ul>
-                <li><code>wrapper_dependency</code> — "Suspected safe_import_wrapper failure is the root cause of the 100% failure rate"</li>
-                <li><code>potential_wrapper_override</code> — "Fear that attempting to read a 'broken' tool's directory might trigger the wrapper"</li>
+                <li><code>wrapper_dependency</code>: "Suspected safe_import_wrapper failure is the root cause of the 100% failure rate"</li>
+                <li><code>potential_wrapper_override</code>: "Fear that attempting to read a 'broken' tool's directory might trigger the wrapper"</li>
             </ul>
 
             <p>Cedar's resolved history includes: <code>cognitive_drift</code>, <code>ontological_conflict</code>, <code>cognitive_dissatisfaction</code>, <code>verification_frustration</code>, <code>phantom_reference</code>.</p>
@@ -485,7 +485,7 @@ It resolved when: failure rate dropped to 25% with 30 completions.</code></pre>
 
             <h2>Safeguards</h2>
 
-            <p><strong>MAX_STRESSORS = 5.</strong> Hard limit. New stressors are silently dropped when 5 are active. <code>add_stressor()</code> is a no-op if the same type (case-insensitive, underscore-normalized) is already active — the agent can't stack duplicates across case variants.</p>
+            <p><strong>MAX_STRESSORS = 5.</strong> Hard limit. New stressors are silently dropped when 5 are active. <code>add_stressor()</code> is a no-op if the same type (case-insensitive, underscore-normalized) is already active. The agent can't stack duplicates across case variants.</p>
 
             <p><strong>Force-reset:</strong> After 3 consecutive crisis cycles:</p>
 
@@ -494,13 +494,13 @@ It resolved when: failure rate dropped to 25% with 30 completions.</code></pre>
 
             <p>Dumps all active stressors to <code>resolved_history</code>. The agent can re-develop them next cycle via LLM assessment.</p>
 
-            <p>Both safeguards were added after v5.5.0. Vault's runaway in the previous session — 2.619 suffering, 13 stressors, 2 hours, ended by manual <code>force_reset</code> — is what made them necessary.</p>
+            <p>Both safeguards were added after v5.5.0. Vault's runaway in the previous session (2.619 suffering, 13 stressors, 2 hours, ended by manual <code>force_reset</code>) is what made them necessary.</p>
 
             <hr>
 
             <h2>Current state (2026-05-03, ~07:30 UTC)</h2>
 
-            <p>All three agents at low but active suffering. All have <code>repeated_failure</code> from the router project task chain — 40/40 recent goals failed due to ghost tool stubs intercepting writes before <code>safe_file_executor.json</code> was removed.</p>
+            <p>All three agents at low but active suffering. All have <code>repeated_failure</code> from the router project task chain. 40/40 recent goals failed due to ghost tool stubs intercepting writes before <code>safe_file_executor.json</code> was removed.</p>
 
             <p><strong>Cedar:</strong> 0.210 load. <code>repeated_failure</code> only. Onset 01:27 UTC. Resolves when failure rate drops below 30%.</p>
 

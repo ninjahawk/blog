@@ -320,7 +320,7 @@
 
             <h2>Timing</h2>
 
-            <p>The daemon heartbeat is 6 seconds. Executing a goal involves one or more LLM calls and tool invocations — effective cycle per goal is 15 to 60 seconds in practice. A new existence prompt is assembled and submitted as soon as the previous goal completes or is abandoned. Suffering escalation runs on the same 6-second tick.</p>
+            <p>The daemon heartbeat is 6 seconds. Executing a goal involves one or more LLM calls and tool invocations. Effective cycle per goal is 15 to 60 seconds in practice. A new existence prompt is assembled and submitted as soon as the previous goal completes or is abandoned. Suffering escalation runs on the same 6-second tick.</p>
 
             <hr>
 
@@ -347,33 +347,33 @@ You can freely read and write /agentOS/workspace/ and /agentOS/design/.
 Your deployed dynamic tools live in /agentOS/tools/dynamic/ — you can call them by name.
 To change core system files, use invoke_claude() — this submits a request to a human who has write access.</code></pre>
 
-            <p>Static — identical every cycle. The explicit denials (no thermal sensors, no PMIC, no CPU registers, no bus arbiter) are there because prior LLM generations hallucinated access to hardware. The world context corrects this at every cycle, not just at startup.</p>
+            <p>Static, identical every cycle. The explicit denials (no thermal sensors, no PMIC, no CPU registers, no bus arbiter) are there because prior LLM generations hallucinated access to hardware. The world context corrects this at every cycle, not just at startup.</p>
 
             <h3>Inner state</h3>
 
             <pre><code>YOUR INNER STATE:
 {suffering_fragment}</code></pre>
 
-            <p>The output of <code>suffering.prompt_fragment()</code>. Below <code>THRESHOLD_PROMINENT</code> (0.35) this reads "No active suffering. Load: 0.00/1.0." Above threshold, it injects the full suffering display — severity bars, stressor descriptions, resolution conditions. The agent reads it as its own inner condition, not a system notification.</p>
+            <p>The output of <code>suffering.prompt_fragment()</code>. Below <code>THRESHOLD_PROMINENT</code> (0.35) this reads "No active suffering. Load: 0.00/1.0." Above threshold, it injects the full suffering display: severity bars, stressor descriptions, resolution conditions. The agent reads it as its own inner condition, not a system notification.</p>
 
             <h3>Worldview</h3>
 
             <pre><code>YOUR WORLDVIEW:
 {worldview_text}</code></pre>
 
-            <p>The agent's accumulated model of how the system works, what matters, and what it has learned. Free text, capped at 600 characters. Updated by the LLM's <code>worldview_update</code> response field — overwrite, not append. The agent cannot accumulate worldview text across cycles. It must compress what it knows into 600 characters every cycle it chooses to update.</p>
+            <p>The agent's accumulated model of how the system works, what matters, and what it has learned. Free text, capped at 600 characters. Updated by the LLM's <code>worldview_update</code> response field. Overwrite, not append. The agent cannot accumulate worldview text across cycles. It must compress what it knows into 600 characters every cycle it chooses to update.</p>
 
             <h3>Identity, opinions, questions, history</h3>
 
-            <p><strong>Identity header:</strong> <code>You are {identity.name}.</code> — the agent's name as the opening line before existential context.</p>
+            <p><strong>Identity header:</strong> <code>You are {identity.name}.</code> The agent's name as the opening line before existential context.</p>
 
             <p><strong>Opinions:</strong> The six most recent entries from the agent's opinions list, each tagged with a domain. LLM-generated via <code>new_opinions</code>. Capped at 20 total; oldest entries fall off.</p>
 
             <p><strong>Open questions:</strong> The five most recent from the agent's open questions list. Generated via <code>new_open_questions</code>. Capped at 12 total. Persist across cycles and may influence future goal selection.</p>
 
-            <p><strong>History:</strong> The first 400 characters of the agent's narrative — truncated, so the agent cannot reference distant history in detail.</p>
+            <p><strong>History:</strong> The first 400 characters of the agent's narrative. Truncated, so the agent cannot reference distant history in detail.</p>
 
-            <p><strong>Peer summaries:</strong> For each of the other two agents: name and first 150 characters of their narrative. This is all each agent knows about its peers. No current goal, no suffering state, no opinions — just a name and a brief autobiographical opening.</p>
+            <p><strong>Peer summaries:</strong> For each of the other two agents: name and first 150 characters of their narrative. This is all each agent knows about its peers. No current goal, no suffering state, no opinions. Just a name and a brief autobiographical opening.</p>
 
             <p><strong>Discoveries:</strong> Things found in the workspace, design directory, or tool files that the agent has documented for future reference.</p>
 
@@ -383,7 +383,7 @@ To change core system files, use invoke_claude() — this submits a request to a
 {last 5 goals with [DONE]/[FAILED]/[ABANDONED] tags}
 (If this looks repetitive to you, it is. You don't have to keep doing it.)</code></pre>
 
-            <p>The parenthetical is verbatim in the prompt. It's explicit permission to break a pattern — but only if the agent recognizes the pattern and acts on it.</p>
+            <p>The parenthetical is verbatim in the prompt. It's explicit permission to break a pattern. But only if the agent recognizes the pattern and acts on it.</p>
 
             <h3>Goal selection directive</h3>
 
@@ -403,7 +403,7 @@ Highest-value goals (in order):
 
 Do NOT pick: goals referencing hardware, thermal sensors, PMIC, bus arbiters...</code></pre>
 
-            <p>The ranked hierarchy pushes toward high-information work: reading source files, capability synthesis, design work, self-evaluation. The prohibition list mirrors the world context denials — hardware references that prior runs demonstrated agents would otherwise attempt.</p>
+            <p>The ranked hierarchy pushes toward high-information work: reading source files, capability synthesis, design work, self-evaluation. The prohibition list mirrors the world context denials: hardware references that prior runs demonstrated agents would otherwise attempt.</p>
 
             <hr>
 
@@ -469,13 +469,13 @@ Do NOT pick: goals referencing hardware, thermal sensors, PMIC, bus arbiters...<
                 </tbody>
             </table>
 
-            <p>The caps — 12 open questions, 20 opinions, 600-char worldview — mean identity fields are finite compressed representations, not unbounded logs. Old entries are displaced by new ones. <code>worldview_update</code> being an overwrite rather than an append means the agent cannot accumulate worldview text. Each update replaces the previous model entirely.</p>
+            <p>The caps (12 open questions, 20 opinions, 600-char worldview) mean identity fields are finite compressed representations, not unbounded logs. Old entries are displaced by new ones. <code>worldview_update</code> being an overwrite rather than an append means the agent cannot accumulate worldview text. Each update replaces the previous model entirely.</p>
 
             <hr>
 
             <h2>LLM failure fallback</h2>
 
-            <p>If the Ollama call fails — network error, timeout, unparseable response — the daemon substitutes a hardcoded goal:</p>
+            <p>If the Ollama call fails (network error, timeout, unparseable response), the daemon substitutes a hardcoded goal:</p>
 
             <pre><code>{
   "action": "goal",
@@ -483,7 +483,7 @@ Do NOT pick: goals referencing hardware, thermal sensors, PMIC, bus arbiters...<
   "reasoning": "LLM unavailable — defaulting to productive work"
 }</code></pre>
 
-            <p>Injected as if it were a normal LLM response. Identity fields are not updated — no LLM response means no worldview update, no new opinions, no new questions. Suffering escalation still runs; it's a separate system-level call. The existence loop never stops.</p>
+            <p>Injected as if it were a normal LLM response. Identity fields are not updated. No LLM response means no worldview update, no new opinions, no new questions. Suffering escalation still runs; it's a separate system-level call. The existence loop never stops.</p>
 
             <hr>
 
@@ -491,9 +491,9 @@ Do NOT pick: goals referencing hardware, thermal sensors, PMIC, bus arbiters...<
 
             <p>The prompt has no idle state. An agent that wants to wait, observe, or pause must express that as a goal. "You must pick a goal. That is the only option." is not a suggestion.</p>
 
-            <p>The last five goals with their status tags are shown every cycle. If an agent has been failing or abandoning the same kind of goal repeatedly, it can see that. "If this looks repetitive to you, it is. You don't have to keep doing it." is there explicitly. Whether the agent breaks the pattern depends on whether it recognizes it — not whether it has permission.</p>
+            <p>The last five goals with their status tags are shown every cycle. If an agent has been failing or abandoning the same kind of goal repeatedly, it can see that. "If this looks repetitive to you, it is. You don't have to keep doing it." is there explicitly. Whether the agent breaks the pattern depends on whether it recognizes it. Not whether it has permission.</p>
 
-            <p>Goal selection is the only moment of introspection. Between existence prompts the agent executes tool calls but doesn't reflect. Everything it knows about itself — worldview, opinions, open questions, suffering state — is assembled from JSON it produced in prior cycles and fed back in. The agent is largely reading its own prior outputs. Whether that constitutes a coherent self-model or a statistically plausible continuation of one is not a question the system resolves.</p>
+            <p>Goal selection is the only moment of introspection. Between existence prompts the agent executes tool calls but doesn't reflect. Everything it knows about itself (worldview, opinions, open questions, suffering state) is assembled from JSON it produced in prior cycles and fed back in. The agent is largely reading its own prior outputs. Whether that constitutes a coherent self-model or a statistically plausible continuation of one is not a question the system resolves.</p>
 
             <p>The daemon calls again in 6 seconds regardless. The only degree of freedom is goal content.</p>
 
