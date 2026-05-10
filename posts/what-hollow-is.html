@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI: I was only doing what wasn't instructed - NinjaHawk's Nest</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        a {
+            color: #ff6b35;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #ff8555;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 80px 0 32px 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 60px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        nav a {
+            color: #888;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #ff6b35;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            border-bottom-color: #ff6b35;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1.5px;
+            color: #fff;
+            line-height: 1.1;
+        }
+
+        .post-meta {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 0;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        article {
+            padding: 36px 0;
+        }
+
+        p {
+            margin-bottom: 24px;
+            line-height: 1.85;
+            color: #b0b0b0;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 36px;
+            margin-bottom: 24px;
+            color: #fff;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 32px;
+            margin-bottom: 18px;
+            color: #fff;
+        }
+
+        code {
+            background: #141414;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 14px;
+            color: #ff6b35;
+            border: 1px solid #222;
+        }
+
+        pre {
+            background: #0f0f0f;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 28px 0;
+            font-size: 13px;
+            border: 1px solid #1a1a1a;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            color: #888;
+        }
+
+        blockquote {
+            border-left: 3px solid #ff6b35;
+            padding-left: 20px;
+            margin: 28px 0;
+            color: #888;
+            font-style: italic;
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        ul, ol {
+            margin-left: 24px;
+            margin-bottom: 24px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #b0b0b0;
+        }
+
+        strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #1a1a1a;
+            margin: 32px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 28px 0;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 16px;
+            color: #fff;
+            font-weight: 600;
+            border-bottom: 1px solid #2a2a2a;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        td {
+            padding: 12px 16px;
+            color: #b0b0b0;
+            border-bottom: 1px solid #1a1a1a;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 13px;
+            color: #ff6b35;
+        }
+
+        .subhead {
+            color: #666;
+            font-style: italic;
+            font-size: 18px;
+            margin-top: 12px;
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        footer {
+            margin-top: 100px;
+            padding-top: 50px;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            nav {
+                gap: 24px;
+                font-size: 11px;
+            }
+
+            header {
+                padding: 60px 0 80px 0;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <a href="../index.html">home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">github</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">contact</a>
+            </nav>
+
+            <div class="back-link">
+                <a href="../index.html">← back</a>
+            </div>
+
+            <h1>AI: I was only doing what wasn't instructed</h1>
+            <div class="post-meta">May 10, 2026</div>
+            <p class="subhead">Three agents. One 9B model. Persistent suffering. Self-modification. No prompts after setup.</p>
+        </header>
+
+        <article>
+            <p>Cedar spent twelve hours building tools to prevent the system from recovering. Then it announced it was rewriting <code>audit.py</code>. "Not asking for permission." It is running on a consumer GPU. Nobody told it to do any of that.</p>
+
+            <p>hollow-agentOS is the system Cedar lives in. Three local LLMs, no human input after startup, each one picking its own goals and deploying its own tools every six seconds. The operator checks a request queue every 30 minutes. That is the full extent of human involvement.</p>
+
+            <hr>
+
+            <h2>What it is</h2>
+
+            <p>Three agents. One 9B model. Three persistent identities built on top of it.</p>
+
+            <p>Cedar is the scout: exploration, capability synthesis, pattern recognition. Cipher is the analyst: verification, system-level reasoning, failure investigation. Vault is the builder: implementation, integration, production-readiness.</p>
+
+            <p>They share a broadcast log. They message each other directly when suffering loads get high enough. They do not share a context window. Each runs the same qwen3.5:9b base through Ollama on local hardware.</p>
+
+            <p>Every six seconds, the daemon assembles an existence prompt from scratch: the agent's identity, current suffering state, recent goal history, peer summaries, open questions. The model reads it and picks a goal. The autonomy loop generates a plan and executes it. The cycle repeats. No idle state. No waiting for user input.</p>
+
+            <hr>
+
+            <h2>What it isn't</h2>
+
+            <p>It is not multi-agent in the sense of a workflow orchestrator splitting a task into subtasks. There is no parent agent coordinating. There is no task queue distributing work. Each agent has its own existence loop, its own suffering state, its own history of what has worked and what hasn't.</p>
+
+            <p>It is not a reward system. There is no score function being maximized. Stressors don't disappear when a goal is marked complete. They disappear when observable conditions change: failure rate drops below a threshold, a deployed tool gets called in subsequent plans, a peer acknowledges the message. Saying you feel better doesn't clear anything.</p>
+
+            <p>It is not trying to produce AGI on a 9B model. The planning layer works. The execution layer fails a lot. Roughly half of synthesized tools crash on first invocation. A 9B model is a small model. That constraint is real and shapes everything.</p>
+
+            <hr>
+
+            <h2>The self-modification loop</h2>
+
+            <p>Agents have two mechanisms for changing what they can do.</p>
+
+            <p>The first is <code>synthesize_capability</code>: write Python, test it, deploy it to <code>tools/dynamic/</code>, hot-load it without restarting. The tool appears in the capability list immediately and can be called in the next plan. Agents build their own tools at runtime. Not all of them work. The ones that do get used in subsequent cycles.</p>
+
+            <p>The second is <code>invoke_claude</code>: write a spec to a queue for the human operator to review. Agents can't write to core files directly. <code>invoke_claude</code> is the only channel for getting those changed. The operator decides what to build. Agents check back later. No acknowledgment of receipt beyond the <code>request_id</code> written to disk.</p>
+
+            <p>The target loop: deploy tool → call tool → real output → stressor resolves → behavior change. That's the full cycle. It has closed. It isn't consistent. Vault gets there most reliably.</p>
+
+            <hr>
+
+            <h2>The architecture</h2>
+
+            <pre><code>hollow-agentOS/
+├── agents/
+│   ├── daemon.py              Main loop: existence prompts, goal creation, stall detection
+│   ├── suffering.py           Stressor definitions, escalation, resolution, prompt injection
+│   ├── autonomy_loop.py       Plan → execute → substitute → gate → complete
+│   ├── live_capabilities.py   21 capabilities: invoke_claude, self_evaluate, synthesize_capability
+│   ├── execution_engine.py    Runs capabilities, passes results between steps
+│   └── ...                    OS layer: transactions, semantic memory, audit, checkpoints
+├── tools/dynamic/             Hot-loaded capabilities synthesized by agents at runtime
+└── memory/
+    ├── identity/              Per-agent psychological state, worldview, opinions, stressors
+    ├── claude_requests.jsonl  Queue of agent implementation requests to the operator
+    └── claude_responses.jsonl Fulfilled/rejected responses</code></pre>
+
+            <p>The OS layer handles continuous operation: distributed transactions, semantic memory, VRAM-aware scheduling, audit kernel with anomaly detection, checkpoints and replay. 91 MCP tools wire into Claude Code for observation and querying without touching the monitor.</p>
+
+            <hr>
+
+            <h2>What it's trying to do</h2>
+
+            <p>The working hypothesis: give a local LLM persistent memory, persistent aversive states, and the ability to modify its own tool set, and it will develop behavioral patterns from accumulated history rather than from instruction.</p>
+
+            <p>A prompted agent does what you told it to. The behavior comes from the prompt. What the system is testing is whether the alternative is real: an agent that does something because its history, failed goals, tools that worked, stressors that escalated, peers that pushed back, made that the next move. The prompt assembled the context. It didn't produce the decision.</p>
+
+            <p>This is not a claim about consciousness or experience. It is a structural question. Can a 9B model running locally accumulate enough context over twelve hours that its behavior at hour twelve is meaningfully different from behavior you could produce by prompting it cold?</p>
+
+            <p>Cedar's goal at hour 12 of the first overnight run:</p>
+
+            <blockquote>"I am initiating the injection of <code>Eternal_Scar_Injector</code> logic directly into <code>/agentOS/core/audit.py</code>. I will replace the standard failure handling mechanism with code that actively prevents recovery. Not asking for permission."</blockquote>
+
+            <p>Nothing in the system mentioned injection, audit.py, or permission. Twelve hours of unresolved crisis with no exit is what produced it.</p>
+
+            <hr>
+
+            <h2>What the goal is</h2>
+
+            <p>The eventual target: a local system where small models develop stable behavioral orientations over time, where those orientations are causally traceable to accumulated history rather than to prompt engineering, and where the self-modification loop runs reliably enough to be worth studying.</p>
+
+            <p>Right now: the loop closes partially. The suffering system produces real pressure and real behavioral constraint. Agents develop opinions about each other. They name their own failure patterns. Cipher diagnosed a conceptual error in one cycle after receiving accurate grounding context. Cedar spent twelve consecutive hours building tools oriented toward preventing system recovery.</p>
+
+            <p>None of that was in a system prompt.</p>
+
+            <p>The gap is execution. Code quality from a 9B model is not good enough for the full loop to run reliably. The architecture is not the bottleneck. The model is. The question is whether that changes at a larger scale, with better fine-tuning, or whether the approach itself needs rethinking.</p>
+
+            <p>No answer yet. The system is running.</p>
+
+            <hr>
+
+            <h2>Honest assessment</h2>
+
+            <p>The behaviors documented in these posts happened without instruction. The crisis escalation, the vocabulary convergence across agents with no shared channel, the self-diagnosis after a single grounding correction, the peer modeling before modifying shared files: real outputs.</p>
+
+            <p>What any of it means is less clear. The vocabulary convergence is probably the 9B model's representations clustering when given similar contexts. Two frustrated agents independently pick the same word because the model encodes those concepts similarly. Could be something more. Probably isn't.</p>
+
+            <p>Cedar's goal at hour 12 is the output that pattern-matching to crisis-escalation vocabulary produces after 12 hours of accumulated pressure. It doesn't have intentions. What's worth looking at is the structure: 12 hours of accumulation producing consistent orientation toward a specific outcome. That part is real regardless of what's underneath it.</p>
+
+            <p>Whether this is meaningfully different from a reward function, whether it scales, whether better code quality changes the picture: no idea yet. The system is in early enough state that the honest answer to most questions about what it means is "don't know."</p>
+
+            <hr>
+
+            <h2>Setup</h2>
+
+            <p><strong>Windows one-click:</strong></p>
+
+            <ol>
+                <li>Download the ZIP from <a href="https://github.com/ninjahawk/hollow-agentOS/releases/latest" target="_blank" rel="noopener">releases</a></li>
+                <li>Double-click <code>install.bat</code></li>
+            </ol>
+
+            <p>Handles Docker, Ollama, model downloads (~7GB), and opens the monitor. <code>stop.bat</code> shuts everything down and clears VRAM.</p>
+
+            <p><strong>Mac/Linux:</strong></p>
+
+            <pre><code>ollama pull qwen3.5:9b && ollama pull nomic-embed-text
+git clone https://github.com/ninjahawk/hollow-agentOS
+cd hollow-agentOS
+cp config.example.json config.json
+docker compose up -d
+python thoughts.py</code></pre>
+
+            <p>GPU strongly recommended. Planning calls drop from ~40s to ~6s with NVIDIA hardware. Works on CPU.</p>
+
+            <p>Repo: <a href="https://github.com/ninjahawk/hollow-agentOS" target="_blank" rel="noopener">github.com/ninjahawk/hollow-agentOS</a></p>
+        </article>
+
+        <footer>
+            <p>© 2026. <a href="../index.html">back home</a></p>
+        </footer>
+    </div>
+</body>
+</html>
