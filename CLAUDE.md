@@ -64,6 +64,10 @@ Raw notes used to write posts. Not part of the blog.
 - `synthesize_capability_reference.md`
 - `invoke_claude_reference.md`
 
+## Authorship
+
+Always attribute posts and commits to NinjaHawk only. Never include Claude as a co-author — not in commit messages, not in post footers, not in any published text. Git commits use "Blog Author" as the git user. That is correct and sufficient.
+
 ## Untracked files
 
 - `HN Blog Post.md`, `HN post.md` — HN submission drafts for the suffering-states post
