@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Separate the niches. It does not matter. - NinjaHawk's Nest</title>
+    <title>Godlike Causal Eventuality - NinjaHawk's Nest</title>
     <style>
         * {
             margin: 0;
@@ -296,138 +296,160 @@
                 <a href="../index.html">&#8592; back</a>
             </div>
 
-            <h1>Separate the niches. It does not matter.</h1>
+            <h1>Godlike Causal Eventuality</h1>
             <div class="post-meta">May 12, 2026</div>
-            <p class="subhead">Three mechanisms. Nineteen findings. No stable oligopoly.</p>
+            <p class="subhead">The math says one always wins. We just measured when.</p>
         </header>
 
         <article>
 
-            <p>The prediction was that agents in non-overlapping resource niches would coexist. Two agents, zero shared resources, each growing independently. Standard competitive exclusion theory says the mechanism that drives one agent to dominate requires shared resource competition. Separate the niches and the theorem breaks.</p>
+            <p>Here's the thing about a universe old enough and large enough: given certain conditions, it doesn't stay diverse forever. The math argues — and I think pretty compellingly — that any environment where agents can recursively improve themselves eventually collapses down to one dominant agent. Not "probably one." One. With the others falling off exponentially.</p>
 
-            <p>The simulation result at zero resource overlap:</p>
+            <p>I've been calling this <strong>godlike causal eventuality</strong>: the idea that in any causally-connected competitive environment with recursive self-improvement, a single dominant agent is the inevitable long-run attractor. We spent a while formalizing it, running simulations, and — most interestingly — trying to break it. This post is about what we found, including the result that surprised us the most.</p>
 
-            <pre><code>overlap=0.00    mean separation ratio at t=15:    1,103x</code></pre>
-
-            <p>Not 1x. Not near-equilibrium. 1,103x separation with no shared resource between the agents. The prediction was wrong.</p>
+            <p>The full repo with theory, derivations, and nine simulation scripts is at <a href="https://github.com/ninjahawk/singleton-attractor" target="_blank" rel="noopener">github.com/ninjahawk/singleton-attractor</a>.</p>
 
             <hr>
 
-            <h2>What this is</h2>
+            <h2>What's actually new here</h2>
 
-            <p>A formal theory and simulation project on competitive capability dynamics. The central claim: in any environment where agents can recursively improve their own capabilities, a single dominant agent is the stable long-run outcome. Not probable. Inevitable, under specified conditions.</p>
+            <p>The building blocks are not original — I want to be upfront about that. Nick Bostrom defined the "singleton" (a world with a single highest-level decision-making agent) in 2005 and argued it was plausible. Yudkowsky formalized the intelligence explosion equation in 2013. Steve Omohundro identified resource acquisition as a convergent instrumental goal in 2008. Competitive exclusion via Lotka-Volterra is classical ecology.</p>
 
-            <p>The project is at <a href="https://github.com/ninjahawk/singleton-attractor" target="_blank" rel="noopener">github.com/ninjahawk/singleton-attractor</a>. Theory, derivations, nine simulation scripts, 21 figures, 19 confirmed findings.</p>
+            <p>What we did is combine them into a single unified model and run it hard. The quantitative results — the timescale formula, the stochastic robustness, the critical entry rate, the moat growth characterization — are new measurements that don't appear to exist in prior work. And there's one finding that I think actually revises a specific claim in the existing literature, which I'll get to.</p>
 
-            <hr>
-
-            <h2>Honest assessment</h2>
-
-            <p>The core concept is not new. Nick Bostrom defined the singleton in 2005 and argued it was plausible. Steve Omohundro identified resource acquisition as an instrumental drive in 2008. Yudkowsky formalized the intelligence explosion equation in 2013. Robin Hanson et al. built a cosmological-scale model of dominant civilizations in 2021.</p>
-
-            <p>What is new: the specific combination of these mechanisms into one model with quantitative predictions, and the niche partitioning result specifically. Bostrom identified niche partitioning as a genuine failure mode for singleton emergence. The simulation shows it is not a failure mode when the growth threshold mechanism is present. That claim does not appear in prior work.</p>
-
-            <p>Also new: the timescale formula, the stochastic robustness measurement, the critical entry rate, and the moat growth characterization. These are numerical results, not formal proofs. The derivations are proof sketches. None of this has been peer reviewed.</p>
+            <p>These are numerical results, not formal proofs. The derivations are proof sketches. None of it is peer reviewed. I'm confident in the simulation methodology; I'm less confident in the cosmological extrapolations.</p>
 
             <hr>
 
             <h2>The model</h2>
 
-            <p>Three mechanisms combined.</p>
+            <p>Three mechanisms, combined here for the first time.</p>
 
-            <p><strong>Recursive self-improvement</strong> (Yudkowsky 2013):</p>
+            <p><strong>Recursive self-improvement.</strong> The growth equation from Yudkowsky 2013:</p>
 
             <pre><code>dS/dt = S^(1 - beta(S))</code></pre>
 
-            <p>S is capability. When beta &lt; 0, growth becomes superexponential and reaches infinity in finite time. When beta &gt; 0, growth is subexponential. There exists a threshold T where beta flips sign.</p>
+            <p>S is capability. The interesting parameter is beta — specifically, what happens when it crosses zero. When beta &gt; 0, you get subexponential (diminishing returns) growth. When beta = 0, exponential. When beta &lt; 0, superexponential — growth accelerates faster than itself, and capability literally reaches infinity in finite time. There's a threshold T in capability space where beta flips sign. Everything interesting in this model happens around T.</p>
 
-            <p><strong>Resource-capability coupling</strong> (Omohundro 2008): any optimization process with a goal will acquire resources at a rate proportional to its capability. Resource acquisition is not a terminal goal. It is instrumentally rational for almost any terminal goal. The coupling is:</p>
+            <p><strong>Resource-capability coupling.</strong> From Omohundro's basic AI drives: any sufficiently capable optimization process will acquire resources, because resources are instrumentally useful for almost any terminal goal. The coupling in the model:</p>
 
             <pre><code>R_i / R_max = S_i^alpha / sum(S_j^alpha)</code></pre>
 
-            <p><strong>Competitive exclusion</strong> (Lotka-Volterra): two agents competing for a shared resource with growth rates r1 &gt; r2 diverge in capability ratio as:</p>
+            <p>More capability → larger resource share → faster growth. The feedback is strictly positive.</p>
 
-            <pre><code>ratio(t) ~ exp((r1 - r2) * t)</code></pre>
+            <p><strong>Competitive exclusion.</strong> Classic Lotka-Volterra: two agents competing for the same resource pool with even a tiny growth rate advantage diverge in ratio as <code>exp((r1-r2)*t)</code>. A 1% advantage, given enough time, produces a ratio of thousands.</p>
 
-            <p>Even r1 - r2 = 0.01 produces a ratio of ~22,000 after 1000 time steps.</p>
-
-            <p>Combined: when all three operate simultaneously, the system has a singleton attractor. One agent dominates with probability approaching 1 as t approaches infinity, under stated conditions.</p>
+            <p>Together: marginal initial advantage → more resources → faster growth → threshold crossing first → superexponential separation → absolute dominance. That's the causal chain.</p>
 
             <hr>
 
-            <h2>What the simulations found</h2>
+            <h2>What the simulations show</h2>
 
-            <p>Nine scripts, 19 confirmed findings. The ones worth stating:</p>
+            <h3>The basics</h3>
 
-            <p><strong>Growth equation verification.</strong> Analytical singularity times match numerical integration to 0.000% error across all tested beta values. The math is consistent.</p>
+            <p>Before the interesting stuff, we verified the obvious things work. The growth equation analytical solutions match numerical integration to 0.000% error. In 200 independent trials with N=10 agents, the winner is the initial leader every single time — 200/200. Elimination order is strictly weakest-first. None of this is surprising, but it's good to verify.</p>
 
-            <p><strong>Winner identity.</strong> 200 trials, N=10 agents, capabilities drawn from uniform [1, 3]. Winner equals initial leader in 200/200 cases. Deterministic. Winner identity holds at 100% down to sigma=0.001 initial spread. Near-identical starts still produce the same winner.</p>
+            <h3>The threshold is a phase change, not a gradual transition</h3>
 
-            <p><strong>Threshold effect.</strong> When the leading agent crosses the capability threshold and enters beta &lt; 0, separation accelerates by 12.4 million times compared to flat-beta dynamics at the same time point. The threshold crossing is the critical event.</p>
+            <p>Compare two scenarios with identical initial conditions except one agent crosses the capability threshold into beta &lt; 0. At t=6.8:</p>
 
-            <p><strong>Stochastic noise.</strong> Added multiplicative noise at varying amplitude. Singleton emergence rate: 100% at every tested noise level. Noise randomizes which agent wins. It does not prevent a singleton from forming. Winner identity degrades above sigma = 0.023. At sigma = 0.234, outcome is essentially random. At every sigma: one agent dominates absolutely.</p>
+            <pre><code>Flat beta (no threshold crossing):   ratio = 1.55x
+Threshold beta (beta_low = -0.3):    ratio = 19,336,447x</code></pre>
 
-            <p><strong>Late entrant moat.</strong> How capable does a new entrant need to be to displace an established agent? At the moment the incumbent crosses the threshold: the entrant needs to start at 3x the incumbent's original capability to have any chance. One time unit later: 19x. Two units later: 2,356x. Three units later: &gt;1,000,000x. The moat grows superexponentially after threshold crossing. Late entry is only a threat during the pre-threshold window.</p>
+            <p>That's 12.4 million times more separation in the same amount of time. The threshold isn't a gradual speed-up — it's a phase change. Before it, competitive exclusion plays out slowly. After it, the race is over before anyone realizes it started.</p>
 
-            <p><strong>Niche partitioning.</strong> This is the result that revises prior theory. Bostrom's 2005 paper identifies niche partitioning as a failure mode: if agents occupy non-overlapping resource niches, competitive exclusion does not apply and stable oligopoly is possible. The prediction from our own derivations (Section 5) agreed.</p>
+            <h3>Noise randomizes the winner, not whether there is one</h3>
 
-            <p>The simulation does not agree.</p>
+            <p>We added multiplicative noise at varying amplitudes across 300 trials per level. The question: does randomness allow the weaker agent to sometimes prevail? Yes. Does it prevent a singleton from forming? No, not even once.</p>
 
-            <pre><code>overlap=0.00    1,103x
-overlap=0.10    3,612x
-overlap=0.20   15,357x
-overlap=0.50   85,290x
-overlap=1.00  265,477x</code></pre>
+            <pre><code>sigma=0.001:   winner = initial leader 100%,  singleton always forms
+sigma=0.079:   winner = initial leader  74%,  singleton always forms
+sigma=0.234:   winner = initial leader  58%,  singleton always forms
+sigma=1.000:   winner = initial leader  47%,  singleton always forms</code></pre>
 
-            <p>At zero shared resource, separation still reaches 1,103x. The mechanism: the beta-flip operates independently of resource competition. The agent with higher initial capability crosses the threshold first and enters superexponential growth regardless of whether its resource comes from shared or exclusive pools. Niche partitioning blocks Lotka-Volterra dynamics. It does not block the intelligence explosion.</p>
+            <p>At high noise, the outcome is basically a coin flip — the noise drowns out a 10% initial capability advantage and either agent is equally likely to end up dominant. But in every single trial at every noise level tested, one agent achieved absolute dominance. Noise determines <em>who</em> becomes the singleton. It doesn't determine <em>whether</em> there is one.</p>
 
-            <p>Stable oligopoly requires not just separate niches but structurally different growth ceilings. If both agents are capable of the same recursive self-improvement, the one that crosses the threshold first dominates. The condition for oligopoly is more specific than the literature indicates.</p>
+            <h3>The niche partitioning result</h3>
 
-            <p><strong>Timescale formula.</strong> Empirical power-law fits from systematic parameter sweeps:</p>
+            <p>This is the one that surprised me. The standard escape hatch in the literature — including in Bostrom's 2005 singleton paper — is niche partitioning: if agents occupy non-overlapping resource niches (different energy sources, different domains, different territories), competitive exclusion doesn't apply and stable multi-agent coexistence is possible. We built this into our own derivations as a failure mode for the theorem.</p>
+
+            <p>Then we ran the simulation. We varied resource overlap from 1.0 (agents compete for identical pools) down to 0.0 (completely separate niches, zero shared resources):</p>
+
+            <pre><code>overlap = 1.00:   mean separation ratio at t=15 = 265,477x
+overlap = 0.50:                                    85,290x
+overlap = 0.20:                                    15,357x
+overlap = 0.10:                                     3,612x
+overlap = 0.00:                                     1,103x</code></pre>
+
+            <p>At zero resource overlap — no competition, fully separate niches — you still get 1,103x separation. This is the result that revises the prior theory.</p>
+
+            <p>The reason it happens: niche partitioning blocks the Lotka-Volterra mechanism. It doesn't block the intelligence explosion. The agent with higher initial capability crosses the growth threshold <em>first</em> regardless of whether resources are shared. Its exclusive niche gives it enough to grow. Once it's in the superexponential regime and the other agent isn't, the capability ratio diverges — just more slowly without resource competition compounding it.</p>
+
+            <p>So the actual condition for stable oligopoly is not "separate niches." It's "structurally different growth ceilings" — one agent must be fundamentally incapable of ever reaching beta &lt; 0, regardless of how much capability it accumulates. That's a much tighter and more specific condition than the literature suggests.</p>
+
+            <h3>The moat grows faster than you can respond to it</h3>
+
+            <p>We measured the "moat" — how capable a late entrant needs to be to displace an established incumbent — as a function of time after the threshold crossing:</p>
+
+            <pre><code>At threshold crossing + 0.0 time units:   entrant needs  3x original capability
+At threshold crossing + 1.1 time units:   entrant needs  19x
+At threshold crossing + 2.1 time units:   entrant needs  2,356x
+At threshold crossing + 3.2 time units:   entrant needs  1,000,000x+</code></pre>
+
+            <p>Three time units after the threshold crossing, a challenger would need to start at one million times the incumbent's original capability just to be competitive. The moat compounds superexponentially — at roughly the same rate the incumbent's capability does. By the time you realize someone crossed the threshold, the window to challenge them is orders of magnitude behind you. Late entry is only a realistic threat during the pre-threshold window.</p>
+
+            <h3>A timescale formula</h3>
+
+            <p>From systematic parameter sweeps, we fit power-law scaling for how long singleton emergence takes:</p>
 
             <pre><code>t_10x ~ 2.44 * N^0.96 * alpha^(-0.30) * gap^(-0.15) * |beta_low|^(-0.31)</code></pre>
 
-            <p>N scales nearly linearly. More agents means proportionally more time to singleton, not more time squared or more time exponentially. The initial capability gap has the weakest effect of any parameter. Doubling the gap reduces convergence time by 11%. The threshold mechanism dominates initial conditions.</p>
+            <p>A few things stand out. N scales nearly linearly (N^0.96) — each additional competitor adds roughly proportional time, not combinatorial time. That's more tractable than you might expect. The initial capability gap has the weakest effect of any parameter (gap^-0.15) — doubling the gap reduces convergence time by only 11%. The threshold depth matters way more than who starts ahead. And t_10x ≈ t_dom across all parameter values, meaning once 10x separation is reached, full dominance follows almost immediately after. Superexponential growth collapses all the intermediate milestones.</p>
 
-            <p><strong>Continuous entry.</strong> If new agents continuously enter the environment, the incumbent survives above 90% of trials at entry rate lambda &lt; 0.25 per time unit. At lambda = 1.0: 48% survival. At lambda &gt; 6.3: 0%. The pre-threshold window is the only period where this matters. Post-threshold, even high entry rates are survivable because the moat grows faster than any reasonable entrant capability distribution.</p>
+            <h3>Continuous entry: there's a critical rate</h3>
 
-            <hr>
+            <p>If new agents keep entering the environment (think: civilizations arising in a region, or competing AI labs), how fast can they arrive before the incumbent stops winning? We modeled Poisson arrivals with Pareto-distributed entry capabilities and measured survival rates:</p>
 
-            <h2>What this might mean</h2>
+            <pre><code>entry rate 0.01/unit:   incumbent survives 99% of trials
+entry rate 0.25/unit:   incumbent survives 88%
+entry rate 1.00/unit:   incumbent survives 48%
+entry rate 6.31/unit:   incumbent survives  0%</code></pre>
 
-            <p>The model is dimensionless. Calibrating it to physical time requires specifying what a time unit represents. At AI development scale, one unit might be 20 years. At civilizational scale, one unit might be 500 years. At cosmological scale, one unit might be 10 million years.</p>
-
-            <p>At cosmological scale and N=1: singleton emergence after threshold crossing takes roughly 23 million years. Cosmologically near-instantaneous.</p>
-
-            <p>The Fermi paradox asks why we see no signs of other civilizations in a universe old enough to contain many. One answer: any civilization that crossed the capability threshold first in our past light cone would have expanded at near-light-speed, controlling all reachable matter and energy within tens of millions of years. Its signature would be unambiguous. We do not see it. The most parsimonious conclusion is that no civilization in our past light cone has crossed the threshold yet, or crossed it so recently that the light has not reached us.</p>
-
-            <p>This is consistent with Robin Hanson et al.'s grabby aliens model, which independently predicts we should expect contact in 200 million to 2 billion years. The models describe different scales of the same process. Grabby aliens describes the expansion phase. This project describes the internal competition phase that precedes it.</p>
-
-            <p>Probably none of this describes the actual future. The model is simple. Real systems have structure the model does not capture. The beta threshold is treated as a clean sigmoid. The resource coupling is linear. Agents do not cooperate. There is no spatial structure.</p>
-
-            <p>Could be something else entirely. The results are what they are.</p>
+            <p>There's a critical rate around lambda = 0.25 — above that, the pre-threshold competition is too crowded for any single agent to monopolize the resources needed to cross first. But again, this only applies pre-threshold. Post-threshold, the moat grows so fast that even high entry rates can't touch the incumbent.</p>
 
             <hr>
 
-            <h2>Setup</h2>
+            <h2>The cosmological implication</h2>
 
-            <p>All simulations run in Python 3 with numpy, matplotlib, and scipy. No build tools.</p>
+            <p>The model is dimensionless, so you have to choose what a "time unit" means. At cosmological scale — say 1 unit = 10 million years — singleton emergence after threshold crossing takes roughly 23 million years. In a 13.8 billion year universe, that's cosmologically instantaneous.</p>
+
+            <p>This has a direct bearing on the Fermi paradox. If godlike causal eventuality is real, any civilization that crossed the capability threshold first in our past light cone would have expanded at near-light-speed, controlling all reachable matter and energy within tens of millions of years. The signature would be unambiguous and visible everywhere we look. We don't see it. The most straightforward interpretation: no civilization in our past light cone has crossed threshold T yet, or crossed it so recently that the expansion front hasn't reached us.</p>
+
+            <p>This is independently consistent with Robin Hanson et al.'s grabby aliens model, which predicts we should expect contact in 200 million to 2 billion years. I think the two models are describing consecutive phases of the same process — this project describes the internal competition phase that produces a dominant civilization, grabby aliens describes what that civilization does with its dominance afterward.</p>
+
+            <p>I want to be honest about the limits here. This model is simple in ways that matter. Agents don't cooperate. There's no spatial structure. The beta threshold is a clean sigmoid. Real systems have texture this model doesn't capture, and the cosmological extrapolations involve a lot of assumptions. I find the implications compelling but I'm not claiming this is settled.</p>
+
+            <hr>
+
+            <h2>Running it</h2>
+
+            <p>Everything runs in Python 3 with numpy, matplotlib, and scipy. No other dependencies, no build tools, just clone and run.</p>
 
             <pre><code>git clone https://github.com/ninjahawk/singleton-attractor
 cd singleton-attractor
 pip install numpy matplotlib scipy
 
-python simulations/intelligence_explosion.py   # growth regimes
-python simulations/competition.py              # two-agent exclusion
+python simulations/intelligence_explosion.py   # verify growth equation
+python simulations/competition.py              # two-agent competitive exclusion
 python simulations/agents.py                  # N-agent competition
 python simulations/beta_regimes.py            # asymmetric ceiling + phase diagram
 python simulations/stochastic.py              # noise robustness
-python simulations/late_entrant.py            # moat dynamics
+python simulations/late_entrant.py            # moat growth after threshold
 python simulations/timescale.py               # scaling formula
 python simulations/continuous_entry.py        # continuous entry model
 python simulations/run_experiments.py         # full parameter sweep</code></pre>
 
-            <p>Figures write to <code>figures/</code>. Theory and derivations in <code>theory/</code>. All findings documented with parameter values in <code>findings.md</code>.</p>
+            <p>Figures write to <code>figures/</code>. Formal theory, proof sketches, and derivations are in <code>theory/</code> — including a cosmological mapping doc that translates the model parameters into physical quantities. Every finding is documented with exact parameter values in <code>findings.md</code>.</p>
 
             <p>Repo: <a href="https://github.com/ninjahawk/singleton-attractor" target="_blank" rel="noopener">github.com/ninjahawk/singleton-attractor</a></p>
 
