@@ -309,7 +309,7 @@
 
             <p>I've been calling this <strong>godlike causal eventuality</strong>: in any environment where agents can recursively improve themselves, a single dominant agent is the inevitable long-run attractor. The universe doesn't end up with many gods. It ends up with one — whichever one crossed a critical capability threshold first.</p>
 
-            <p>This is a formal theory and simulation project, not speculation. Everything is in the repo: <a href="https://github.com/ninjahawk/singleton-attractor" target="_blank" rel="noopener">github.com/ninjahawk/singleton-attractor</a>. Nine simulation scripts, formal derivations, 19 confirmed findings. The rest of this post covers what we actually found and why some of it surprised me.</p>
+            <p>This is a formal theory and simulation project, not speculation. Everything is in the repo: <a href="https://github.com/ninjahawk/singleton-attractor" target="_blank" rel="noopener">github.com/ninjahawk/singleton-attractor</a>. Ten simulation scripts, formal derivations, 23 confirmed findings. The rest of this post covers what we actually found and why some of it surprised me.</p>
 
             <hr>
 
@@ -419,6 +419,28 @@ entry rate 6.31/unit:   incumbent survives  0%</code></pre>
 
             <p>There's a critical rate around lambda = 0.25 — above that, the pre-threshold competition is too crowded for any single agent to monopolize the resources needed to cross first. But again, this only applies pre-threshold. Post-threshold, the moat grows so fast that even high entry rates can't touch the incumbent.</p>
 
+            <h3>Cooperation: the strongest objection</h3>
+
+            <p>The most natural objection to all of the above: agents can cooperate. Two weaker agents can pool resources to resist a stronger one. So I ran that experiment last, and it turned out to be the most interesting.</p>
+
+            <p>First, we established that coalition pooling can work in principle. A coalition of N=2 agents — combined capability 2.0 vs singleton candidate 1.1 — is enough to prevent the singleton from ever crossing threshold T. The critical coalition size is small. This looks like a viable defense.</p>
+
+            <p>Then we tested it with realistic internal dynamics. An 8-member coalition pooling externally against one singleton candidate. The coalition has 8 times the combined capability. It receives 88% of total resources. The singleton candidate crosses T first anyway.</p>
+
+            <p>The mechanism: coalition resources split among 8 members give each individual member roughly 11% of total resources. The singleton candidate, competing alone, gets 12%. The singleton beats every individual coalition member in the race to T, even though the coalition dominates in aggregate. Coalition pooling is self-defeating — it prevents any member from accumulating resources fast enough to compete with the unconstrained singleton. The coalition wins the group competition and loses the capability race.</p>
+
+            <p>We then checked whether rational defection was the failure mode. It's not. Coalition members find it individually rational to stay — defecting exposes them to the full competitive denominator and reduces their share. Zero defection events in the defection game. The coalition holds together completely. The singleton candidate wins anyway.</p>
+
+            <p>Finally, we ran 50 trials per regime across three cooperation structures: no cooperation, full oracle cooperation (all non-leaders optimally pool against the current leader at every step), and rational cooperation (defect when individually better off):</p>
+
+            <pre><code>No cooperation:         100% singleton rate,   mean t_10x = 10.09
+Full oracle cooperation: 100% singleton rate,   mean t_10x = 10.09
+Rational cooperation:   100% singleton rate,   mean t_10x = 10.09</code></pre>
+
+            <p>Oracle cooperation suppresses the initial leader's resource share — and it works. That agent's dominance is prevented. But the coalition has internal capability divergence. The strongest follower grows faster than the weaker followers. That follower becomes the new leader, faces the pooled coalition, gets suppressed, and one of the next-strongest emerges. The process repeats. Eventually one agent achieves 10x separation regardless. Cooperation picks a different winner. It doesn't prevent or measurably delay singleton formation.</p>
+
+            <p>The only cooperation structure that would work is a true merger — agents fully combining into a single entity, eliminating internal competition entirely. At that point, the merged entity is just a new single agent with higher initial capability than any competitor. The theorem applies to it directly.</p>
+
             <hr>
 
             <h2>The cosmological implication</h2>
@@ -429,7 +451,7 @@ entry rate 6.31/unit:   incumbent survives  0%</code></pre>
 
             <p>This is independently consistent with Robin Hanson et al.'s grabby aliens model, which predicts we should expect contact in 200 million to 2 billion years. I think the two models are describing consecutive phases of the same process — this project describes the internal competition phase that produces a dominant civilization, grabby aliens describes what that civilization does with its dominance afterward.</p>
 
-            <p>I want to be honest about the limits here. This model is simple in ways that matter. Agents don't cooperate. There's no spatial structure. The beta threshold is a clean sigmoid. Real systems have texture this model doesn't capture, and the cosmological extrapolations involve a lot of assumptions. I find the implications compelling but I'm not claiming this is settled.</p>
+            <p>I want to be honest about the limits here. This model is simple in ways that matter. There's no spatial structure. The beta threshold is a clean sigmoid. Real systems have texture this model doesn't capture, and the cosmological extrapolations involve a lot of assumptions. I find the implications compelling but I'm not claiming this is settled.</p>
 
             <hr>
 
@@ -449,6 +471,7 @@ python simulations/stochastic.py              # noise robustness
 python simulations/late_entrant.py            # moat growth after threshold
 python simulations/timescale.py               # scaling formula
 python simulations/continuous_entry.py        # continuous entry model
+python simulations/cooperation.py             # coalition and cooperation dynamics
 python simulations/run_experiments.py         # full parameter sweep</code></pre>
 
             <p>Figures write to <code>figures/</code>. Formal theory, proof sketches, and derivations are in <code>theory/</code> — including a cosmological mapping doc that translates the model parameters into physical quantities. Every finding is documented with exact parameter values in <code>findings.md</code>.</p>
