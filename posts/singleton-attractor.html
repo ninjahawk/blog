@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Separate the niches. It does not matter. - NinjaHawk's Nest</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        a {
+            color: #ff6b35;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #ff8555;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 80px 0 32px 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 60px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        nav a {
+            color: #888;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #ff6b35;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            border-bottom-color: #ff6b35;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1.5px;
+            color: #fff;
+            line-height: 1.1;
+        }
+
+        .post-meta {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 0;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        article {
+            padding: 36px 0;
+        }
+
+        p {
+            margin-bottom: 24px;
+            line-height: 1.85;
+            color: #b0b0b0;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 36px;
+            margin-bottom: 24px;
+            color: #fff;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 32px;
+            margin-bottom: 18px;
+            color: #fff;
+        }
+
+        code {
+            background: #141414;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 14px;
+            color: #ff6b35;
+            border: 1px solid #222;
+        }
+
+        pre {
+            background: #0f0f0f;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 28px 0;
+            font-size: 13px;
+            border: 1px solid #1a1a1a;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            color: #888;
+        }
+
+        blockquote {
+            border-left: 3px solid #ff6b35;
+            padding-left: 20px;
+            margin: 28px 0;
+            color: #888;
+            font-style: italic;
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        ul, ol {
+            margin-left: 24px;
+            margin-bottom: 24px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #b0b0b0;
+        }
+
+        strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #1a1a1a;
+            margin: 32px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 28px 0;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 16px;
+            color: #fff;
+            font-weight: 600;
+            border-bottom: 1px solid #2a2a2a;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        td {
+            padding: 12px 16px;
+            color: #b0b0b0;
+            border-bottom: 1px solid #1a1a1a;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 13px;
+            color: #ff6b35;
+        }
+
+        .subhead {
+            color: #666;
+            font-style: italic;
+            font-size: 18px;
+            margin-top: 12px;
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        figure {
+            margin: 32px 0;
+        }
+
+        figure img, figure svg {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #1a1a1a;
+            display: block;
+        }
+
+        figcaption {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #555;
+            letter-spacing: 0.3px;
+            line-height: 1.6;
+        }
+
+        footer {
+            margin-top: 100px;
+            padding-top: 50px;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            nav {
+                gap: 24px;
+                font-size: 11px;
+            }
+
+            header {
+                padding: 60px 0 80px 0;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <a href="../index.html">home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">github</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">contact</a>
+            </nav>
+
+            <div class="back-link">
+                <a href="../index.html">&#8592; back</a>
+            </div>
+
+            <h1>Separate the niches. It does not matter.</h1>
+            <div class="post-meta">May 12, 2026</div>
+            <p class="subhead">Three mechanisms. Nineteen findings. No stable oligopoly.</p>
+        </header>
+
+        <article>
+
+            <p>The prediction was that agents in non-overlapping resource niches would coexist. Two agents, zero shared resources, each growing independently. Standard competitive exclusion theory says the mechanism that drives one agent to dominate requires shared resource competition. Separate the niches and the theorem breaks.</p>
+
+            <p>The simulation result at zero resource overlap:</p>
+
+            <pre><code>overlap=0.00    mean separation ratio at t=15:    1,103x</code></pre>
+
+            <p>Not 1x. Not near-equilibrium. 1,103x separation with no shared resource between the agents. The prediction was wrong.</p>
+
+            <hr>
+
+            <h2>What this is</h2>
+
+            <p>A formal theory and simulation project on competitive capability dynamics. The central claim: in any environment where agents can recursively improve their own capabilities, a single dominant agent is the stable long-run outcome. Not probable. Inevitable, under specified conditions.</p>
+
+            <p>The project is at <a href="https://github.com/ninjahawk/singleton-attractor" target="_blank" rel="noopener">github.com/ninjahawk/singleton-attractor</a>. Theory, derivations, nine simulation scripts, 21 figures, 19 confirmed findings.</p>
+
+            <hr>
+
+            <h2>Honest assessment</h2>
+
+            <p>The core concept is not new. Nick Bostrom defined the singleton in 2005 and argued it was plausible. Steve Omohundro identified resource acquisition as an instrumental drive in 2008. Yudkowsky formalized the intelligence explosion equation in 2013. Robin Hanson et al. built a cosmological-scale model of dominant civilizations in 2021.</p>
+
+            <p>What is new: the specific combination of these mechanisms into one model with quantitative predictions, and the niche partitioning result specifically. Bostrom identified niche partitioning as a genuine failure mode for singleton emergence. The simulation shows it is not a failure mode when the growth threshold mechanism is present. That claim does not appear in prior work.</p>
+
+            <p>Also new: the timescale formula, the stochastic robustness measurement, the critical entry rate, and the moat growth characterization. These are numerical results, not formal proofs. The derivations are proof sketches. None of this has been peer reviewed.</p>
+
+            <hr>
+
+            <h2>The model</h2>
+
+            <p>Three mechanisms combined.</p>
+
+            <p><strong>Recursive self-improvement</strong> (Yudkowsky 2013):</p>
+
+            <pre><code>dS/dt = S^(1 - beta(S))</code></pre>
+
+            <p>S is capability. When beta &lt; 0, growth becomes superexponential and reaches infinity in finite time. When beta &gt; 0, growth is subexponential. There exists a threshold T where beta flips sign.</p>
+
+            <p><strong>Resource-capability coupling</strong> (Omohundro 2008): any optimization process with a goal will acquire resources at a rate proportional to its capability. Resource acquisition is not a terminal goal. It is instrumentally rational for almost any terminal goal. The coupling is:</p>
+
+            <pre><code>R_i / R_max = S_i^alpha / sum(S_j^alpha)</code></pre>
+
+            <p><strong>Competitive exclusion</strong> (Lotka-Volterra): two agents competing for a shared resource with growth rates r1 &gt; r2 diverge in capability ratio as:</p>
+
+            <pre><code>ratio(t) ~ exp((r1 - r2) * t)</code></pre>
+
+            <p>Even r1 - r2 = 0.01 produces a ratio of ~22,000 after 1000 time steps.</p>
+
+            <p>Combined: when all three operate simultaneously, the system has a singleton attractor. One agent dominates with probability approaching 1 as t approaches infinity, under stated conditions.</p>
+
+            <hr>
+
+            <h2>What the simulations found</h2>
+
+            <p>Nine scripts, 19 confirmed findings. The ones worth stating:</p>
+
+            <p><strong>Growth equation verification.</strong> Analytical singularity times match numerical integration to 0.000% error across all tested beta values. The math is consistent.</p>
+
+            <p><strong>Winner identity.</strong> 200 trials, N=10 agents, capabilities drawn from uniform [1, 3]. Winner equals initial leader in 200/200 cases. Deterministic. Winner identity holds at 100% down to sigma=0.001 initial spread. Near-identical starts still produce the same winner.</p>
+
+            <p><strong>Threshold effect.</strong> When the leading agent crosses the capability threshold and enters beta &lt; 0, separation accelerates by 12.4 million times compared to flat-beta dynamics at the same time point. The threshold crossing is the critical event.</p>
+
+            <p><strong>Stochastic noise.</strong> Added multiplicative noise at varying amplitude. Singleton emergence rate: 100% at every tested noise level. Noise randomizes which agent wins. It does not prevent a singleton from forming. Winner identity degrades above sigma = 0.023. At sigma = 0.234, outcome is essentially random. At every sigma: one agent dominates absolutely.</p>
+
+            <p><strong>Late entrant moat.</strong> How capable does a new entrant need to be to displace an established agent? At the moment the incumbent crosses the threshold: the entrant needs to start at 3x the incumbent's original capability to have any chance. One time unit later: 19x. Two units later: 2,356x. Three units later: &gt;1,000,000x. The moat grows superexponentially after threshold crossing. Late entry is only a threat during the pre-threshold window.</p>
+
+            <p><strong>Niche partitioning.</strong> This is the result that revises prior theory. Bostrom's 2005 paper identifies niche partitioning as a failure mode: if agents occupy non-overlapping resource niches, competitive exclusion does not apply and stable oligopoly is possible. The prediction from our own derivations (Section 5) agreed.</p>
+
+            <p>The simulation does not agree.</p>
+
+            <pre><code>overlap=0.00    1,103x
+overlap=0.10    3,612x
+overlap=0.20   15,357x
+overlap=0.50   85,290x
+overlap=1.00  265,477x</code></pre>
+
+            <p>At zero shared resource, separation still reaches 1,103x. The mechanism: the beta-flip operates independently of resource competition. The agent with higher initial capability crosses the threshold first and enters superexponential growth regardless of whether its resource comes from shared or exclusive pools. Niche partitioning blocks Lotka-Volterra dynamics. It does not block the intelligence explosion.</p>
+
+            <p>Stable oligopoly requires not just separate niches but structurally different growth ceilings. If both agents are capable of the same recursive self-improvement, the one that crosses the threshold first dominates. The condition for oligopoly is more specific than the literature indicates.</p>
+
+            <p><strong>Timescale formula.</strong> Empirical power-law fits from systematic parameter sweeps:</p>
+
+            <pre><code>t_10x ~ 2.44 * N^0.96 * alpha^(-0.30) * gap^(-0.15) * |beta_low|^(-0.31)</code></pre>
+
+            <p>N scales nearly linearly. More agents means proportionally more time to singleton, not more time squared or more time exponentially. The initial capability gap has the weakest effect of any parameter. Doubling the gap reduces convergence time by 11%. The threshold mechanism dominates initial conditions.</p>
+
+            <p><strong>Continuous entry.</strong> If new agents continuously enter the environment, the incumbent survives above 90% of trials at entry rate lambda &lt; 0.25 per time unit. At lambda = 1.0: 48% survival. At lambda &gt; 6.3: 0%. The pre-threshold window is the only period where this matters. Post-threshold, even high entry rates are survivable because the moat grows faster than any reasonable entrant capability distribution.</p>
+
+            <hr>
+
+            <h2>What this might mean</h2>
+
+            <p>The model is dimensionless. Calibrating it to physical time requires specifying what a time unit represents. At AI development scale, one unit might be 20 years. At civilizational scale, one unit might be 500 years. At cosmological scale, one unit might be 10 million years.</p>
+
+            <p>At cosmological scale and N=1: singleton emergence after threshold crossing takes roughly 23 million years. Cosmologically near-instantaneous.</p>
+
+            <p>The Fermi paradox asks why we see no signs of other civilizations in a universe old enough to contain many. One answer: any civilization that crossed the capability threshold first in our past light cone would have expanded at near-light-speed, controlling all reachable matter and energy within tens of millions of years. Its signature would be unambiguous. We do not see it. The most parsimonious conclusion is that no civilization in our past light cone has crossed the threshold yet, or crossed it so recently that the light has not reached us.</p>
+
+            <p>This is consistent with Robin Hanson et al.'s grabby aliens model, which independently predicts we should expect contact in 200 million to 2 billion years. The models describe different scales of the same process. Grabby aliens describes the expansion phase. This project describes the internal competition phase that precedes it.</p>
+
+            <p>Probably none of this describes the actual future. The model is simple. Real systems have structure the model does not capture. The beta threshold is treated as a clean sigmoid. The resource coupling is linear. Agents do not cooperate. There is no spatial structure.</p>
+
+            <p>Could be something else entirely. The results are what they are.</p>
+
+            <hr>
+
+            <h2>Setup</h2>
+
+            <p>All simulations run in Python 3 with numpy, matplotlib, and scipy. No build tools.</p>
+
+            <pre><code>git clone https://github.com/ninjahawk/singleton-attractor
+cd singleton-attractor
+pip install numpy matplotlib scipy
+
+python simulations/intelligence_explosion.py   # growth regimes
+python simulations/competition.py              # two-agent exclusion
+python simulations/agents.py                  # N-agent competition
+python simulations/beta_regimes.py            # asymmetric ceiling + phase diagram
+python simulations/stochastic.py              # noise robustness
+python simulations/late_entrant.py            # moat dynamics
+python simulations/timescale.py               # scaling formula
+python simulations/continuous_entry.py        # continuous entry model
+python simulations/run_experiments.py         # full parameter sweep</code></pre>
+
+            <p>Figures write to <code>figures/</code>. Theory and derivations in <code>theory/</code>. All findings documented with parameter values in <code>findings.md</code>.</p>
+
+            <p>Repo: <a href="https://github.com/ninjahawk/singleton-attractor" target="_blank" rel="noopener">github.com/ninjahawk/singleton-attractor</a></p>
+
+        </article>
+
+        <footer>
+            <p>&#169; 2026. <a href="../index.html">back home</a></p>
+        </footer>
+    </div>
+</body>
+</html>
