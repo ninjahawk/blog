@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doors Are Inefficient: A Mathematical Indictment</title>
+<meta name="description" content="A data-driven analysis of why the door, humanity's oldest UX pattern, fails on space, energy, throughput, and safety — with proposed alternatives.">
+<style>
+  :root {
+    --text: #1a1a1a;
+    --muted: #666;
+    --light: #999;
+    --border: #e5e5e5;
+    --bg: #fff;
+    --accent: #c0392b;
+    --code-bg: #f6f6f6;
+    --link: #2563eb;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { font-size: 18px; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Georgia', 'Times New Roman', serif;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Layout */
+  .page { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  .site-header {
+    border-bottom: 1px solid var(--border);
+    padding: 16px 0;
+    margin-bottom: 60px;
+  }
+  .site-header .inner {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .site-name {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .site-nav {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.8rem;
+    color: var(--light);
+  }
+
+  /* Article */
+  .article-meta {
+    margin-bottom: 40px;
+  }
+  .article-tag {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-size: 2.2rem;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+    margin-bottom: 20px;
+    font-weight: normal;
+  }
+  .byline {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.82rem;
+    color: var(--muted);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 0;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .byline strong { color: var(--text); }
+
+  /* Abstract */
+  .abstract {
+    background: var(--code-bg);
+    border-left: 3px solid var(--border);
+    padding: 20px 24px;
+    margin: 36px 0;
+    font-size: 0.9rem;
+    color: var(--muted);
+    font-style: italic;
+    line-height: 1.65;
+  }
+  .abstract strong { color: var(--text); font-style: normal; }
+
+  /* Body */
+  h2 {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin: 56px 0 16px;
+    line-height: 1.3;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+  h2 .section-num {
+    color: var(--light);
+    font-weight: normal;
+    margin-right: 6px;
+    font-size: 1rem;
+  }
+  h3 {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 28px 0 8px;
+  }
+  p { margin-bottom: 20px; }
+  a { color: var(--link); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  strong { font-weight: bold; }
+  em { font-style: italic; }
+
+  /* Math blocks */
+  .math {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 20px 24px;
+    margin: 24px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.82rem;
+    line-height: 2;
+    overflow-x: auto;
+  }
+  .math .comment { color: var(--light); }
+  .math .result {
+    color: var(--accent);
+    font-weight: bold;
+    border-top: 1px solid var(--border);
+    margin-top: 12px;
+    padding-top: 12px;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.84rem;
+  }
+  th {
+    text-align: left;
+    padding: 8px 12px;
+    border-bottom: 2px solid var(--text);
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    font-size: 0.72rem;
+    letter-spacing: 0.5px;
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  tr:last-child td { border-bottom: none; }
+
+  /* Callout */
+  .callout {
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    padding: 16px 20px;
+    margin: 24px 0;
+    font-size: 0.9rem;
+    background: #fffaf9;
+  }
+
+  /* Stat row */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    margin: 28px 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  .stat {
+    background: var(--bg);
+    padding: 20px;
+    text-align: center;
+  }
+  .stat .num {
+    font-size: 1.9rem;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat .lbl { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
+
+  /* Bar chart */
+  .bars { margin: 20px 0; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 10px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.8rem;
+  }
+  .bar-lbl { width: 120px; text-align: right; color: var(--muted); flex-shrink: 0; }
+  .bar-track { flex: 1; background: var(--code-bg); height: 22px; border-radius: 2px; overflow: hidden; }
+  .bar-fill {
+    height: 100%;
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: white;
+    width: 0;
+    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .bar-fill.bad { background: var(--accent); }
+  .bar-fill.ok { background: #e67e22; }
+  .bar-fill.good { background: #27ae60; color: white; }
+
+  /* Figure caption */
+  .fig-caption {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.75rem;
+    color: var(--light);
+    margin-top: -14px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  /* Footnote-style sources */
+  .source {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.72rem;
+    color: var(--light);
+    margin-top: -12px;
+    margin-bottom: 20px;
+  }
+
+  /* HN section */
+  .hn-section {
+    margin-top: 80px;
+    border-top: 3px solid #ff6600;
+    padding-top: 32px;
+  }
+  .hn-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+  .hn-logo {
+    background: #ff6600;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 3px 7px;
+    border-radius: 2px;
+  }
+  .hn-title {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.85rem;
+    color: var(--muted);
+  }
+  .hn-post-title {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.9rem;
+    margin-bottom: 4px;
+  }
+  .hn-post-title a { color: var(--text); }
+  .hn-post-meta {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 28px;
+  }
+  .hn-post-meta span { margin-right: 6px; }
+  .hn-comment {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hn-comment:last-child { border-bottom: none; }
+  .hn-comment-meta {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.72rem;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .hn-comment-meta strong { color: #ff6600; font-weight: normal; }
+  .hn-comment-body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.84rem;
+    line-height: 1.6;
+    color: var(--text);
+  }
+  .hn-comment-body p { margin-bottom: 10px; }
+  .hn-comment-body p:last-child { margin-bottom: 0; }
+  .hn-reply { margin-left: 24px; margin-top: 16px; border-left: 2px solid var(--border); padding-left: 16px; }
+
+  /* Verdict */
+  .verdict {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-top: 3px solid var(--text);
+    padding: 28px 32px;
+    margin: 48px 0;
+  }
+  .verdict h2 { border-top: none; margin-top: 0; padding-top: 0; font-size: 1.1rem; }
+  .verdict p { font-size: 0.9rem; color: var(--muted); }
+
+  /* Footer */
+  footer {
+    margin-top: 80px;
+    padding: 32px 0;
+    border-top: 1px solid var(--border);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.75rem;
+    color: var(--light);
+    text-align: center;
+    line-height: 2;
+  }
+
+  .toc {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin: 28px 0;
+    line-height: 2;
+  }
+  .toc a { color: var(--muted); }
+  .toc a:hover { color: var(--text); }
+
+  @media (max-width: 600px) {
+    html { font-size: 16px; }
+    h1 { font-size: 1.7rem; }
+    .stats { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="inner">
+    <div class="site-name">Applied Engineering Analysis</div>
+    <div class="site-nav">Volume IV &nbsp;·&nbsp; Infrastructure</div>
+  </div>
+</header>
+
+<main class="page">
+
+  <article>
+    <div class="article-meta">
+      <div class="article-tag">Research &nbsp;·&nbsp; Architecture &nbsp;·&nbsp; Transportation</div>
+      <h1>Doors Are Inefficient: A Mathematical Indictment</h1>
+      <div class="byline">
+        <span>By <strong>M. Doorian</strong>, Independent Infrastructure Researcher</span>
+        <span>May 20, 2026 &nbsp;·&nbsp; 12 min read</span>
+      </div>
+    </div>
+
+    <div class="abstract">
+      <strong>Abstract.</strong> A door has one job: allow selective passage through a barrier. We examine how efficiently it does that job across four dimensions — <strong>space</strong>, <strong>energy</strong>, <strong>throughput</strong>, and <strong>safety</strong> — and find it failing on all four. Using publicly available US government datasets, we find that doors consume $14,270 worth of floor space per household doing literally nothing, contribute to $3.1 billion in annual HVAC losses, reduce pedestrian throughput by 56%, and in automotive contexts, are geometrically incompatible with the parking spaces specifically built around them. A better solution has existed for decades. We are simply not using it.
+    </div>
+
+    <div class="toc">
+      <strong>Contents</strong><br>
+      <a href="#space">1. Spatial Inefficiency</a><br>
+      <a href="#energy">2. Thermal Losses</a><br>
+      <a href="#cars">3. The Automotive Case Study</a><br>
+      <a href="#throughput">4. Throughput</a><br>
+      <a href="#solutions">5. Proposed Alternatives</a><br>
+      <a href="#conclusion">6. Conclusion</a>
+    </div>
+
+    <p>A door has one job. It has had 5,000 years to get good at it. This piece examines whether it has.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="num">5,000</div><div class="lbl">Years without a design revision</div></div>
+      <div class="stat"><div class="num">78 ft²</div><div class="lbl">Floor area lost per home to swing clearance</div></div>
+      <div class="stat"><div class="num">$3.1B</div><div class="lbl">Annual US HVAC losses from doors</div></div>
+      <div class="stat"><div class="num">809 mi²</div><div class="lbl">US land reserved for car door swing</div></div>
+    </div>
+
+    <!-- SECTION 1 -->
+    <h2 id="space"><span class="section-num">1.</span> Spatial Inefficiency: The Swing Tax</h2>
+
+    <p>Every hinged door demands a <em>dead zone</em> — floor area that cannot contain furniture, appliances, or people. This zone is the arc swept by the door as it opens. You are paying for it in rent or mortgage every month.</p>
+
+    <div class="math">
+      <span class="comment">// Standard US interior door: 32" wide, 80" tall</span><br>
+      swing_area = π × (door_width)² / 4<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = π × (0.813 m)² / 4<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = <strong>0.519 m² per door</strong> (5.59 sq ft)<br>
+      <br>
+      <span class="comment">// Average US home: 14 doors (interior + closets + exterior)</span><br>
+      total_dead_zone = 14 × 5.59 sq ft = <strong>78.3 sq ft</strong><br>
+      <br>
+      <span class="comment">// Median US home size: 2,261 sq ft (NAR, 2024)</span><br>
+      dead_zone_pct = 78.3 / 2261 = <strong>3.46%</strong><br>
+      <br>
+      <span class="comment">// Median home value: $412,000 (NAR, 2024)</span><br>
+      dead_zone_value = 0.0346 × $412,000
+      <div class="result">▶ $14,272 in floor value consumed by door swing — per household</div>
+    </div>
+
+    <p>That figure assumes every door opens to exactly 90°. In rooms with furniture or walls nearby, many doors can only open 60–70°, at which point the dead zone becomes an active obstacle — you're squeezing past the door itself. The median US home is <strong>2,261 sq ft</strong>. Doors consume <strong>3.5%</strong> of that doing literally nothing.</p>
+
+    <p>Japan figured this out centuries ago and uses sliding doors as standard. We did not. The reason is not engineering. It is inertia.</p>
+
+    <h3>Space efficiency by door type</h3>
+    <div class="bars" id="spaceChart">
+      <div class="bar-row"><div class="bar-lbl">Hinged door</div><div class="bar-track"><div class="bar-fill bad" data-width="72">72%</div></div></div>
+      <div class="bar-row"><div class="bar-lbl">Bi-fold door</div><div class="bar-track"><div class="bar-fill ok" data-width="86">86%</div></div></div>
+      <div class="bar-row"><div class="bar-lbl">Sliding door</div><div class="bar-track"><div class="bar-fill good" data-width="97">97%</div></div></div>
+      <div class="bar-row"><div class="bar-lbl">Pocket door</div><div class="bar-track"><div class="bar-fill good" data-width="100">100%</div></div></div>
+    </div>
+    <div class="fig-caption">Figure 1. Usable floor area retained as a percentage of door-adjacent square footage. Hinged door assumes 90° swing into the room; real-world constraint typically reduces this further.</div>
+
+    <!-- SECTION 2 -->
+    <h2 id="energy"><span class="section-num">2.</span> Thermal Losses: The Breach</h2>
+
+    <p>Every time a door opens, conditioned air (warm in winter, cool in summer) escapes and unconditioned air enters. This is called <em>infiltration</em>, and doors are a primary culprit. They also leak continuously when closed, through frame gaps and degraded weatherstripping, which fails after 2–5 years and is replaced by roughly 20% of homeowners.</p>
+
+    <div class="math">
+      <span class="comment">// Opening event energy loss</span><br>
+      openings_per_year = 25/day × 365 = 9,125<br>
+      air_per_opening = 0.15 m³/s × 3 seconds = 0.45 m³<br>
+      total_air_exchanged = 9,125 × 0.45 = <strong>4,106 m³/year</strong><br>
+      <br>
+      <span class="comment">// Heating load: ΔT = 19.4°C (cold climate avg), Cp = 1.006 kJ/kg·K</span><br>
+      mass = 4,106 m³ × 1.225 kg/m³ = 5,030 kg<br>
+      energy_lost = 5,030 × 1.006 × 19.4 = 98,300 kJ = <strong>27.3 kWh</strong><br>
+      <br>
+      <span class="comment">// At $0.17/kWh (US avg, EIA 2024):</span><br>
+      cost_per_door_per_year = $4.65<br>
+      <br>
+      <span class="comment">// Frame infiltration (LBNL): adds ~$60/year per household</span><br>
+      total_door_energy_cost ≈ $65/year/household × 143M units
+      <div class="result">▶ $9.3 billion/year in door-related energy losses across US housing stock</div>
+    </div>
+
+    <p>That's just door <em>openings</em>. The DOE estimates door frames, gaps, and weatherstripping failures account for <strong>11% of all residential infiltration losses</strong> — which total $28 billion annually across the US. The DOE's own weatherization fact sheet lists door replacement as a top-10 fix. The recommended solution to a leaking door is, apparently, a less leaky door.</p>
+
+    <div class="callout">
+      <strong>It gets worse.</strong> 40% of door thermal loss occurs at the frame gap — not from opening the door at all, but from the door simply existing in the wall.
+    </div>
+
+    <!-- SECTION 3 -->
+    <h2 id="cars"><span class="section-num">3.</span> The Automotive Case Study: Geometry as Violence</h2>
+
+    <p>The car door is perhaps the most egregious example of door inefficiency ever engineered. It opens <em>outward</em>, directly into the space occupied by other cars, cyclists, and pedestrians. It does this because that is how the first car doors worked, and nobody has since been sufficiently motivated to reconsider it.</p>
+
+    <div class="math">
+      <span class="comment">// Standard US parking space width: 8.5 ft (ITE Parking Generation Manual)</span><br>
+      <span class="comment">// Average sedan body width: 6.0 ft</span><br>
+      <span class="comment">// Lateral clearance available per side: (8.5 - 6.0) / 2 = 1.25 ft</span><br>
+      <br>
+      <span class="comment">// Door swing width (fully open, front door): 2.5 ft</span><br>
+      clearance_available = 1.25 ft<br>
+      clearance_required = 2.50 ft<br>
+      <div class="result">▶ Deficit: 1.25 ft — standard car doors cannot fully open in standard parking spaces</div>
+    </div>
+
+    <p>This means every parked car, in a standard parking lot, cannot fully open its doors without entering the adjacent space. Parking designers compensate by making spaces <em>larger than the car requires</em> to accommodate the door swing. We have been quietly doing this for a century.</p>
+
+    <div class="math">
+      <span class="comment">// US parking spaces: ~800 million (UCLA Institute of Transportation Studies)</span><br>
+      <span class="comment">// Extra width added per space to accommodate door swing: ~1.0 ft</span><br>
+      <span class="comment">// Average space depth: 18 ft</span><br>
+      extra_land = 800,000,000 × 1.0 ft × 18 ft<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 14.4 billion sq ft<br>
+      &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = 517,000 acres<br>
+      <div class="result">▶ 809 square miles of US land exists solely to accommodate car door swing geometry</div>
+    </div>
+
+    <p>That's an area larger than <strong>Rhode Island</strong>, dedicated entirely to a side effect of poor door design.</p>
+
+    <div class="callout">
+      <strong>"Dooring"</strong> — when a car door swings open into a cyclist — causes approximately <strong>19,000 accidents per year</strong> in the US, with an estimated 9 fatalities annually. The car door is the only part of a vehicle specifically designed to assault people standing next to it.
+    </div>
+
+    <h3>Car door type comparison</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Lateral Clearance Req.</th>
+          <th>Cyclist Risk</th>
+          <th>Real-World Use</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Standard hinged (outward)</td>
+          <td>+2.5 ft per side</td>
+          <td>High — standard dooring vector</td>
+          <td>95% of passenger cars</td>
+        </tr>
+        <tr>
+          <td>Suicide doors (rear-hinged)</td>
+          <td>+2.5 ft per side</td>
+          <td>High</td>
+          <td>Rolls-Royce, some Lincolns</td>
+        </tr>
+        <tr>
+          <td>Gull-wing / falcon wing</td>
+          <td>+~12 in. vertical only</td>
+          <td>None</td>
+          <td>Tesla Model X, DeLorean</td>
+        </tr>
+        <tr>
+          <td>Sliding (van-style)</td>
+          <td>Zero lateral clearance</td>
+          <td>None</td>
+          <td>Minivans since 1984</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="source">Source: SAE door geometry standards; NHTSA FARS database; ITE Parking Generation Manual 5th Ed.</p>
+
+    <p>The sliding door solution has existed since the 1984 Chrysler Town &amp; Country. It requires zero lateral clearance, eliminates dooring entirely, and is easier to use with kids, groceries, and wheelchairs. The reason sedans don't use them: the B-pillar (the structural post between front and rear doors) provides crash rigidity. This is a real engineering constraint. It is also a solvable one — several EV startups have solved it. The reason it hasn't propagated to mass-market cars is that the current solution is not broken enough for anyone to be fired over it.</p>
+
+    <!-- SECTION 4 -->
+    <h2 id="throughput"><span class="section-num">4.</span> Throughput: The Queuing Problem</h2>
+
+    <p>A door creates a <em>single-file bottleneck</em>. Human crowd dynamics research gives us the tools to measure exactly how bad this is.</p>
+
+    <div class="math">
+      <span class="comment">// Fruin pedestrian flow formula: Q = v × D × w</span><br>
+      <span class="comment">// Comfortable density D = 0.5 ped/m², walking speed v = 1.2 m/s</span><br>
+      <br>
+      <span class="comment">// Standard 32" doorway: w = 0.813 m</span><br>
+      Q_door = 1.2 × 0.5 × 0.813 = <strong>0.49 ped/sec</strong> (29 people/min)<br>
+      <br>
+      <span class="comment">// Equivalent open archway (6 ft): w = 1.83 m</span><br>
+      Q_archway = 1.2 × 0.5 × 1.83 = <strong>1.10 ped/sec</strong> (66 people/min)<br>
+      <div class="result">▶ A door reduces passage throughput by 56% vs an equivalent open span</div>
+    </div>
+
+    <p>The handle itself adds measurable friction. Studies in healthcare ergonomics find that door handles require <strong>4–7 Newtons of force</strong> to actuate — a non-trivial barrier for elderly users, people with packages, or anyone in a hurry. The automatic door, invented in 1954, was an explicit acknowledgment that the handle is unnecessary. We made it automatic and called it solved, without asking whether the swinging slab beneath it was worth keeping.</p>
+
+    <div class="math">
+      <span class="comment">// Time cost accounting</span><br>
+      <span class="comment">// Average adult: 20 door interactions/day × 3 seconds each</span><br>
+      time_per_person_per_year = 20 × 3 × 365 = 21,900 sec = <strong>6.08 hours</strong><br>
+      <br>
+      <span class="comment">// US adult population: 260 million</span><br>
+      national_time_cost = 260M × 6.08 hours
+      <div class="result">▶ 1.58 billion person-hours per year spent operating doors in the US</div>
+    </div>
+
+    <!-- SECTION 5 -->
+    <h2 id="solutions"><span class="section-num">5.</span> Proposed Alternatives</h2>
+
+    <p>The evidence points to a clear hierarchy of solutions. The optimal replacement depends on context — but in nearly every case, a better option exists and has existed for decades.</p>
+
+    <h3>Homes: Pocket Doors (100% space efficient)</h3>
+    <p>A pocket door slides entirely into the wall cavity. Zero swing radius. Zero dead zone. Equivalent acoustic and thermal performance to a hinged door when sealed. Installation premium over a hinged door: ~$500. At $14,270 in reclaimed space value, the math is embarrassingly favorable. Already standard in Japan, where space efficiency is non-negotiable.</p>
+
+    <h3>Cars: Sliding Doors (already proven at scale)</h3>
+    <p>Minivans have used sliding doors since the 1984 Chrysler Town &amp; Country. Zero lateral clearance required. Dooring risk: eliminated. The structural objection (B-pillar rigidity) is real but solvable — several EV startups have demonstrated this. We just haven't done it for sedans because nobody's in enough pain yet.</p>
+
+    <h3>High-traffic passages: Air Curtains</h3>
+    <p>A fan array producing laminar airflow across a passage provides thermal separation with no physical barrier at all. Throughput is the full width of the opening. Already standard in walk-in freezers and commercial kitchens. The retail cold aisle is functionally a door you walk through without noticing it's there.</p>
+
+    <h3>Aggregate impact of residential pocket door adoption</h3>
+    <div class="math">
+      US housing units: 143 million<br>
+      Space value unlocked per unit: $14,272<br>
+      Total: $2.04 trillion in reclaimed floor area<br>
+      <br>
+      Energy savings per unit: ~$65/year<br>
+      <div class="result">▶ $9.3 billion/year in energy savings + $2 trillion in housing stock value</div>
+    </div>
+
+    <!-- SECTION 6 -->
+    <h2 id="conclusion"><span class="section-num">6.</span> Conclusion</h2>
+
+    <p>The door is not a bad idea. It is a <em>5,000-year-old idea that we never stopped to question</em>. When evaluated against modern alternatives on space, energy, safety, and throughput, the hinged door fails on every axis.</p>
+
+    <p>The reason we still have them is not that they're optimal. It's that they're sufficient, they're what building codes specify, they're what contractors know how to install, and they're what everyone who's renovated a house expected to see. The better option is right there. We just never looked.</p>
+
+    <p><strong>The door is inefficient. The math is not close.</strong></p>
+
+    <div class="verdict">
+      <h2>Summary finding</h2>
+      <p>The door is not a bad idea. It is a <em>5,000-year-old idea that we never stopped to question</em>. When evaluated against modern alternatives on space, energy, safety, and throughput, the hinged door fails on every axis. We are paying $14,270 per household, 6+ hours per year, and 809 square miles of land for the privilege of a technology that a sliding panel outperforms in every measurable way.</p>
+    <p><strong>The door is inefficient. The math is not close.</strong></p>
+    </div>
+  </article>
+
+  <!-- HN COMMENTS -->
+  <div class="hn-section">
+    <div class="hn-header">
+      <div class="hn-logo">Y</div>
+      <div class="hn-title">Hacker News · Discussion</div>
+    </div>
+
+    <div class="hn-post-title">
+      <a href="#">The Door Is Quadratically Inefficient: A Quantitative Analysis</a>
+    </div>
+    <div class="hn-post-meta">
+      <span>847 points</span>
+      <span>|</span>
+      <span>submitted by <strong style="color:#ff6600">throwaway_door_hater</strong></span>
+      <span>|</span>
+      <span>312 comments</span>
+    </div>
+
+    <div class="hn-comment">
+      <div class="hn-comment-meta"><strong>tptacek</strong> &nbsp;4 hours ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
+      <div class="hn-comment-body">
+        <p>The parking lot math is making me spiral a little. Is it really true that we've just quietly been building Rhode Island twice over in door buffer? I want to call this wrong but I can't find the error.</p>
+      </div>
+      <div class="hn-reply">
+        <div class="hn-comment-meta"><strong>kevinsys</strong> &nbsp;3 hours ago</div>
+        <div class="hn-comment-body">
+          <p>The underlying figure (800M parking spaces) is from Shoup's "The High Cost of Free Parking" which is itself a seminal work on how parking minimums distort urban land use. The author is actually being conservative — Shoup's own estimates run higher.</p>
+          <p>The part of this that should really bother people is that the car door problem is downstream of a single engineering non-decision made in the 1910s.</p>
+        </div>
+        <div class="hn-reply">
+          <div class="hn-comment-meta"><strong>tptacek</strong> &nbsp;3 hours ago</div>
+          <div class="hn-comment-body">
+            <p>The 1910s engineering non-decision is doing a lot of work in that sentence. You could describe the entire 20th century built environment that way.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hn-comment">
+      <div class="hn-comment-meta"><strong>patio11</strong> &nbsp;4 hours ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
+      <div class="hn-comment-body">
+        <p>I've lived in Japan for 15 years and genuinely cannot overstate how much of an adjustment it is to return to the West and experience hinged doors again. You lose the ability to see it as normal.</p>
+        <p>The standard counterargument is "pocket doors are harder to seal acoustically" and this is technically true and practically irrelevant for the vast majority of interior door use cases, where acoustic separation is "I can't hear the TV from the hallway" not "I'm recording a podcast."</p>
+      </div>
+      <div class="hn-reply">
+        <div class="hn-comment-meta"><strong>rdtsc</strong> &nbsp;3 hours ago</div>
+        <div class="hn-comment-body">
+          <p>What's your take on the installation complexity argument? I hear this a lot — pocket doors require wall cavity work, so retrofitting is expensive.</p>
+        </div>
+        <div class="hn-reply">
+          <div class="hn-comment-meta"><strong>patio11</strong> &nbsp;2 hours ago</div>
+          <div class="hn-comment-body">
+            <p>The installation complexity argument is real but it only survives if you ignore that the thing being compared is "building a new door frame." Pocket door framing is different from hinged door framing. It is not meaningfully harder. The "wall cavity" sounds scary but carpenters encounter it in literally every renovation job. The complexity is social, not technical — contractors quote it high because it feels unusual, not because it takes longer.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hn-comment">
+      <div class="hn-comment-meta"><strong>dang</strong> &nbsp;3 hours ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
+      <div class="hn-comment-body">
+        <p>Flagged by some users but I disagree — this is a genuine quantitative engineering argument with transparent sourcing. The framing is whimsical but the math is sound. Leaving up.</p>
+      </div>
+      <div class="hn-reply">
+        <div class="hn-comment-meta"><strong>nullandvoid9</strong> &nbsp;2 hours ago</div>
+        <div class="hn-comment-body">
+          <p>What was the flag reason even? "We disagree about doors"?</p>
+        </div>
+        <div class="hn-reply">
+          <div class="hn-comment-meta"><strong>heyihaveaquestion</strong> &nbsp;2 hours ago</div>
+          <div class="hn-comment-body">
+            <p>The door lobby is very powerful.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hn-comment">
+      <div class="hn-comment-meta"><strong>geofft</strong> &nbsp;3 hours ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
+      <div class="hn-comment-body">
+        <p>The throughput analysis undersells the problem. It models the door as a flow reduction, but in practice a door also introduces queueing dynamics. If two people arrive at a door within ~2 seconds of each other, one must wait. At scale — a school hallway, an office, an apartment building — this creates measurable congestion. I wrote my undergrad thesis on pedestrian flow in Boston subway stations and hinged doors were by far the dominant bottleneck factor, more significant than staircase width or platform geometry.</p>
+      </div>
+    </div>
+
+    <div class="hn-comment">
+      <div class="hn-comment-meta"><strong>pg</strong> &nbsp;2 hours ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
+      <div class="hn-comment-body">
+        <p>This is the kind of thing I had in mind when I wrote about schlep blindness [1]. The door problem is not hard. It is familiar, and familiarity has successfully impersonated "hard" for five millennia.</p>
+        <p>[1] paulgraham.com/schlep.html</p>
+      </div>
+      <div class="hn-reply">
+        <div class="hn-comment-meta"><strong>throwaway_door_hater</strong> &nbsp;1 hour ago</div>
+        <div class="hn-comment-body">
+          <p>I was not expecting to be cited in a Paul Graham comment on my door post. This has been a strange afternoon.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hn-comment">
+      <div class="hn-comment-meta"><strong>mechanical_engineer_throwaway</strong> &nbsp;2 hours ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
+      <div class="hn-comment-body">
+        <p>Source of frustration from a practicing ME: the B-pillar constraint for car sliding doors is genuinely not that hard. We know how to make sliding tracks that carry crash loads — train doors do this. The real barrier is amortized tooling cost. A new door geometry requires retooling a manufacturing line that cost $400M to build. The engineering is fine. The accounting is the obstacle. No one gets promoted for solving a problem that doesn't show up in this quarter's incident reports.</p>
+      </div>
+      <div class="hn-reply">
+        <div class="hn-comment-meta"><strong>gus_mccrae</strong> &nbsp;1 hour ago</div>
+        <div class="hn-comment-body">
+          <p>"No one gets promoted for solving a problem that doesn't show up in this quarter's incident reports." This sentence explains about 60% of infrastructure in the developed world.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hn-comment">
+      <div class="hn-comment-meta"><strong>sgerenser</strong> &nbsp;1 hour ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
+      <div class="hn-comment-body">
+        <p>I'm going to defend the door on one narrow point: the tactile and mechanical affordance of a hinged door — the handle, the weight, the swing resistance — communicates information. You know the door is latched. You know it's fully open. You know the approximate air pressure difference from how hard you have to push. Sliding doors are informationally impoverished in comparison. They're also more likely to injure fingers, particularly small children's fingers, in ways that hinged doors are not.</p>
+        <p>I am not saying this outweighs the case in the article. I'm saying it's a real design consideration that "sliding door good" advocates consistently ignore.</p>
+      </div>
+      <div class="hn-reply">
+        <div class="hn-comment-meta"><strong>throwaway_door_hater</strong> &nbsp;45 minutes ago</div>
+        <div class="hn-comment-body">
+          <p>This is the most coherent defense I've received today. The tactile affordance point is legitimate. The finger injury point is addressed by the soft-close mechanisms that have been standard on sliding doors since the mid-2000s. But the affordance thing is real and I should have engaged with it in the piece.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="hn-comment">
+      <div class="hn-comment-meta"><strong>yummyfajitas</strong> &nbsp;1 hour ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
+      <div class="hn-comment-body">
+        <p>Wait until this person discovers that we're also bad at windows, stairs, and light switches. There's a whole genre of "we have been doing this basic thing wrong for 100 years" essay and I will never stop reading them.</p>
+      </div>
+    </div>
+
+    <div class="hn-comment">
+      <div class="hn-comment-meta"><strong>sp332</strong> &nbsp;30 minutes ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
+      <div class="hn-comment-body">
+        <p>$2 trillion in unlocked real estate value sounds large but this is realized value, not extracted value. You can't sell your pocket doors. You can sell a bigger room, but only if the buyer also understands that pocket doors = bigger room, and they probably don't, because they've never thought about this before reading this article thirty minutes ago.</p>
+      </div>
+      <div class="hn-reply">
+        <div class="hn-comment-meta"><strong>throwaway_door_hater</strong> &nbsp;20 minutes ago</div>
+        <div class="hn-comment-body">
+          <p>This is a fair critique of my framing. The $14K figure represents value destruction, not necessarily value that can be immediately recovered. A better framing is: when building a new home, each pocket door costs ~$500 more and returns ~$1,000 in marketable floor space at median $/sqft. The ROI is still there, the mechanism is just different.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center; padding: 20px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.8rem; color: var(--light);">
+      Showing top comments · <a href="#" style="color:var(--muted)">312 total</a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  Applied Engineering Analysis &nbsp;·&nbsp; All calculations use publicly available US government datasets.<br>
+  DOE Building Energy Data Book · NHTSA FARS · NAR Housing Data · UCLA ITS · LBNL Infiltration Study · SAE Standards<br>
+  <br>
+  <span style="color:#ccc">Math is transparent and reproducible in the article body. Corrections welcome.</span>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.querySelectorAll('.bar-fill').forEach(fill => {
+          setTimeout(() => { fill.style.width = fill.dataset.width + '%'; }, 150);
+        });
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  document.querySelectorAll('.bars').forEach(c => observer.observe(c));
+</script>
+</body>
+</html>
