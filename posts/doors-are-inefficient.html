@@ -56,6 +56,14 @@
     font-size: 0.8rem;
     color: var(--light);
   }
+  .back-link {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-size: 0.78rem;
+    color: var(--light);
+    text-decoration: none;
+    position: absolute;
+  }
+  .back-link:hover { color: var(--muted); }
 
   /* Article */
   .article-meta {
@@ -367,6 +375,7 @@
 
 <header class="site-header">
   <div class="inner">
+    <a href="../index.html" class="back-link">← Blog</a>
     <div class="site-name">Applied Engineering Analysis</div>
     <div class="site-nav">Volume IV &nbsp;·&nbsp; Infrastructure</div>
   </div>
