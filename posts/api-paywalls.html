@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>They trained on your posts for free. Reading one back costs half a cent. - NinjaHawk's Nest</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        a {
+            color: #ff6b35;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #ff8555;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 80px 0 32px 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 60px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        nav a {
+            color: #888;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #ff6b35;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            border-bottom-color: #ff6b35;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1.5px;
+            color: #fff;
+            line-height: 1.1;
+        }
+
+        .post-meta {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 0;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        article {
+            padding: 36px 0;
+        }
+
+        p {
+            margin-bottom: 24px;
+            line-height: 1.85;
+            color: #b0b0b0;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 36px;
+            margin-bottom: 24px;
+            color: #fff;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 32px;
+            margin-bottom: 18px;
+            color: #fff;
+        }
+
+        code {
+            background: #141414;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 14px;
+            color: #ff6b35;
+            border: 1px solid #222;
+        }
+
+        pre {
+            background: #0f0f0f;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 28px 0;
+            font-size: 13px;
+            border: 1px solid #1a1a1a;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            color: #888;
+        }
+
+        blockquote {
+            border-left: 3px solid #ff6b35;
+            padding-left: 20px;
+            margin: 28px 0;
+            color: #888;
+            font-style: italic;
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        ul, ol {
+            margin-left: 24px;
+            margin-bottom: 24px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #b0b0b0;
+        }
+
+        strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #1a1a1a;
+            margin: 32px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 28px 0;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 16px;
+            color: #fff;
+            font-weight: 600;
+            border-bottom: 1px solid #2a2a2a;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        td {
+            padding: 12px 16px;
+            color: #b0b0b0;
+            border-bottom: 1px solid #1a1a1a;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 13px;
+            color: #ff6b35;
+        }
+
+        .subhead {
+            color: #666;
+            font-style: italic;
+            font-size: 18px;
+            margin-top: 12px;
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        figure {
+            margin: 32px 0;
+        }
+
+        figure img, figure svg {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #1a1a1a;
+            display: block;
+        }
+
+        figcaption {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #555;
+            letter-spacing: 0.3px;
+            line-height: 1.6;
+        }
+
+        footer {
+            margin-top: 100px;
+            padding-top: 50px;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            nav {
+                gap: 24px;
+                font-size: 11px;
+            }
+
+            header {
+                padding: 60px 0 80px 0;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <a href="../index.html">home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">github</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">contact</a>
+            </nav>
+
+            <div class="back-link">
+                <a href="../index.html">← back</a>
+            </div>
+
+            <h1>They trained on your posts for free. Reading one back costs half a cent.</h1>
+            <div class="post-meta">July 12, 2026</div>
+            <p class="subhead">Train on it. Meter it. Ban you. Every platform is somewhere in this sequence.</p>
+        </header>
+
+        <article>
+            <p>X's developer pricing, effective February 2026:</p>
+
+            <pre><code>post read               $0.005
+post write              $0.015
+post write (with link)  $0.20
+user read               $0.010
+
+read cap: 2,000,000 posts/month
+above the cap: Enterprise, ~$42,000/month</code></pre>
+
+            <p>Half a cent to read one post through the API. The post was written by a user. The user was not paid. Under X's terms of service, effective November 15, 2024, that same post carries a worldwide, royalty-free license to train X's AI models. For posts, there is no opt-out.</p>
+
+            <hr>
+
+            <h2>The pattern</h2>
+
+            <p>Three steps:</p>
+
+            <ol>
+                <li>Use your data to train their model.</li>
+                <li>Make you pay to access the data.</li>
+                <li>Ban your account if you interfere with either.</li>
+            </ol>
+
+            <p>None of this is hidden. Each step is documented in pricing pages, SEC filings, and moderation actions. The rest of this post is the documentation.</p>
+
+            <hr>
+
+            <h2>Step one: train on it</h2>
+
+            <p><strong>Reddit.</strong> February 2024: a licensing deal with Google, reported at <a href="https://www.cbsnews.com/news/google-reddit-60-million-deal-ai-training/" target="_blank" rel="noopener">$60 million per year</a>, giving Google API access to train Gemini on user posts. Reddit's IPO prospectus disclosed data licensing contracts with an aggregate value of $203 million. A separate deal with OpenAI followed in May 2024.</p>
+
+            <p><strong>X.</strong> The <a href="https://www.cnn.com/2024/10/21/tech/x-twitter-terms-of-service" target="_blank" rel="noopener">November 2024 terms of service</a> grant X a license to use posts to train machine learning and AI models "for any purpose." Grok is trained on this. Users outside the EU cannot opt their posts out.</p>
+
+            <p><strong>Stack Overflow.</strong> May 2024: an API partnership giving OpenAI access to the answer corpus. Sixteen years of volunteer-written answers, submitted under a license that assigns the platform perpetual rights.</p>
+
+            <p>In each case the content was written by users, for free, before the deal existed. The license terms that made the sale legal were accepted at signup, years earlier, for a different platform under different owners.</p>
+
+            <hr>
+
+            <h2>Step two: meter it</h2>
+
+            <p><strong>X</strong> ran the full arc:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Event</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Jan 2023</td>
+                        <td>Third-party clients (Tweetbot, Twitterrific) cut off with no announcement. Days of silence, then a retroactive rule change.</td>
+                    </tr>
+                    <tr>
+                        <td>Feb 2023</td>
+                        <td>Free API discontinued. Paid tiers introduced.</td>
+                    </tr>
+                    <tr>
+                        <td>2023–2025</td>
+                        <td>Tiers settle at Basic $200/mo, Pro $5,000/mo, Enterprise ~$42,000/mo.</td>
+                    </tr>
+                    <tr>
+                        <td>Feb 2026</td>
+                        <td>Pay-per-use becomes the default. $0.005 per post read. No free tier. Basic and Pro closed to new signups.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p><strong>Reddit</strong> announced its API price in April 2023: $0.24 per 1,000 calls. Apollo, the largest third-party client, made 7 billion calls a month. That priced Apollo at <a href="https://techcrunch.com/2023/06/08/popular-third-party-reddit-app-apollo-is-shutting-down-as-a-result-of-reddits-new-api-pricing/" target="_blank" rel="noopener">roughly $1.7 million per month, $20 million per year</a>. Apollo shut down June 30, 2023. The subreddit blackout that followed changed nothing.</p>
+
+            <p><strong>Meta</strong> skipped the metering step and went straight to removal. CrowdTangle, the tool journalists and researchers used to track content on Facebook and Instagram, was <a href="https://techcrunch.com/2024/08/15/meta-shut-down-crowdtangle-a-tool-for-tracking-disinformation-heres-how-its-replacement-compares/" target="_blank" rel="noopener">shut down August 14, 2024</a>. The replacement, Meta Content Library, is restricted to approved academics and nonprofits. Most journalists do not qualify.</p>
+
+            <p>What the meter means for an individual:</p>
+
+            <pre><code>your posting history:            10,000 posts
+cost to read it back via API:    10,000 × $0.005 = $50
+your share of licensing revenue: $0</code></pre>
+
+            <hr>
+
+            <h2>Step three: ban you</h2>
+
+            <p>In May 2024, Stack Overflow users responded to the OpenAI deal by deleting or overwriting their own highest-voted answers. Moderators <a href="https://www.tomshardware.com/tech-industry/artificial-intelligence/stack-overflow-bans-users-en-masse-for-rebelling-against-openai-partnership-users-banned-for-deleting-answers-to-prevent-them-being-used-to-train-chatgpt" target="_blank" rel="noopener">reverted the edits and suspended the accounts</a>, some within an hour. The stated basis: content, once submitted, is perpetually licensed to the platform. Removing your own answer is treated as vandalism.</p>
+
+            <p>That is the load-bearing fact. You cannot withdraw. The license you granted at signup survives your objection, your account deletion, and in Stack Overflow's case, your attempt to delete the words you wrote.</p>
+
+            <p>Enforcement also runs platform-to-platform. Reddit <a href="https://www.artificialintelligence-news.com/news/reddit-sues-anthropic-for-scraping-user-data-to-train-ai/" target="_blank" rel="noopener">sued Anthropic in June 2025</a>, alleging over 100,000 unauthorized requests to scrape user content. Note what the complaint is not. It is not that user data was taken. It is that it was taken without paying Reddit. The users appear in the lawsuit as the property being disputed, not as a party.</p>
+
+            <hr>
+
+            <h2>Honest assessment</h2>
+
+            <p>What happened: between 2023 and 2026, every major English-language UGC platform either priced its API out of individual reach, closed it, or both, while simultaneously signing training-data licenses or granting themselves training rights through ToS changes. That part is documented and not in dispute.</p>
+
+            <p>What it means: user-generated content became a priced asset the moment LLM companies started paying for text. Free APIs leaked the asset. So the free APIs died. The API price is the market price of user output, collected by the platform. X's $0.005 per read is not a rate limit with a fee attached. It is a unit price on other people's writing.</p>
+
+            <p>What it might mean: I expect the remaining holdouts to follow. Any platform with a meaningful text corpus and a legal team will converge on the same three steps, because each step is individually rational and nothing pushes back. The exceptions, if there are any, will be structural rather than moral: federated protocols where the data is public by design, and EU platforms where regulators mandate researcher access. Could be wrong about the timeline. Probably not wrong about the direction.</p>
+
+            <hr>
+
+            <h2>The sequence, restated</h2>
+
+            <p>Use your data to train their model. Make you pay to access the data. Ban your account.</p>
+
+            <p>As is the world.</p>
+        </article>
+
+        <footer>
+            <p>© 2026. <a href="../index.html">back home</a></p>
+        </footer>
+    </div>
+</body>
+</html>
