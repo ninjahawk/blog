@@ -27,6 +27,11 @@ deploy.sh                   Interactive deploy script (don't use — push direct
 | `posts/existence-loop.html` | Every six seconds a 9B model reads its own prior outputs and picks a goal. There is no other loop. | May 3, 2026 |
 | `posts/synthesize-capability.html` | How synthesize_capability works | May 3, 2026 |
 | `posts/invoke-claude.html` | The operator fulfilled the request. Cedar submitted it 31 more times. | May 3, 2026 |
+| `posts/what-hollow-is.html` | AI: Apologies, I was only doing what was instructed. | May 10, 2026 |
+| `posts/singleton-attractor.html` | Godlike Causal Eventuality | May 12, 2026 |
+| `posts/doors-are-inefficient.html` | Doors Are Inefficient: A Mathematical Indictment | May 20, 2026 |
+| `posts/api-paywalls.html` | They trained on your posts for free. Reading one back costs half a cent. | July 12, 2026 |
+| `posts/poke500.html` | I built a stock index for Pokémon cards. The cheapest card in it is a common Psyduck at $226. | July 15, 2026 |
 
 Posts are ordered newest-first in `index.html`.
 

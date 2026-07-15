@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I built a stock index for Pokémon cards. The cheapest card in it is a common Psyduck at $226. - NinjaHawk's Nest</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: #0a0a0a;
+            color: #e0e0e0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            font-size: 16px;
+        }
+
+        a {
+            color: #ff6b35;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        a:hover {
+            color: #ff8555;
+        }
+
+        .container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            padding: 80px 0 32px 0;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        nav {
+            display: flex;
+            gap: 32px;
+            margin-bottom: 60px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        nav a {
+            color: #888;
+            transition: color 0.2s;
+        }
+
+        nav a:hover {
+            color: #ff6b35;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            padding: 10px 0;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            border-bottom-color: #ff6b35;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 800;
+            margin-bottom: 16px;
+            letter-spacing: -1.5px;
+            color: #fff;
+            line-height: 1.1;
+        }
+
+        .post-meta {
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 0;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        article {
+            padding: 36px 0;
+        }
+
+        p {
+            margin-bottom: 24px;
+            line-height: 1.85;
+            color: #b0b0b0;
+        }
+
+        h2 {
+            font-size: 32px;
+            font-weight: 700;
+            margin-top: 36px;
+            margin-bottom: 24px;
+            color: #fff;
+            letter-spacing: -1px;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 32px;
+            margin-bottom: 18px;
+            color: #fff;
+        }
+
+        code {
+            background: #141414;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 14px;
+            color: #ff6b35;
+            border: 1px solid #222;
+        }
+
+        pre {
+            background: #0f0f0f;
+            padding: 20px;
+            border-radius: 6px;
+            overflow-x: auto;
+            margin: 28px 0;
+            font-size: 13px;
+            border: 1px solid #1a1a1a;
+            line-height: 1.6;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+            border-radius: 0;
+            border: none;
+            color: #888;
+        }
+
+        blockquote {
+            border-left: 3px solid #ff6b35;
+            padding-left: 20px;
+            margin: 28px 0;
+            color: #888;
+            font-style: italic;
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        ul, ol {
+            margin-left: 24px;
+            margin-bottom: 24px;
+        }
+
+        li {
+            margin-bottom: 12px;
+            color: #b0b0b0;
+        }
+
+        strong {
+            color: #fff;
+            font-weight: 700;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #1a1a1a;
+            margin: 32px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 28px 0;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            padding: 10px 16px;
+            color: #fff;
+            font-weight: 600;
+            border-bottom: 1px solid #2a2a2a;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        td {
+            padding: 12px 16px;
+            color: #b0b0b0;
+            border-bottom: 1px solid #1a1a1a;
+            vertical-align: top;
+        }
+
+        td:first-child {
+            font-family: "Monaco", "Courier New", monospace;
+            font-size: 13px;
+            color: #ff6b35;
+        }
+
+        .subhead {
+            color: #666;
+            font-style: italic;
+            font-size: 18px;
+            margin-top: 12px;
+            margin-bottom: 0;
+            line-height: 1.6;
+        }
+
+        figure {
+            margin: 32px 0;
+        }
+
+        figure img, figure svg {
+            width: 100%;
+            height: auto;
+            border-radius: 6px;
+            border: 1px solid #1a1a1a;
+            display: block;
+        }
+
+        figcaption {
+            margin-top: 12px;
+            font-size: 12px;
+            color: #555;
+            letter-spacing: 0.3px;
+            line-height: 1.6;
+        }
+
+        footer {
+            margin-top: 100px;
+            padding-top: 50px;
+            border-top: 1px solid #1a1a1a;
+            text-align: center;
+            color: #666;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 640px) {
+            h1 {
+                font-size: 36px;
+            }
+
+            h2 {
+                font-size: 28px;
+            }
+
+            nav {
+                gap: 24px;
+                font-size: 11px;
+            }
+
+            header {
+                padding: 60px 0 80px 0;
+            }
+
+            table {
+                font-size: 13px;
+            }
+
+            th, td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <nav>
+                <a href="../index.html">home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">github</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">contact</a>
+            </nav>
+
+            <div class="back-link">
+                <a href="../index.html">← back</a>
+            </div>
+
+            <h1>I built a stock index for Pokémon cards. The cheapest card in it is a common Psyduck at $226.</h1>
+            <div class="post-meta">July 15, 2026</div>
+            <p class="subhead">500 cards. One number. Updated daily. Live at poké500.com.</p>
+        </header>
+
+        <article>
+            <p>Yesterday's close:</p>
+
+            <pre><code>S&amp;Poké 500 (SPK500)
+
+1,074.32   ▼ 1.21% (-13.20) Today
+
+Jul 14, 2026 · TCGplayer market prices
+
+Prev close                 1,087.52
+All-time high              1,107.91
+All-time low                 943.14
+Basket value            $253,171.28
+Advancing / declining       27 / 22
+Unchanged                       451</code></pre>
+
+            <p>That is the front page of <a href="https://poké500.com" target="_blank" rel="noopener">poké500.com</a>, a site I launched this week. It quotes the Pokémon card market like a stock index: one number, one chart, and a table of the 500 constituents. The site calls itself the S&amp;Poké 500. Parody name. It is not affiliated with S&amp;P Global, Nintendo, The Pokémon Company, or TCGplayer.</p>
+
+            <hr>
+
+            <h2>What it is</h2>
+
+            <p>A price-weighted index of the 500 most valuable English, raw (ungraded) Pokémon trading cards. Rebased to 1,000 at the base date. It moves with the combined market price of the basket: up when cards get pricier, down when the market cools. The layout is the Google Finance quote page: hero number, gradient area chart with a scrubber, previous-close reference line, movers, and a searchable table.</p>
+
+            <hr>
+
+            <h2>The number</h2>
+
+            <p>The index is the sum of the 500 card prices divided by a divisor:</p>
+
+            <pre><code>index = totalValue / divisor
+
+2024-02-08 (base)   $90,695.71  / 90.696   = 1,000.00
+2026-07-14          $253,171.28 / 235.657  = 1,074.32</code></pre>
+
+            <p>Both values are published in the site's <code>latest.json</code>. The divisor exists for the same reason the Dow has one. Membership churns: cards fall out of the top 500, new cards enter. When the basket changes, the divisor is adjusted so the churn itself doesn't move the number. Only price changes do.</p>
+
+            <p>The gap between the two columns is the point. The dollar sum of the basket nearly tripled since February 2024, but almost all of that is composition: new sets entered the top 500 at high prices. The index strips that out and reports price movement alone: +7.4% over the same period.</p>
+
+            <hr>
+
+            <h2>The basket</h2>
+
+            <p>Top of the table on July 14:</p>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Card</th>
+                        <th>Set</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>1</td><td>Charizard Star (Delta Species)</td><td>Dragon Frontiers</td><td>$4,000</td></tr>
+                    <tr><td>2</td><td>Shining Charizard</td><td>Neo Destiny</td><td>$3,999</td></tr>
+                    <tr><td>3</td><td>Latias &amp; Latios GX (Alt Full Art)</td><td>SM - Team Up</td><td>$3,203</td></tr>
+                    <tr><td>4</td><td>Pikachu Star</td><td>Holon Phantoms</td><td>$3,200</td></tr>
+                    <tr><td>5</td><td>Treecko Star</td><td>Team Rocket Returns</td><td>$2,400</td></tr>
+                    <tr><td>6</td><td>Umbreon VMAX (Alt Art Secret)</td><td>Evolving Skies</td><td>$2,396</td></tr>
+                    <tr><td>7</td><td>Lugia</td><td>Aquapolis</td><td>$2,225</td></tr>
+                    <tr><td>8</td><td>Mew Star (Delta Species)</td><td>Dragon Frontiers</td><td>$2,200</td></tr>
+                    <tr><td>9</td><td>Charizard</td><td>Base Set (Shadowless)</td><td>$2,146</td></tr>
+                    <tr><td>10</td><td>Kyogre Star</td><td>Delta Species</td><td>$2,101</td></tr>
+                </tbody>
+            </table>
+
+            <p>Rank 500 is a common. Psyduck, 73/100, Sandstorm, $226.56. That is the current bar for entry into the index.</p>
+
+            <p>Two scope rules. Cards are English and ungraded, priced by TCGplayer's market price for the regular printing. And 1st Edition printings are out of scope entirely: they trade too thinly on TCGplayer for reliable daily pricing.</p>
+
+            <hr>
+
+            <h2>The data</h2>
+
+            <p>Prices are TCGplayer market data via <a href="https://tcgcsv.com" target="_blank" rel="noopener">tcgcsv.com</a>, which publishes one snapshot per day (the July 14 snapshot landed at 20:05 UTC). A scheduled job checks hourly, recomputes the index when a new snapshot appears, and commits fresh <code>latest.json</code> and <code>history.json</code> files. The site itself is static. An open tab polls the JSON every five minutes and ticks over to the new day on its own.</p>
+
+            <p>Look at the breadth line in the quote: 27 advancing, 22 declining, 451 unchanged. That is a normal day. Most of these cards do not trade daily, and TCGplayer's market price is a smoothed estimate, not a last-trade tick. When a thin card does reprice, it jumps. July 14's movers:</p>
+
+            <pre><code>Top gainer   Alakazam E4 Lv.X (Rising Rivals)   $300.00    +50.00%
+Top loser    Jolteon Star (Power Keepers)       $1,549.97  -22.50%</code></pre>
+
+            <p>A +50% day on a $300 card is probably one sale. Card-level daily changes are noisy. The index level is where the smoothing happens: 500 mostly-static prices, a handful of jumps, a 1.21% move at the top.</p>
+
+            <hr>
+
+            <h2>The chart</h2>
+
+            <p>History runs from February 8, 2024 to now, 129 points. Everything before launch is backfilled from tcgcsv's archive at weekly resolution. From launch forward it records one point per day. Range buttons go from 1W to 5Y; the narrow ones stay disabled until enough daily history exists to fill them.</p>
+
+            <p>What the line shows so far: the index spent late 2024 underwater, bottoming at 943.14 on October 10, 2024. It recovered through 2025 and set its all-time high of 1,107.91 on June 18, 2026. It has drifted down about 3% since.</p>
+
+            <hr>
+
+            <h2>The site</h2>
+
+            <p>Static HTML, one CSS file, one vanilla JavaScript file. No framework, no build step, no dependencies, no chart library. The chart is hand-drawn SVG. Tapping a row opens a lightbox with the card image and a link to its TCGplayer page. The page loads no analytics and no third-party scripts; the only external requests are card thumbnails from TCGplayer's CDN.</p>
+
+            <p>The domain has the accent in it. <code>poké500.com</code> is a real registrable name because of internationalized domains; under the hood it is <code>xn--pok500-dva.com</code>. Both resolve to the same place.</p>
+
+            <hr>
+
+            <h2>Honest assessment</h2>
+
+            <p>What happened: I put a Dow-style price-weighted index on top of a daily price file that already existed, backfilled two years of history from the same source's archive, and gave it a quote page.</p>
+
+            <p>What it means: the top of the raw English card market is up about 7.4% since February 2024 once you strip out new-set churn, with a drawdown through late 2024 and a recovery since. That is what this particular methodology says, from this particular data source.</p>
+
+            <p>What it might mean: less than it looks like. Price weighting overweights expensive cards; the top 10 cards are 11% of the basket, and the $4,000 Charizard Star counts for 17.7 Psyducks. TCGplayer's market price is an estimate with its own smoothing, and 90% of constituents do not move on a given day, so short windows mostly measure which thin cards happened to trade. The multi-month trend is probably real. The daily number is entertainment. The site says as much in the footer: informational and entertainment purposes only, not investment advice.</p>
+
+            <p>The site is at <a href="https://poké500.com" target="_blank" rel="noopener">poké500.com</a>. It updates once a day, when the market does.</p>
+        </article>
+
+        <footer>
+            <p>© 2026. <a href="../index.html">back home</a></p>
+        </footer>
+    </div>
+</body>
+</html>
