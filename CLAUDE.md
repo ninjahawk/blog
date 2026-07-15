@@ -1,21 +1,33 @@
 # NinjaHawk's Nest — Blog
 
-Static blog at https://ninjahawk.github.io/blog. Pure HTML/CSS, no JS, no build tools.
+Static blog at https://ninjahawk.github.io/blog. HTML/CSS, no build tools.
 
 ## Structure
 
 ```
-index.html                  Homepage with post list
-posts/*.html                Individual post pages
+index.html                  Homepage (WIRED-style magazine grid)
+style.css                   Shared stylesheet — drives homepage + every post
+posts/*.html                Individual post pages (link ../style.css)
 deploy.sh                   Interactive deploy script (don't use — push directly with git)
 ```
 
 ## Design
 
-- Background: `#0a0a0a`, text: `#e0e0e0`, accent: `#ff6b35`
-- Font: system sans-serif for body, Monaco monospace for `h1` on homepage
-- Max width: 720px container
-- All CSS is inline per-file — no shared stylesheet
+Light editorial / newsstand look, modeled on WIRED. All shared rules live in
+`style.css`; pages link it (`style.css` from root, `../style.css` from posts).
+Posts no longer carry an inline `<style>` block — the one exception is
+`doors-are-inefficient.html`, which keeps a small private block for its bespoke
+components (bar charts, math blocks, HN thread, verdict) plus a scroll-animation
+script.
+
+- Background `#ffffff`, headlines `#0f0f0f`, body `#26241f`, hairlines `#e6e2d8`
+- Accent red `#e5091a`; brand orange `#ff6b35` (secondary)
+- Fonts (Google Fonts): **Oswald** for display/headlines/nav/kickers (uppercase),
+  **Source Serif 4** for body, system monospace for code
+- Code blocks (`pre`) render as dark panels; inline `code` is a light chip
+- Widths: `--wrap` 1180px for site chrome/homepage, `--read` 720px for article text
+- Colors are CSS variables in `style.css :root`. Cover-poster colors are the
+  `.cv-*` classes; article kicker colors are the `.k-*` classes.
 
 ## Posts
 
@@ -37,10 +49,11 @@ Posts are ordered newest-first in `index.html`.
 
 ## Adding a post
 
-1. Copy an existing post HTML (e.g. `posts/suffering-system.html`) — the CSS block is identical across all posts, don't change it
-2. Update `<title>`, `<h1>`, `.post-meta` date, `.subhead`, and article content
-3. Add a `<li class="post-item">` entry at the top of the post list in `index.html`
-4. Commit and push: `git add index.html posts/your-post.html && git commit -m "..." && git push origin master`
+1. Copy a standard post (e.g. `posts/suffering-system.html`). It links `../style.css` and the Google Fonts — leave the `<head>` links as-is.
+2. Update `<title>`, and in the `.article-head` block: the `.kicker` (label + `k-*` color class), the `<h1>`, the `.dek` (subhead), and the `.by-date`. Keep `.by-author` as `NinjaHawk`.
+3. Write the post body inside `<div class="article-body">…</div>`. Use plain `<p>`, `<h2>`, `<h3>`, `<pre><code>`, `<table>`, `<blockquote>`, `<figure>` — the shared stylesheet styles them all.
+4. Add a card to `index.html`. Newest post is the `.picks-lead` hero; older ones move down through `.picks-side`, the `.picks-recent` list, and the `.more-grid`. Give the cover a `.cv-*` color and set the kicker.
+5. Commit and push: `git add index.html posts/your-post.html && git commit -m "..." && git push origin master`
 
 Do not use `deploy.sh` — it prompts interactively for GitHub credentials and will hang.
 
@@ -55,7 +68,7 @@ Posts are written in a flat, clinical voice. Key rules:
 - Epistemic discipline: distinguish what happened, what it means, and what it might mean. Never conflate. Hedge plainly when uncertain ("Probably...", "Could be something else.").
 - No metaphors. No "this shows that" sentences.
 - Section headers are plain and descriptive.
-- Subheads (`.subhead`) are fragments: "Three agents. Twelve hours. No prompts after setup."
+- Subheads (the `.dek`) are fragments: "Three agents. Twelve hours. No prompts after setup."
 - Titles for technical explainer posts follow "How X works". Titles for experiment posts are punchy statements with a twist.
 - "Honest assessment" or "What this means" section before Setup in every post.
 - Every post ends with the standard Setup block (Windows one-click + Mac/Linux).

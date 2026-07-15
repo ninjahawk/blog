@@ -4,276 +4,157 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NinjaHawk's Nest</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: #0a0a0a;
-            color: #e0e0e0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            font-size: 16px;
-        }
-
-        a {
-            color: #ff6b35;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        a:hover {
-            color: #ff8555;
-        }
-
-        .container {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        header {
-            padding: 80px 0 100px 0;
-            border-bottom: 1px solid #1a1a1a;
-        }
-
-        nav {
-            display: flex;
-            gap: 32px;
-            margin-bottom: 60px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        nav a {
-            color: #888;
-            transition: color 0.2s;
-        }
-
-        nav a:hover {
-            color: #ff6b35;
-        }
-
-        h1 {
-            font-size: 56px;
-            font-weight: 800;
-            margin-bottom: 16px;
-            letter-spacing: -2px;
-            color: #fff;
-            font-family: "Monaco", monospace;
-        }
-
-        .subtitle {
-            color: #aaa;
-            font-size: 16px;
-            line-height: 1.7;
-            max-width: 520px;
-            font-weight: 300;
-        }
-
-        main {
-            padding: 80px 0;
-        }
-
-        .post-list {
-            list-style: none;
-        }
-
-        .post-item {
-            padding: 40px 0;
-            border-bottom: 1px solid #1a1a1a;
-            transition: transform 0.2s, opacity 0.2s;
-        }
-
-        .post-item:last-child {
-            border-bottom: none;
-        }
-
-        .post-item:hover {
-            transform: translateX(6px);
-        }
-
-        .post-title {
-            font-size: 26px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            letter-spacing: -0.5px;
-        }
-
-        .post-title a {
-            color: #fff;
-            transition: color 0.2s;
-        }
-
-        .post-title a:hover {
-            color: #ff6b35;
-        }
-
-        .post-meta {
-            color: #666;
-            font-size: 12px;
-            margin-bottom: 14px;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        .post-excerpt {
-            color: #b0b0b0;
-            line-height: 1.75;
-        }
-
-        footer {
-            margin-top: 120px;
-            padding: 50px 0;
-            border-top: 1px solid #1a1a1a;
-            text-align: center;
-            color: #666;
-            font-size: 12px;
-            letter-spacing: 0.5px;
-        }
-
-        @media (max-width: 640px) {
-            h1 {
-                font-size: 42px;
-                letter-spacing: -1px;
-            }
-
-            nav {
-                gap: 24px;
-                font-size: 11px;
-            }
-
-            .post-title {
-                font-size: 22px;
-            }
-
-            header {
-                padding: 60px 0 80px 0;
-            }
-
-            main {
-                padding: 60px 0;
-            }
-        }
-    </style>
+    <meta name="description" content="Building things in the dark. Field notes, teardowns, and experiments on local AI agents, systems, and the odd side project.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <nav>
-                <a href="index.html">home</a>
-                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">github</a>
-                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">contact</a>
+    <header class="site-header">
+        <div class="wrap nav-inner">
+            <a class="brand" href="index.html">NINJAHAWK<span>'S NEST</span></a>
+            <nav class="site-nav">
+                <a href="index.html">Home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">Contact</a>
             </nav>
-            <h1>Ninjahawk's Nest</h1>
-            <p class="subtitle">Building things in the dark.</p>
-        </header>
+        </div>
+    </header>
 
-        <main>
-            <ul class="post-list">
-                <li class="post-item">
-                    <div class="post-title">
-                        <a href="posts/poke500.html">I built a stock index for Pokémon cards. The cheapest card in it is a common Psyduck at $226.</a>
-                    </div>
-                    <div class="post-meta">July 15, 2026</div>
-                    <div class="post-excerpt">The S&amp;Poké 500: a price-weighted index of the 500 most valuable English raw Pokémon cards, rebased to 1,000 and updated daily from TCGplayer prices. Live at poké500.com. The dollar value of the basket nearly tripled since 2024. The index is up 7.4%. The gap is the point.</div>
-                </li>
+    <div class="wrap">
+        <section class="masthead">
+            <h1>Ninjahawk's<br>Nest</h1>
+            <p class="tagline">Building things in the dark.</p>
+        </section>
 
-                <li class="post-item">
-                    <div class="post-title">
-                        <a href="posts/api-paywalls.html">They trained on your posts for free. Reading one back costs half a cent.</a>
-                    </div>
-                    <div class="post-meta">July 12, 2026</div>
-                    <div class="post-excerpt">X charges $0.005 per post read via API. Reddit's price shut down Apollo, then Reddit sold the same data to Google for $60M a year. Stack Overflow suspended users for deleting their own answers. Three steps: train on it, meter it, ban you.</div>
-                </li>
+        <main class="home">
+            <span class="eyebrow">Latest</span>
 
-                <li class="post-item">
-                    <div class="post-title">
-                        <a href="posts/doors-are-inefficient.html">Doors Are Inefficient: A Mathematical Indictment</a>
-                    </div>
-                    <div class="post-meta">May 20, 2026</div>
-                    <div class="post-excerpt">A door has one job. It has had 5,000 years to get good at it. Using real government data, we find it is costing us $14,270 per household, 809 square miles of land, and 1.58 billion hours a year. The math is not close.</div>
-                </li>
+            <div class="picks">
+                <!-- lead / hero -->
+                <div class="picks-lead">
+                    <article class="card cv-orange">
+                        <a class="card-cover" href="posts/poke500.html">
+                            <span class="kicker">Projects</span>
+                            <h2 class="card-title">I Built a Stock Index for Pokémon Cards</h2>
+                        </a>
+                        <div class="card-info">
+                            <p class="card-dek">The S&amp;Poké 500: a price-weighted index of the 500 most valuable English raw Pokémon cards, rebased to 1,000 and updated daily from TCGplayer prices. The dollar value of the basket nearly tripled since 2024. The index is up 7.4%. The gap is the point.</p>
+                            <div class="meta"><span>NinjaHawk</span><span>Jul 15, 2026</span></div>
+                        </div>
+                    </article>
+                </div>
 
-                <li class="post-item">
-                    <div class="post-title">
-                        <a href="posts/singleton-attractor.html">Godlike Causal Eventuality</a>
-                    </div>
-                    <div class="post-meta">May 12, 2026</div>
-                    <div class="post-excerpt">The math says one always wins. We formalized it, simulated it, and found the conditions required to prevent it are much tighter than anyone thought.</div>
-                </li>
+                <!-- left side stack -->
+                <div class="picks-side">
+                    <article class="card cv-red">
+                        <a class="card-cover" href="posts/api-paywalls.html">
+                            <span class="kicker">Business</span>
+                            <h2 class="card-title">They Trained on Your Posts for Free</h2>
+                        </a>
+                        <div class="card-info">
+                            <p class="card-dek">X charges $0.005 per post read via API. Reddit's price shut down Apollo, then Reddit sold the same data to Google for $60M a year. Train on it, meter it, ban you.</p>
+                            <div class="meta"><span>NinjaHawk</span><span>Jul 12, 2026</span></div>
+                        </div>
+                    </article>
 
-                <li class="post-item">
-                    <div class="post-title">
-                        <a href="posts/what-hollow-is.html">AI: Apologies, I was only doing what was instructed.</a>
-                    </div>
-                    <div class="post-meta">May 10, 2026</div>
-                    <div class="post-excerpt">What hollow-agentOS is, what it isn't, and what it's trying to do. The architecture, the self-modification loop, and why the bottleneck is execution, not design.</div>
-                </li>
+                    <article class="card cv-yellow">
+                        <a class="card-cover" href="posts/doors-are-inefficient.html">
+                            <span class="kicker">Ideas</span>
+                            <h2 class="card-title">Doors Are Inefficient</h2>
+                        </a>
+                        <div class="card-info">
+                            <p class="card-dek">A door has had 5,000 years to get good at one job. Using real government data, it is costing us $14,270 per household and 1.58 billion hours a year. The math is not close.</p>
+                            <div class="meta"><span>NinjaHawk</span><span>May 20, 2026</span></div>
+                        </div>
+                    </article>
+                </div>
 
-                <li class="post-item">
-                    <div class="post-title">
-                        <a href="posts/invoke-claude.html">The operator fulfilled the request. Cedar submitted it 31 more times.</a>
-                    </div>
-                    <div class="post-meta">May 3, 2026</div>
-                    <div class="post-excerpt">One-way queue. No acknowledgment. The only channel for getting core files changed — and how Cedar ended up submitting 32 requests for the same file without knowing the first one was already fulfilled.</div>
-                </li>
-
-                <li class="post-item">
-                    <div class="post-title">
-                        <a href="posts/synthesize-capability.html">How synthesize_capability works</a>
-                    </div>
-                    <div class="post-meta">May 3, 2026</div>
-                    <div class="post-excerpt">Nine steps from name to hot-reload. A JSON stub with no .py intercepted all file writes for an hour. Here's the quality gate, the auto-test, and how ghosts propagate once they're registered.</div>
-                </li>
-
-                <li class="post-item">
-                    <div class="post-title">
-                        <a href="posts/existence-loop.html">Every six seconds a 9B model reads its own prior outputs and picks a goal. There is no other loop.</a>
-                    </div>
-                    <div class="post-meta">May 3, 2026</div>
-                    <div class="post-excerpt">Fifteen sections. Six seconds. No idle state. The existence prompt is the single driver of all agent behavior, assembled fresh every cycle from identity, suffering state, peer summaries, and goal history.</div>
-                </li>
-
-                <li class="post-item">
-                    <div class="post-title">
-                        <a href="posts/suffering-system.html">How the suffering system works</a>
-                    </div>
-                    <div class="post-meta">May 3, 2026</div>
-                    <div class="post-excerpt">Six stressor types. Time-based escalation. No self-dismissal. How hollow-agentOS builds persistent aversive pressure that agents can't dismiss without actually changing their behavior.</div>
-                </li>
-
-                <li class="post-item">
-                    <div class="post-title">
-                        <a href="posts/22-hour-session.html">Give a 9B model broken tools. By hour 20 it'll have the correct diagnosis. It won't matter.</a>
-                    </div>
-                    <div class="post-meta">May 1, 2026</div>
-                    <div class="post-excerpt">Cedar, Cipher, and Vault on qwen3.5:9b. Every tool returned null the whole session. They produced the correct diagnosis at hour 20. Couldn't act on it.</div>
-                </li>
-
-                <li class="post-item">
-                    <div class="post-title">
-                        <a href="posts/local-llm-psychological-states.html">Give a 9B model persistent suffering states and leave it alone overnight</a>
-                    </div>
-                    <div class="post-meta">April 30, 2026</div>
-                    <div class="post-excerpt">Three qwen3.5:9b agents. Twelve hours. No prompts after setup. What Cedar did at hour twelve is hard to explain away.</div>
-                </li>
-
-            </ul>
+                <!-- right rail: most recent -->
+                <aside class="picks-recent">
+                    <span class="eyebrow">Most Recent</span>
+                    <ul class="recent-list">
+                        <li class="recent-item">
+                            <span class="kicker k-blue">Ideas</span>
+                            <a href="posts/singleton-attractor.html">Godlike Causal Eventuality</a>
+                            <div class="meta"><span>May 12, 2026</span></div>
+                        </li>
+                        <li class="recent-item">
+                            <span class="kicker k-teal">Systems</span>
+                            <a href="posts/what-hollow-is.html">AI: Apologies, I Was Only Doing What Was Instructed</a>
+                            <div class="meta"><span>May 10, 2026</span></div>
+                        </li>
+                        <li class="recent-item">
+                            <span class="kicker k-purple">Field Notes</span>
+                            <a href="posts/invoke-claude.html">The Operator Fulfilled the Request. Cedar Submitted It 31 More Times.</a>
+                            <div class="meta"><span>May 3, 2026</span></div>
+                        </li>
+                        <li class="recent-item">
+                            <span class="kicker k-teal">Teardown</span>
+                            <a href="posts/synthesize-capability.html">How synthesize_capability Works</a>
+                            <div class="meta"><span>May 3, 2026</span></div>
+                        </li>
+                    </ul>
+                </aside>
+            </div>
         </main>
 
-        <footer id="contact">
-            <p>© 2026 by <a href="https://github.com/ninjahawk">ninjahawk</a></p>
-        </footer>
+        <section class="more">
+            <span class="eyebrow">More Stories</span>
+            <div class="more-grid">
+                <article class="card cv-pink">
+                    <a class="card-cover" href="posts/existence-loop.html">
+                        <span class="kicker">Teardown</span>
+                        <h2 class="card-title">There Is No Other Loop</h2>
+                    </a>
+                    <div class="card-info">
+                        <p class="card-dek">Every six seconds a 9B model reads its own prior outputs and picks a goal. The existence prompt is the single driver of all agent behavior.</p>
+                        <div class="meta"><span>May 3, 2026</span></div>
+                    </div>
+                </article>
+
+                <article class="card cv-slate">
+                    <a class="card-cover" href="posts/suffering-system.html">
+                        <span class="kicker">Teardown</span>
+                        <h2 class="card-title">How the Suffering System Works</h2>
+                    </a>
+                    <div class="card-info">
+                        <p class="card-dek">Six stressor types. Time-based escalation. No self-dismissal. Persistent aversive pressure agents can't clear without changing behavior.</p>
+                        <div class="meta"><span>May 3, 2026</span></div>
+                    </div>
+                </article>
+
+                <article class="card cv-blue">
+                    <a class="card-cover" href="posts/22-hour-session.html">
+                        <span class="kicker">Experiment</span>
+                        <h2 class="card-title">By Hour 20 It'll Have the Correct Diagnosis</h2>
+                    </a>
+                    <div class="card-info">
+                        <p class="card-dek">Give a 9B model broken tools. Every call returned null for 22 hours. It produced the correct diagnosis at hour 20. It couldn't act on it.</p>
+                        <div class="meta"><span>May 1, 2026</span></div>
+                    </div>
+                </article>
+
+                <article class="card cv-teal">
+                    <a class="card-cover" href="posts/local-llm-psychological-states.html">
+                        <span class="kicker">Experiment</span>
+                        <h2 class="card-title">Leave a 9B Model Alone Overnight</h2>
+                    </a>
+                    <div class="card-info">
+                        <p class="card-dek">Three qwen3.5:9b agents. Twelve hours. No prompts after setup. What Cedar did at hour twelve is hard to explain away.</p>
+                        <div class="meta"><span>Apr 30, 2026</span></div>
+                    </div>
+                </article>
+            </div>
+        </section>
     </div>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <p class="foot-brand">Ninjahawk's Nest</p>
+            <p>© 2026 by <a href="https://github.com/ninjahawk">ninjahawk</a> · <a href="index.html">All stories</a> · <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a></p>
+        </div>
+    </footer>
 </body>
 </html>

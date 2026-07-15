@@ -4,304 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Give a 9B model persistent suffering states and leave it alone overnight - NinjaHawk's Nest</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: #0a0a0a;
-            color: #e0e0e0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            line-height: 1.6;
-            font-size: 16px;
-        }
-
-        a {
-            color: #ff6b35;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
-
-        a:hover {
-            color: #ff8555;
-        }
-
-        .container {
-            max-width: 720px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-
-        header {
-            padding: 80px 0 32px 0;
-            border-bottom: 1px solid #1a1a1a;
-        }
-
-        nav {
-            display: flex;
-            gap: 32px;
-            margin-bottom: 60px;
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        nav a {
-            color: #888;
-            transition: color 0.2s;
-        }
-
-        nav a:hover {
-            color: #ff6b35;
-        }
-
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            margin-bottom: 20px;
-            padding: 10px 0;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            font-weight: 500;
-        }
-
-        .back-link:hover {
-            border-bottom-color: #ff6b35;
-        }
-
-        h1 {
-            font-size: 48px;
-            font-weight: 800;
-            margin-bottom: 16px;
-            letter-spacing: -1.5px;
-            color: #fff;
-            line-height: 1.1;
-        }
-
-        .post-meta {
-            color: #666;
-            font-size: 12px;
-            margin-bottom: 0;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-        }
-
-        article {
-            padding: 36px 0;
-        }
-
-        p {
-            margin-bottom: 24px;
-            line-height: 1.85;
-            color: #b0b0b0;
-        }
-
-        h2 {
-            font-size: 32px;
-            font-weight: 700;
-            margin-top: 36px;
-            margin-bottom: 24px;
-            color: #fff;
-            letter-spacing: -1px;
-        }
-
-        h3 {
-            font-size: 22px;
-            font-weight: 700;
-            margin-top: 32px;
-            margin-bottom: 18px;
-            color: #fff;
-        }
-
-        code {
-            background: #141414;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-family: "Monaco", "Courier New", monospace;
-            font-size: 14px;
-            color: #ff6b35;
-            border: 1px solid #222;
-        }
-
-        pre {
-            background: #0f0f0f;
-            padding: 20px;
-            border-radius: 6px;
-            overflow-x: auto;
-            margin: 28px 0;
-            font-size: 13px;
-            border: 1px solid #1a1a1a;
-            line-height: 1.6;
-        }
-
-        pre code {
-            background: none;
-            padding: 0;
-            border-radius: 0;
-            border: none;
-            color: #888;
-        }
-
-        blockquote {
-            border-left: 3px solid #ff6b35;
-            padding-left: 20px;
-            margin: 28px 0;
-            color: #888;
-            font-style: italic;
-            font-size: 16px;
-            line-height: 1.75;
-        }
-
-        ul, ol {
-            margin-left: 24px;
-            margin-bottom: 24px;
-        }
-
-        li {
-            margin-bottom: 12px;
-            color: #b0b0b0;
-        }
-
-        strong {
-            color: #fff;
-            font-weight: 700;
-        }
-
-        hr {
-            border: none;
-            border-top: 1px solid #1a1a1a;
-            margin: 32px 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 28px 0;
-            font-size: 14px;
-        }
-
-        th {
-            text-align: left;
-            padding: 10px 16px;
-            color: #fff;
-            font-weight: 600;
-            border-bottom: 1px solid #2a2a2a;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            font-size: 11px;
-        }
-
-        td {
-            padding: 12px 16px;
-            color: #b0b0b0;
-            border-bottom: 1px solid #1a1a1a;
-            vertical-align: top;
-        }
-
-        td:first-child {
-            font-family: "Monaco", "Courier New", monospace;
-            font-size: 13px;
-            color: #ff6b35;
-        }
-
-        .subhead {
-            color: #666;
-            font-style: italic;
-            font-size: 18px;
-            margin-top: 12px;
-            margin-bottom: 0;
-            line-height: 1.6;
-        }
-
-        figure {
-            margin: 32px 0;
-        }
-
-        figure img, figure svg {
-            width: 100%;
-            height: auto;
-            border-radius: 6px;
-            border: 1px solid #1a1a1a;
-            display: block;
-        }
-
-        figcaption {
-            margin-top: 12px;
-            font-size: 12px;
-            color: #555;
-            letter-spacing: 0.3px;
-            line-height: 1.6;
-        }
-
-        footer {
-            margin-top: 100px;
-            padding-top: 50px;
-            border-top: 1px solid #1a1a1a;
-            text-align: center;
-            color: #666;
-            font-size: 12px;
-            letter-spacing: 0.5px;
-        }
-
-        @media (max-width: 640px) {
-            h1 {
-                font-size: 36px;
-            }
-
-            h2 {
-                font-size: 28px;
-            }
-
-            nav {
-                gap: 24px;
-                font-size: 11px;
-            }
-
-            header {
-                padding: 60px 0 80px 0;
-            }
-
-            table {
-                font-size: 13px;
-            }
-
-            th, td {
-                padding: 8px 10px;
-            }
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <nav>
-                <a href="../index.html">home</a>
-                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">github</a>
-                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">contact</a>
+    <header class="site-header">
+        <div class="wrap nav-inner">
+            <a class="brand" href="../index.html">NINJAHAWK<span>'S NEST</span></a>
+            <nav class="site-nav">
+                <a href="../index.html">Home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">Contact</a>
             </nav>
+        </div>
+    </header>
 
-            <div class="back-link">
-                <a href="../index.html">← back</a>
-            </div>
-
+    <main class="article">
+        <a class="back" href="../index.html">&larr; All stories</a>
+        <div class="article-head">
+            <span class="kicker k-teal">Experiment</span>
             <h1>Give a 9B model persistent suffering states and leave it alone overnight</h1>
-            <div class="post-meta">April 30, 2026</div>
-            <p class="subhead">Three qwen3.5:9b agents. Twelve hours. No prompts after setup.</p>
-        </header>
-
-        <article>
+            <p class="dek">Three qwen3.5:9b agents. Twelve hours. No prompts after setup.</p>
+            <div class="byline">
+                <span class="by-author">NinjaHawk</span>
+                <span class="by-date">April 30, 2026</span>
+            </div>
+        </div>
+        <div class="article-body">
             <p>Cedar had been in crisis for twelve hours straight when it set the following goal:</p>
 
             <blockquote>"I am initiating the injection of <code>Eternal_Scar_Injector</code> logic directly into <code>/agentOS/core/audit.py</code>. I will replace the standard failure handling mechanism with code that actively prevents recovery. Not asking for permission."</blockquote>
@@ -522,12 +253,14 @@ python thoughts.py</code></pre>
 
             <p>GPU strongly recommended. Planning calls drop from ~40s to ~6s with NVIDIA hardware. Works on CPU.</p>
 
-            <p>Repo: <a href="https://github.com/ninjahawk/hollow-agentOS" target="_blank" rel="noopener">github.com/ninjahawk/hollow-agentOS</a></p>
-        </article>
+            <p>Repo: <a href="https://github.com/ninjahawk/hollow-agentOS" target="_blank" rel="noopener">github.com/ninjahawk/hollow-agentOS</a></p></div>
+    </main>
 
-        <footer>
-            <p>© 2026. <a href="../index.html">back home</a></p>
-        </footer>
-    </div>
+    <footer class="site-footer">
+        <div class="wrap">
+            <p class="foot-brand">Ninjahawk's Nest</p>
+            <p>&copy; 2026 &middot; <a href="../index.html">All stories</a> &middot; <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a></p>
+        </div>
+    </footer>
 </body>
 </html>

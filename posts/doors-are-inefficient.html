@@ -5,394 +5,83 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Doors Are Inefficient: A Mathematical Indictment</title>
 <meta name="description" content="A data-driven analysis of why the door, humanity's oldest UX pattern, fails on space, energy, throughput, and safety — with proposed alternatives.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<link rel="stylesheet" href="../style.css">
 <style>
-  :root {
-    --text: #1a1a1a;
-    --muted: #666;
-    --light: #999;
-    --border: #e5e5e5;
-    --bg: #fff;
-    --accent: #c0392b;
-    --code-bg: #f6f6f6;
-    --link: #2563eb;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { font-size: 18px; }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Georgia', 'Times New Roman', serif;
-    line-height: 1.75;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* Layout */
-  .page { max-width: 680px; margin: 0 auto; padding: 0 24px; }
-
-  /* Header */
-  .site-header {
-    border-bottom: 1px solid var(--border);
-    padding: 16px 0;
-    margin-bottom: 60px;
-  }
-  .site-header .inner {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 0 24px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  .site-name {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--muted);
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-  }
-  .site-nav {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.8rem;
-    color: var(--light);
-  }
-  .back-link {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.78rem;
-    color: var(--light);
-    text-decoration: none;
-  }
-  .back-link:hover { color: var(--muted); }
-
-  /* Article */
-  .article-meta {
-    margin-bottom: 40px;
-  }
-  .article-tag {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 12px;
-  }
-  h1 {
-    font-size: 2.2rem;
-    line-height: 1.2;
-    letter-spacing: -0.5px;
-    margin-bottom: 20px;
-    font-weight: normal;
-  }
-  .byline {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.82rem;
-    color: var(--muted);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 12px 0;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 6px;
-  }
-  .byline strong { color: var(--text); }
-
-  /* Abstract */
-  .abstract {
-    background: var(--code-bg);
-    border-left: 3px solid var(--border);
-    padding: 20px 24px;
-    margin: 36px 0;
-    font-size: 0.9rem;
-    color: var(--muted);
-    font-style: italic;
-    line-height: 1.65;
-  }
-  .abstract strong { color: var(--text); font-style: normal; }
-
-  /* Body */
-  h2 {
-    font-size: 1.3rem;
-    font-weight: bold;
-    margin: 56px 0 16px;
-    line-height: 1.3;
-    padding-top: 32px;
-    border-top: 1px solid var(--border);
-  }
-  h2 .section-num {
-    color: var(--light);
-    font-weight: normal;
-    margin-right: 6px;
-    font-size: 1rem;
-  }
-  h3 {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin: 28px 0 8px;
-  }
-  p { margin-bottom: 20px; }
-  a { color: var(--link); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  strong { font-weight: bold; }
-  em { font-style: italic; }
-
-  /* Math blocks */
-  .math {
-    background: var(--code-bg);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 20px 24px;
-    margin: 24px 0;
-    font-family: 'Courier New', monospace;
-    font-size: 0.82rem;
-    line-height: 2;
-    overflow-x: auto;
-  }
+  /* doors-only components; base + chrome come from ../style.css */
+  .abstract { background: var(--code-bg); border-left: 3px solid var(--border); padding: 20px 24px; margin: 8px 0 36px; font-size: 0.92em; color: var(--muted); font-style: italic; line-height: 1.65; }
+  .abstract strong { color: var(--ink); font-style: normal; }
+  .toc { font-family: var(--sans); font-size: 0.82rem; color: var(--muted); margin: 28px 0; line-height: 2; }
+  .toc a { color: var(--muted); box-shadow: none; }
+  .toc a:hover { color: var(--ink); }
+  h2 .section-num { color: var(--light); font-weight: 400; margin-right: 8px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 28px 0; font-family: var(--sans); }
+  .stat { background: var(--bg); padding: 22px 16px; text-align: center; }
+  .stat .num { font-family: var(--display); font-size: 2.1rem; font-weight: 700; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+  .stat .lbl { font-size: 0.7rem; color: var(--muted); line-height: 1.4; text-transform: uppercase; letter-spacing: 0.4px; }
+  .math { background: var(--code-bg); border: 1px solid var(--border); border-radius: 6px; padding: 20px 24px; margin: 24px 0; font-family: var(--mono); font-size: 0.8rem; line-height: 2; overflow-x: auto; color: var(--text); }
   .math .comment { color: var(--light); }
-  .math .result {
-    color: var(--accent);
-    font-weight: bold;
-    border-top: 1px solid var(--border);
-    margin-top: 12px;
-    padding-top: 12px;
-  }
-
-  /* Tables */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 24px 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.84rem;
-  }
-  th {
-    text-align: left;
-    padding: 8px 12px;
-    border-bottom: 2px solid var(--text);
-    font-weight: 700;
-    color: var(--muted);
-    text-transform: uppercase;
-    font-size: 0.72rem;
-    letter-spacing: 0.5px;
-  }
-  td {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: top;
-  }
-  tr:last-child td { border-bottom: none; }
-
-  /* Callout */
-  .callout {
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--accent);
-    padding: 16px 20px;
-    margin: 24px 0;
-    font-size: 0.9rem;
-    background: #fffaf9;
-  }
-
-  /* Stat row */
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-    gap: 1px;
-    background: var(--border);
-    border: 1px solid var(--border);
-    margin: 28px 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  }
-  .stat {
-    background: var(--bg);
-    padding: 20px;
-    text-align: center;
-  }
-  .stat .num {
-    font-size: 1.9rem;
-    font-weight: 700;
-    color: var(--accent);
-    line-height: 1;
-    margin-bottom: 4px;
-  }
-  .stat .lbl { font-size: 0.72rem; color: var(--muted); line-height: 1.4; }
-
-  /* Bar chart */
+  .math .result { color: var(--accent); font-weight: 700; border-top: 1px solid var(--border); margin-top: 12px; padding-top: 12px; }
+  .callout { border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 16px 20px; margin: 24px 0; font-size: 0.95em; background: #fffaf9; }
   .bars { margin: 20px 0; }
-  .bar-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 10px;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.8rem;
-  }
+  .bar-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; font-family: var(--sans); font-size: 0.8rem; }
   .bar-lbl { width: 120px; text-align: right; color: var(--muted); flex-shrink: 0; }
   .bar-track { flex: 1; background: var(--code-bg); height: 22px; border-radius: 2px; overflow: hidden; }
-  .bar-fill {
-    height: 100%;
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    padding-left: 8px;
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: white;
-    width: 0;
-    transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
-  }
+  .bar-fill { height: 100%; border-radius: 2px; display: flex; align-items: center; padding-left: 8px; font-size: 0.72rem; font-weight: 700; color: #fff; width: 0; transition: width 1.2s cubic-bezier(0.16,1,0.3,1); }
   .bar-fill.bad { background: var(--accent); }
   .bar-fill.ok { background: #e67e22; }
-  .bar-fill.good { background: #27ae60; color: white; }
-
-  /* Figure caption */
-  .fig-caption {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.75rem;
-    color: var(--light);
-    margin-top: -14px;
-    margin-bottom: 24px;
-    line-height: 1.5;
-  }
-
-  /* Footnote-style sources */
-  .source {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.72rem;
-    color: var(--light);
-    margin-top: -12px;
-    margin-bottom: 20px;
-  }
-
-  /* HN section */
-  .hn-section {
-    margin-top: 80px;
-    border-top: 3px solid #ff6600;
-    padding-top: 32px;
-  }
-  .hn-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 8px;
-  }
-  .hn-logo {
-    background: #ff6600;
-    color: white;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-weight: 700;
-    font-size: 0.85rem;
-    padding: 3px 7px;
-    border-radius: 2px;
-  }
-  .hn-title {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.85rem;
-    color: var(--muted);
-  }
-  .hn-post-title {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.9rem;
-    margin-bottom: 4px;
-  }
-  .hn-post-title a { color: var(--text); }
-  .hn-post-meta {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.72rem;
-    color: var(--muted);
-    margin-bottom: 28px;
-  }
+  .bar-fill.good { background: #1f9d55; }
+  .fig-caption { font-family: var(--sans); font-size: 0.75rem; color: var(--light); margin-top: -8px; margin-bottom: 24px; line-height: 1.5; }
+  .source { font-family: var(--sans); font-size: 0.72rem; color: var(--light); margin-top: -12px; margin-bottom: 20px; }
+  .hn-section { margin-top: 80px; border-top: 3px solid #ff6600; padding-top: 32px; }
+  .hn-header { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+  .hn-logo { background: #ff6600; color: #fff; font-family: var(--sans); font-weight: 700; font-size: 0.85rem; padding: 3px 7px; border-radius: 2px; }
+  .hn-title { font-family: var(--sans); font-size: 0.85rem; color: var(--muted); }
+  .hn-post-title { font-family: var(--sans); font-size: 0.95rem; font-weight: 700; margin-bottom: 4px; }
+  .hn-post-title a { color: var(--ink); box-shadow: none; }
+  .hn-post-meta { font-family: var(--sans); font-size: 0.72rem; color: var(--muted); margin-bottom: 28px; }
   .hn-post-meta span { margin-right: 6px; }
-  .hn-comment {
-    margin-bottom: 24px;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--border);
-  }
+  .hn-comment { margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--border); }
   .hn-comment:last-child { border-bottom: none; }
-  .hn-comment-meta {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.72rem;
-    color: var(--muted);
-    margin-bottom: 8px;
-  }
-  .hn-comment-meta strong { color: #ff6600; font-weight: normal; }
-  .hn-comment-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.84rem;
-    line-height: 1.6;
-    color: var(--text);
-  }
+  .hn-comment-meta { font-family: var(--sans); font-size: 0.72rem; color: var(--muted); margin-bottom: 8px; }
+  .hn-comment-meta strong { color: #ff6600; font-weight: 400; }
+  .hn-comment-body { font-family: var(--sans); font-size: 0.86rem; line-height: 1.6; color: var(--text); }
   .hn-comment-body p { margin-bottom: 10px; }
   .hn-comment-body p:last-child { margin-bottom: 0; }
   .hn-reply { margin-left: 24px; margin-top: 16px; border-left: 2px solid var(--border); padding-left: 16px; }
-
-  /* Verdict */
-  .verdict {
-    background: var(--code-bg);
-    border: 1px solid var(--border);
-    border-top: 3px solid var(--text);
-    padding: 28px 32px;
-    margin: 48px 0;
-  }
-  .verdict h2 { border-top: none; margin-top: 0; padding-top: 0; font-size: 1.1rem; }
-  .verdict p { font-size: 0.9rem; color: var(--muted); }
-
-  /* Footer */
-  footer {
-    margin-top: 80px;
-    padding: 32px 0;
-    border-top: 1px solid var(--border);
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.75rem;
-    color: var(--light);
-    text-align: center;
-    line-height: 2;
-  }
-
-  .toc {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    font-size: 0.8rem;
-    color: var(--muted);
-    margin: 28px 0;
-    line-height: 2;
-  }
-  .toc a { color: var(--muted); }
-  .toc a:hover { color: var(--text); }
-
-  @media (max-width: 600px) {
-    html { font-size: 16px; }
-    h1 { font-size: 1.7rem; }
-    .stats { grid-template-columns: repeat(2, 1fr); }
-  }
+  .verdict { background: var(--code-bg); border: 1px solid var(--border); border-top: 3px solid var(--rule); padding: 28px 32px; margin: 48px 0; }
+  .verdict h2 { border-top: none; margin-top: 0; padding-top: 0; font-size: 1.4rem; }
+  .verdict p { font-size: 0.95em; color: var(--muted); }
+  @media (max-width: 600px) { .stats { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
 <body>
+    <header class="site-header">
+        <div class="wrap nav-inner">
+            <a class="brand" href="../index.html">NINJAHAWK<span>'S NEST</span></a>
+            <nav class="site-nav">
+                <a href="../index.html">Home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">Contact</a>
+            </nav>
+        </div>
+    </header>
 
-<header class="site-header">
-  <div class="inner">
-    <a href="../index.html" class="back-link">← Blog</a>
-    <div class="site-name">Applied Engineering Analysis</div>
-    <div class="site-nav">Volume IV &nbsp;·&nbsp; Infrastructure</div>
-  </div>
-</header>
-
-<main class="page">
-
-  <article>
-    <div class="article-meta">
-      <div class="article-tag">Research &nbsp;·&nbsp; Architecture &nbsp;·&nbsp; Transportation</div>
-      <h1>Doors Are Inefficient: A Mathematical Indictment</h1>
-      <div class="byline">
-        <span>By <strong>M. Doorian</strong>, Independent Door Researcher</span>
-        <span>May 20, 2026 &nbsp;·&nbsp; 12 min read</span>
-      </div>
-    </div>
-
-    <div class="abstract">
+    <main class="article">
+        <a class="back" href="../index.html">&larr; All stories</a>
+        <div class="article-head">
+            <span class="kicker k-gold">Ideas</span>
+            <h1>Doors Are Inefficient: A Mathematical Indictment</h1>
+            <p class="dek">A door has one job. It has had 5,000 years to get good at it. Using publicly available US government data, we find it failing on all four dimensions that matter: space, energy, throughput, and safety.</p>
+            <div class="byline">
+                <span class="by-author">NinjaHawk</span>
+                <span class="by-date">May 20, 2026 &middot; 12 min read</span>
+            </div>
+        </div>
+        <div class="article-body">
+<div class="abstract">
       <strong>Abstract.</strong> A door has one job: allow selective passage through a barrier. We examine how efficiently it does that job across four dimensions — <strong>space</strong>, <strong>energy</strong>, <strong>throughput</strong>, and <strong>safety</strong> — and find it failing on all four. Using publicly available US government datasets, we find that doors consume $14,270 worth of floor space per household doing literally nothing, contribute to $3.1 billion in annual HVAC losses, reduce pedestrian throughput by 56%, and in automotive contexts, are geometrically incompatible with the parking spaces specifically built around them. A better solution has existed for decades. We are simply not using it.
     </div>
 
@@ -621,168 +310,18 @@
       <p>The door is not a bad idea. It is a <em>5,000-year-old idea that we never stopped to question</em>. When evaluated against modern alternatives on space, energy, safety, and throughput, the hinged door fails on every axis. We are paying $14,270 per household, 6+ hours per year, and 809 square miles of land for the privilege of a technology that a sliding panel outperforms in every measurable way.</p>
     <p><strong>The door is inefficient. The math is not close.</strong></p>
     </div>
-  </article>
-
-  <!-- HN COMMENTS -->
-  <div class="hn-section">
-    <div class="hn-header">
-      <div class="hn-logo">Y</div>
-      <div class="hn-title">Hacker News · Discussion</div>
-    </div>
-
-    <div class="hn-post-title">
-      <a href="#">The Door Is Quadratically Inefficient: A Quantitative Analysis</a>
-    </div>
-    <div class="hn-post-meta">
-      <span>847 points</span>
-      <span>|</span>
-      <span>submitted by <strong style="color:#ff6600">throwaway_door_hater</strong></span>
-      <span>|</span>
-      <span>312 comments</span>
-    </div>
-
-    <div class="hn-comment">
-      <div class="hn-comment-meta"><strong>tptacek</strong> &nbsp;4 hours ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
-      <div class="hn-comment-body">
-        <p>The parking lot math is making me spiral a little. Is it really true that we've just quietly been building Rhode Island twice over in door buffer? I want to call this wrong but I can't find the error.</p>
-      </div>
-      <div class="hn-reply">
-        <div class="hn-comment-meta"><strong>kevinsys</strong> &nbsp;3 hours ago</div>
-        <div class="hn-comment-body">
-          <p>The underlying figure (800M parking spaces) is from Shoup's "The High Cost of Free Parking" which is itself a seminal work on how parking minimums distort urban land use. The author is actually being conservative — Shoup's own estimates run higher.</p>
-          <p>The part of this that should really bother people is that the car door problem is downstream of a single engineering non-decision made in the 1910s.</p>
         </div>
-        <div class="hn-reply">
-          <div class="hn-comment-meta"><strong>tptacek</strong> &nbsp;3 hours ago</div>
-          <div class="hn-comment-body">
-            <p>The 1910s engineering non-decision is doing a lot of work in that sentence. You could describe the entire 20th century built environment that way.</p>
-          </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <p class="foot-brand">Ninjahawk's Nest</p>
+            <p>&copy; 2026 &middot; <a href="../index.html">All stories</a> &middot; <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a></p>
+            <p style="margin-top:10px; color:var(--light)">All calculations use publicly available US government datasets. Math is reproducible in the article body. Corrections welcome.</p>
         </div>
-      </div>
-    </div>
+    </footer>
 
-    <div class="hn-comment">
-      <div class="hn-comment-meta"><strong>patio11</strong> &nbsp;4 hours ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
-      <div class="hn-comment-body">
-        <p>I've lived in Japan for 15 years and genuinely cannot overstate how much of an adjustment it is to return to the West and experience hinged doors again. You lose the ability to see it as normal.</p>
-        <p>The standard counterargument is "pocket doors are harder to seal acoustically" and this is technically true and practically irrelevant for the vast majority of interior door use cases, where acoustic separation is "I can't hear the TV from the hallway" not "I'm recording a podcast."</p>
-      </div>
-      <div class="hn-reply">
-        <div class="hn-comment-meta"><strong>rdtsc</strong> &nbsp;3 hours ago</div>
-        <div class="hn-comment-body">
-          <p>What's your take on the installation complexity argument? I hear this a lot — pocket doors require wall cavity work, so retrofitting is expensive.</p>
-        </div>
-        <div class="hn-reply">
-          <div class="hn-comment-meta"><strong>patio11</strong> &nbsp;2 hours ago</div>
-          <div class="hn-comment-body">
-            <p>The installation complexity argument is real but it only survives if you ignore that the thing being compared is "building a new door frame." Pocket door framing is different from hinged door framing. It is not meaningfully harder. The "wall cavity" sounds scary but carpenters encounter it in literally every renovation job. The complexity is social, not technical — contractors quote it high because it feels unusual, not because it takes longer.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="hn-comment">
-      <div class="hn-comment-meta"><strong>dang</strong> &nbsp;3 hours ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
-      <div class="hn-comment-body">
-        <p>Flagged by some users but I disagree — this is a genuine quantitative engineering argument with transparent sourcing. The framing is whimsical but the math is sound. Leaving up.</p>
-      </div>
-      <div class="hn-reply">
-        <div class="hn-comment-meta"><strong>nullandvoid9</strong> &nbsp;2 hours ago</div>
-        <div class="hn-comment-body">
-          <p>What was the flag reason even? "We disagree about doors"?</p>
-        </div>
-        <div class="hn-reply">
-          <div class="hn-comment-meta"><strong>heyihaveaquestion</strong> &nbsp;2 hours ago</div>
-          <div class="hn-comment-body">
-            <p>The door lobby is very powerful.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="hn-comment">
-      <div class="hn-comment-meta"><strong>geofft</strong> &nbsp;3 hours ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
-      <div class="hn-comment-body">
-        <p>The throughput analysis undersells the problem. It models the door as a flow reduction, but in practice a door also introduces queueing dynamics. If two people arrive at a door within ~2 seconds of each other, one must wait. At scale — a school hallway, an office, an apartment building — this creates measurable congestion. I wrote my undergrad thesis on pedestrian flow in Boston subway stations and hinged doors were by far the dominant bottleneck factor, more significant than staircase width or platform geometry.</p>
-      </div>
-    </div>
-
-    <div class="hn-comment">
-      <div class="hn-comment-meta"><strong>pg</strong> &nbsp;2 hours ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
-      <div class="hn-comment-body">
-        <p>This is the kind of thing I had in mind when I wrote about schlep blindness [1]. The door problem is not hard. It is familiar, and familiarity has successfully impersonated "hard" for five millennia.</p>
-        <p>[1] paulgraham.com/schlep.html</p>
-      </div>
-      <div class="hn-reply">
-        <div class="hn-comment-meta"><strong>throwaway_door_hater</strong> &nbsp;1 hour ago</div>
-        <div class="hn-comment-body">
-          <p>I was not expecting to be cited in a Paul Graham comment on my door post. This has been a strange afternoon.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="hn-comment">
-      <div class="hn-comment-meta"><strong>mechanical_engineer_throwaway</strong> &nbsp;2 hours ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
-      <div class="hn-comment-body">
-        <p>Source of frustration from a practicing ME: the B-pillar constraint for car sliding doors is genuinely not that hard. We know how to make sliding tracks that carry crash loads — train doors do this. The real barrier is amortized tooling cost. A new door geometry requires retooling a manufacturing line that cost $400M to build. The engineering is fine. The accounting is the obstacle. No one gets promoted for solving a problem that doesn't show up in this quarter's incident reports.</p>
-      </div>
-      <div class="hn-reply">
-        <div class="hn-comment-meta"><strong>gus_mccrae</strong> &nbsp;1 hour ago</div>
-        <div class="hn-comment-body">
-          <p>"No one gets promoted for solving a problem that doesn't show up in this quarter's incident reports." This sentence explains about 60% of infrastructure in the developed world.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="hn-comment">
-      <div class="hn-comment-meta"><strong>sgerenser</strong> &nbsp;1 hour ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
-      <div class="hn-comment-body">
-        <p>I'm going to defend the door on one narrow point: the tactile and mechanical affordance of a hinged door — the handle, the weight, the swing resistance — communicates information. You know the door is latched. You know it's fully open. You know the approximate air pressure difference from how hard you have to push. Sliding doors are informationally impoverished in comparison. They're also more likely to injure fingers, particularly small children's fingers, in ways that hinged doors are not.</p>
-        <p>I am not saying this outweighs the case in the article. I'm saying it's a real design consideration that "sliding door good" advocates consistently ignore.</p>
-      </div>
-      <div class="hn-reply">
-        <div class="hn-comment-meta"><strong>throwaway_door_hater</strong> &nbsp;45 minutes ago</div>
-        <div class="hn-comment-body">
-          <p>This is the most coherent defense I've received today. The tactile affordance point is legitimate. The finger injury point is addressed by the soft-close mechanisms that have been standard on sliding doors since the mid-2000s. But the affordance thing is real and I should have engaged with it in the piece.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="hn-comment">
-      <div class="hn-comment-meta"><strong>yummyfajitas</strong> &nbsp;1 hour ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
-      <div class="hn-comment-body">
-        <p>Wait until this person discovers that we're also bad at windows, stairs, and light switches. There's a whole genre of "we have been doing this basic thing wrong for 100 years" essay and I will never stop reading them.</p>
-      </div>
-    </div>
-
-    <div class="hn-comment">
-      <div class="hn-comment-meta"><strong>sp332</strong> &nbsp;30 minutes ago &nbsp;| &nbsp;prev &nbsp;| &nbsp;next</div>
-      <div class="hn-comment-body">
-        <p>$2 trillion in unlocked real estate value sounds large but this is realized value, not extracted value. You can't sell your pocket doors. You can sell a bigger room, but only if the buyer also understands that pocket doors = bigger room, and they probably don't, because they've never thought about this before reading this article thirty minutes ago.</p>
-      </div>
-      <div class="hn-reply">
-        <div class="hn-comment-meta"><strong>throwaway_door_hater</strong> &nbsp;20 minutes ago</div>
-        <div class="hn-comment-body">
-          <p>This is a fair critique of my framing. The $14K figure represents value destruction, not necessarily value that can be immediately recovered. A better framing is: when building a new home, each pocket door costs ~$500 more and returns ~$1,000 in marketable floor space at median $/sqft. The ROI is still there, the mechanism is just different.</p>
-        </div>
-      </div>
-    </div>
-
-    <div style="text-align:center; padding: 20px 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; font-size: 0.8rem; color: var(--light);">
-      Showing top comments · <a href="#" style="color:var(--muted)">312 total</a>
-    </div>
-  </div>
-
-</main>
-
-<footer>
-  Applied Engineering Analysis &nbsp;·&nbsp; All calculations use publicly available US government datasets.<br>
-  DOE Building Energy Data Book · NHTSA FARS · NAR Housing Data · UCLA ITS · LBNL Infiltration Study · SAE Standards<br>
-  <br>
-  <span style="color:#ccc">Math is transparent and reproducible in the article body. Corrections welcome.</span>
-</footer>
-
-<script>
+    <script>
   history.scrollRestoration = 'manual';
   window.scrollTo(0, 0);
 
