@@ -3,6 +3,10 @@
    standard post. Load order: this file, then the page's own small overrides
    (only doors-are-inefficient keeps a private block for its charts). */
 
+/* Headline sans for article pages (USA Today-style news reading layout).
+   The homepage keeps Oswald; only .article* rules use this. */
+@import url("https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&display=swap");
+
 :root {
   --bg:        #ffffff;
   --paper:     #f5f3ee;  /* newsprint wells */
@@ -21,10 +25,16 @@
   --panel-ink: #cfd4dc;
   --panel-dim: #838d9b;
 
-  --display: "Oswald", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
-  --serif:   "Source Serif 4", Georgia, "Times New Roman", serif;
-  --sans:    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --mono:    "Monaco", "SFMono-Regular", "Courier New", monospace;
+  --display:  "Oswald", "Arial Narrow", "Helvetica Neue", system-ui, sans-serif;
+  --headline: "Libre Franklin", "Helvetica Neue", Arial, sans-serif; /* article news headlines */
+  --serif:    "Source Serif 4", Georgia, "Times New Roman", serif;
+  --sans:     -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --mono:     "Monaco", "SFMono-Regular", "Courier New", monospace;
+
+  /* article accent (USA Today-style blue) — homepage keeps red/orange */
+  --art-accent: #0b66c3;  /* kickers, rules, quote bar, table accents */
+  --art-link:   #0a57ad;  /* body links */
+  --navy:       #0a0e14;  /* headline near-black */
 
   --wrap: 1180px;
   --read: 720px;
@@ -264,80 +274,93 @@ a:hover { text-decoration: underline; }
 }
 .back {
   display: inline-block;
-  font-family: var(--display);
-  font-weight: 500;
+  font-family: var(--headline);
+  font-weight: 600;
   font-size: 12px;
-  letter-spacing: 1.4px;
+  letter-spacing: 0.8px;
   text-transform: uppercase;
-  color: var(--muted);
+  color: var(--art-link);
   margin-bottom: 30px;
 }
-.back:hover { color: var(--accent); text-decoration: none; }
+.back:hover { color: var(--navy); text-decoration: none; }
 
-.article-head { margin-bottom: 40px; }
-.article-head .kicker { font-size: 13px; }
-.article-head h1 {
-  font-family: var(--display);
+.article-head { margin-bottom: 34px; }
+.article-head .kicker {
+  font-family: var(--headline);
   font-weight: 700;
-  font-size: clamp(34px, 6vw, 60px);
-  line-height: 1.02;
-  letter-spacing: -0.6px;
-  text-transform: uppercase;
-  color: var(--ink);
-  margin: 14px 0 20px;
+  font-size: 13px;
+  letter-spacing: 1px;
+  color: var(--art-accent);
+}
+.article-head h1 {
+  font-family: var(--headline);
+  font-weight: 800;
+  font-size: clamp(32px, 5.2vw, 52px);
+  line-height: 1.08;
+  letter-spacing: -0.7px;
+  text-transform: none;
+  color: var(--navy);
+  margin: 12px 0 18px;
 }
 .dek {
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 21px;
-  line-height: 1.5;
-  color: var(--muted);
-  margin-bottom: 26px;
+  line-height: 1.45;
+  color: #3f3d38;
+  margin-bottom: 24px;
 }
 .byline {
   display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 8px;
-  border-top: 1px solid var(--rule);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  border-top: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
-  padding: 12px 0;
-  font-family: var(--sans);
-  font-size: 13px;
-  letter-spacing: 0.4px;
+  padding: 13px 0;
+  font-family: var(--headline);
 }
-.by-author { color: var(--ink); font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
-.by-date { color: var(--muted); text-transform: uppercase; letter-spacing: 1px; font-size: 12px; }
+.by-author {
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.2px;
+  text-transform: none;
+}
+.by-date {
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  text-transform: none;
+}
+.by-date::before { content: "Published "; }
 
 /* article body ------------------------------------------------------------ */
 .article-body { font-size: 19px; }
 .article-body p { margin-bottom: 24px; line-height: 1.78; }
-.article-body > p:first-of-type { font-size: 20px; }
 
 .article-body h2 {
-  font-family: var(--display);
+  font-family: var(--headline);
   font-weight: 700;
-  font-size: 30px;
-  line-height: 1.1;
-  letter-spacing: -0.4px;
-  text-transform: uppercase;
-  color: var(--ink);
-  margin: 52px 0 18px;
-  padding-top: 26px;
-  border-top: 1px solid var(--border);
+  font-size: 27px;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+  text-transform: none;
+  color: var(--navy);
+  margin: 46px 0 14px;
 }
 .article-body h3 {
-  font-family: var(--display);
+  font-family: var(--headline);
   font-weight: 600;
-  font-size: 15px;
-  letter-spacing: 0.6px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin: 34px 0 12px;
+  font-size: 18px;
+  letter-spacing: -0.1px;
+  text-transform: none;
+  color: var(--ink);
+  margin: 32px 0 10px;
 }
 
-.article-body a { color: var(--link); box-shadow: inset 0 -1px 0 rgba(196,13,30,0.35); }
-.article-body a:hover { text-decoration: none; box-shadow: inset 0 -2px 0 var(--link); }
+.article-body a { color: var(--art-link); box-shadow: inset 0 -1px 0 rgba(11,102,195,0.4); }
+.article-body a:hover { text-decoration: none; box-shadow: inset 0 -2px 0 var(--art-link); }
 
 .article-body strong { color: var(--ink); font-weight: 700; }
 .article-body em { font-style: italic; }
@@ -381,14 +404,15 @@ pre code {
 }
 
 blockquote {
-  border-left: 4px solid var(--accent);
+  border-left: 4px solid var(--art-accent);
   padding: 4px 0 4px 22px;
   margin: 30px 0;
-  font-family: var(--display);
-  font-weight: 500;
-  font-size: 24px;
-  line-height: 1.3;
-  color: var(--ink);
+  font-family: var(--headline);
+  font-weight: 600;
+  font-size: 23px;
+  line-height: 1.32;
+  letter-spacing: -0.2px;
+  color: var(--navy);
   font-style: normal;
   text-transform: none;
 }
@@ -404,13 +428,13 @@ table {
 th {
   text-align: left;
   padding: 10px 14px;
-  border-bottom: 2px solid var(--rule);
+  border-bottom: 2px solid var(--navy);
   color: var(--ink);
-  font-family: var(--display);
-  font-weight: 600;
+  font-family: var(--headline);
+  font-weight: 700;
   text-transform: uppercase;
   font-size: 12px;
-  letter-spacing: 0.8px;
+  letter-spacing: 0.6px;
 }
 td {
   padding: 11px 14px;
@@ -418,7 +442,7 @@ td {
   vertical-align: top;
   color: var(--text);
 }
-td:first-child { font-family: var(--mono); font-size: 13px; color: var(--accent-2); }
+td:first-child { font-family: var(--mono); font-size: 13px; color: var(--art-accent); }
 tr:last-child td { border-bottom: none; }
 
 /* figures */
