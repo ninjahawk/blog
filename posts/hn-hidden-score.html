@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I went looking for my secret Hacker News score - NinjaHawk's Nest</title>
+    <meta name="description" content="Two public APIs, five stored fields, and one column stripped from every comment. There is no hidden reputation grade on Hacker News. Your karma just turns out to be a public sum of numbers nobody is allowed to see.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+    <link rel="stylesheet" href="../style.css">
+    <script data-goatcounter="https://blog-nathanlangley.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script defer src="../nest.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrap nav-inner">
+            <a class="brand" href="../index.html">NINJAHAWK<span>'S NEST</span></a>
+            <nav class="site-nav">
+                <a href="../index.html">Home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://nathanlangley.dev" target="_blank" rel="noopener">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="article">
+        <a class="back" href="../index.html">&larr;</a>
+        <div class="article-head">
+            <span class="kicker k-red">Investigation</span>
+            <h1>I went looking for my secret Hacker News score. There isn't one. Your karma is a public sum of numbers nobody can see.</h1>
+            <p class="dek">Two public APIs, five stored fields, and one column that is stripped off every comment on the site. Here is the number, and here is why you are not allowed to see the numbers inside it.</p>
+            <div class="byline">
+                <span class="by-author">NinjaHawk</span>
+                <span class="by-date">July 22, 2026</span>
+            </div>
+        </div>
+        <div class="article-body">
+            <p>Here is the idea I started with. Every large platform grades you. Twitter, TikTok, YouTube, all of them keep some private reputation number for your account, and they run it through a model you never get to see. It decides who your posts reach. Nobody at those companies will show it to you.</p>
+
+            <p>Hacker News is the interesting case, because Hacker News is <em>old</em>. It has looked the same for close to twenty years. It is famously allergic to features. So I had two guesses, and I liked both of them. Either HN was too stubborn to build a hidden score at all, or it had built one so long ago, in such plain un-obfuscated code, that the number was probably just sitting there in the open where I could read it right off the wire.</p>
+
+            <p>So I went to find mine. I want to walk through what I found, because the answer was not what I expected, and the real finding is better than the one I went looking for.</p>
+
+            <h2>There is no hidden score. There are five fields.</h2>
+
+            <p>Hacker News has a public API. No key, no login, no rate-limit dance. You ask it about a username and it hands back a small blob of JSON. Here is the entire thing it knows about you at the account level:</p>
+
+            <ul>
+                <li><code>id</code>, your username.</li>
+                <li><code>created</code>, the second you signed up.</li>
+                <li><code>karma</code>, one integer.</li>
+                <li><code>about</code>, your bio text.</li>
+                <li><code>submitted</code>, a list of the ID of every post and comment you have ever made.</li>
+            </ul>
+
+            <p>That is it. That is the whole record. I checked it against several accounts and the shape never changes. There is no <code>trust</code>, no <code>score</code>, no <code>rank</code>, no shadow field with a suggestive name. The only number on the account that grades you is karma, and karma is already printed next to your name for the whole internet to see.</p>
+
+            <p>So the conspiracy version is just wrong. HN is not hiding a reputation grade in the page. It never built one. The thing I assumed was buried in old code does not exist, because the old code is genuinely that simple.</p>
+
+            <p>I almost stopped there. Then I looked at what karma actually is, and the post turned into a different post.</p>
+
+            <h2>Karma is a comment score wearing a submission score's clothes</h2>
+
+            <p>Karma looks like one clean number. It is not. It is the running total of the votes on everything you have ever posted, stories and comments together, added up into a single integer. The site shows you the total. It never shows you the breakdown.</p>
+
+            <p>So I reconstructed the breakdown. There is a second public API, the search index, and it behaves differently for stories and comments in a way that turns out to be the whole point of this post. For a <em>story</em> it gives you the score. For a <em>comment</em> it gives you everything except the score. The points field is simply not there. It is stripped off.</p>
+
+            <p>That is not a bug in the index. It is HN's oldest rule, working as designed: your comment has a score, and you are the only person on Earth allowed to see it. Everyone else, including the search API, gets the comment with the number sanded off. It is meant to stop bandwagoning, where people pile votes onto whatever is already winning.</p>
+
+            <p>Which sets up the thing I actually want to show you. Story scores are public, so I can measure exactly how much of someone's karma came from submissions. Whatever is left over came from comments. I pulled fourteen of the most recognizable accounts on the site and did that subtraction. Here is a slice of it:</p>
+
+            <table>
+                <thead>
+                    <tr><th>Account</th><th>Karma</th><th>From comments</th><th>Story hit-rate</th><th>Dead on arrival</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>tptacek</td><td>422,970</td><td>~91%</td><td>20.6%</td><td>5.3%</td></tr>
+                    <tr><td>jacquesm</td><td>242,026</td><td>~86%</td><td>10.2%</td><td>23.6%</td></tr>
+                    <tr><td>pg</td><td>157,316</td><td>~70%</td><td>20.5%</td><td>4.3%</td></tr>
+                    <tr><td>rayiner</td><td>127,920</td><td>~98%</td><td>9.5%</td><td>15.9%</td></tr>
+                    <tr><td>patio11</td><td>127,807</td><td>~96%</td><td>36.5%</td><td>1.9%</td></tr>
+                    <tr><td>edw519</td><td>73,785</td><td>~87%</td><td>2.0%</td><td>40.4%</td></tr>
+                    <tr><td>dang</td><td>41,569</td><td>~44%</td><td>17.5%</td><td>44.7%</td></tr>
+                    <tr><td>sama</td><td>23,059</td><td>~0%</td><td>51.6%</td><td>3.3%</td></tr>
+                </tbody>
+            </table>
+
+            <p>The middle column is the finding. For most of these accounts, the great majority of their karma came from comments. The median across all fourteen was about eighty percent. For rayiner and jerf it was over ninety-eight. These are the people the site treats as high reputation, and they earned that reputation almost entirely through comments, and <em>every single one of those comment scores is invisible</em>. Not hard to find. Invisible. Stripped at the source.</p>
+
+            <p>So the number Hacker News prints next to your name, the one public signal of your standing on the site, is a sum of thousands of numbers that nobody except you is allowed to see. The scoreboard is public. Every individual score on it is private. I did not expect the answer to my "where is the hidden score" question to be "it is smeared across the one number that was never hidden at all," but that is where it landed.</p>
+
+            <p>One honest caveat, because I would rather you trust the careful version. That subtraction is an estimate. Karma is votes up minus votes down, and I am approximating each account's story-karma as the sum of its public story points. It ignores downvote penalties and assumes a story point converts to karma one for one. So read sama's "~0%" as "the estimate saturated," not as a literal zero: his submissions alone account for more points than his entire karma, which if anything makes the point harder. The exact percentages are soft. The pattern, that karma is mostly comment karma, is not. The gap is too large for the approximation to be inventing it.</p>
+
+            <h2>What you actually can see: how a person posts</h2>
+
+            <p>Since story scores are public, the part of a profile that <em>is</em> reconstructable is submission behavior, and it has a texture that karma alone hides completely. Two numbers do most of the work: hit-rate, the share of someone's posts that cleared 100 points and got real traction, and dead-on-arrival, the share that never made it past a single point.</p>
+
+            <p>Look back at that table and two opposite styles fall out of it. sama posts rarely and lands over half the time, with almost nothing dying. patio11 is similar: fifty-two submissions across seventeen years, a third of them hits. Call that the sniper. Then there is edw519, one of the great commenters in the site's history, who also fired off 3,819 submissions, forty percent of which died at one point and only two percent of which broke a hundred. Call that the volume shooter. Same site, same scoring, completely different signature, and you only see it once you pull the full history and stop looking at the single karma number.</p>
+
+            <p>The other thing this makes plain: everybody eats dead posts. Even the most front-page-famous accounts have a real floor of submissions that went up and vanished at one point. There is no account so trusted that the site carries its duds. The score you never see is failing quietly in the background for everyone.</p>
+
+            <h2>The two records do not agree with each other</h2>
+
+            <p>Here is a smaller finding I did not go looking for. HN's account record lists every item you submitted. The search index lists every item it can find. These two public sources are supposed to describe the same history, and for heavy users they disagree, sometimes by tens of thousands of items, in both directions.</p>
+
+            <p>The clearest case is dang, who runs the place. His account record says he submitted 83,933 things. Public search can surface 54,007 of them. Roughly thirty thousand items are in the moderator's own history and not in the searchable record. The mundane explanation covers most of it: deleted and dead comments fall out of the search index but stay in the raw history. Which is its own quiet finding. The person doing the moderating has the most redacted trail on the site, and neither public source is the complete one. If you want someone's real history you have to reconcile both and accept you still will not get all of it.</p>
+
+            <h2>The one score that actually is hidden, and it is yours</h2>
+
+            <p>So after all that, is there a hidden score worth chasing? Yes, exactly one, and it is not a conspiracy. It is your own comment scores.</p>
+
+            <p>Remember the stripped column. Your comment has a point value. You are the only person allowed to see it, and only when you are logged in, one comment at a time, buried on the page. Nobody has the total. HN certainly is not going to add it up for you. But it is <em>your</em> data, it is sitting behind your own login, and there is nothing stopping you from walking your entire comment history while signed in and adding it up yourself. That gives you a number that genuinely does not exist anywhere else: the full distribution of your own comment scores, the thing HN hides even from you by never totaling it.</p>
+
+            <p>That is the one build here that needs a login, and it only ever touches your own account. You cannot do it to anyone else, because their scores are stripped for you the same way yours are stripped for them. Which is the honest shape of the whole thing. The only hidden reputation number on Hacker News that you can actually recover is the one that was always yours to look at, just never in one place.</p>
+
+            <h2>What this means</h2>
+
+            <p>I went in expecting to catch an old site hiding a grade in plain sight. That is not what is happening. Hacker News did not hide a reputation model. It declined to build one, and the single score it does hide, per-comment points, it hides for a reason it has stated out loud for years.</p>
+
+            <p>The finding that replaced it is quieter and I think more true. The public reputation number on Hacker News is an aggregate of private ones. Karma is real, it gates real abilities on the site, and for most people it is mostly a comment score whose parts you are not permitted to see. There is no secret file on you. There is just a total, printed in the open, adding up a long column of numbers the site sanded off one by one on the way in.</p>
+
+            <h2>Run it yourself</h2>
+
+            <p>All of this is read-only and needs no account. Two endpoints do the work. The account record is <code>hacker-news.firebaseio.com/v0/user/YOURNAME.json</code>, which gives you karma, age, and the full submitted list. The search index is <code>hn.algolia.com/api/v1/search?tags=story,author_YOURNAME</code>, which gives you every story with its score, and the same call with <code>tags=comment</code> gives you every comment with the score conspicuously missing. Count them, sum the story points, subtract from karma, and you have your own version of the table above. The whole thing is about forty lines of Python and it runs in a few seconds. Point it at your own handle and see how much of your standing came from numbers you were never shown.</p>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <p class="foot-brand">Ninjahawk's Nest</p>
+            <p>&copy; 2026 Nathan Langley</p>
+        </div>
+    </footer>
+</body>
+</html>
