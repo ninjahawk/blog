@@ -548,73 +548,39 @@ figcaption {
   .picks-lead .card-title { font-size: 32px; }
 }
 
-/* ---------------------------------------------------- pull-to-refresh nest */
-/* Injected by nest.js on touch devices: three creatures wake from the dark. */
+/* ---------------------------------------------------- pull-to-refresh raven */
+/* Injected by nest.js on touch devices. Sprite: CC0 "Pixel Raven" (opengameart). */
 html { overscroll-behavior-y: contain; }
 #nest-ptr {
   position: fixed;
   top: 0; left: 0; right: 0;
-  height: 130px;
-  transform: translateY(-130px);
+  height: 120px;
+  transform: translateY(-120px);
   z-index: 60;
   pointer-events: none;
   overflow: hidden;
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-end;
-  padding-bottom: 16px;
-  background: radial-gradient(140% 160% at 50% -10%, #10182a 0%, #070a12 55%, #05070b 100%);
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 22px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
   will-change: transform;
 }
-.nest-scene { display: flex; align-items: flex-end; gap: 30px; height: 52px; }
-.nest-creature {
-  position: relative;
-  width: 46px; height: 46px;
-  border-radius: 50% 50% 46% 46%;
-  background: linear-gradient(180deg, #2b3446, #0e131c);
-  box-shadow: inset 0 2px 0 rgba(255,255,255,0.08), inset 0 -8px 12px rgba(0,0,0,0.6), 0 3px 8px rgba(0,0,0,0.5);
-  transform: translateY(52px);
-  transition: transform 0.08s linear;
+.nest-raven {
+  width: 64px; height: 64px;
+  background-image: url("raven.png");
+  background-repeat: no-repeat;
+  background-size: 320px 64px;   /* 5 frames of the 80x16 sheet, scaled 4x */
+  background-position-x: 0;       /* frame 0 = perched idle */
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
-.nest-creature i {
-  position: absolute;
-  top: 15px;
-  width: 8px; height: 8px;
-  border-radius: 50%;
-  background: var(--eye);
-  box-shadow: 0 0 9px 2px var(--eye);
-  transform: scaleY(0.08);
-  transform-origin: center;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.nest-creature i:first-child { left: 9px; }
-.nest-creature i:last-child  { right: 9px; }
-.nest-creature.awake i { transform: scaleY(1); }
-.nest-creature.awake { animation: nest-bob 1.15s ease-in-out infinite; }
-#nest-ptr .c1 { --eye: #17b3c9; } /* Cedar  — teal  */
-#nest-ptr .c2 { --eye: #8a6bff; } /* Cipher — purple */
-#nest-ptr .c3 { --eye: #ff6b35; } /* Vault  — orange */
-#nest-ptr.ready .nest-creature i { box-shadow: 0 0 18px 5px var(--eye); }
-.nest-twig {
-  width: 150px; height: 4px; margin-top: 9px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, transparent, #2a2015 20%, #3a2c1c 50%, #2a2015 80%, transparent);
-}
-.nest-hint {
-  margin-top: 11px;
-  font-family: var(--display, sans-serif);
-  font-size: 11px;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: #59616f;
-  transition: color 0.2s;
-}
-#nest-ptr.ready .nest-hint { color: #d3dae6; }
-@keyframes nest-bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-5px); }
+.nest-raven.flying { animation: raven-fly 0.4s steps(4) infinite; }
+@keyframes raven-fly {
+  from { background-position-x: -64px; }   /* flap frames 1..4 */
+  to   { background-position-x: -320px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .nest-creature.awake { animation: none; }
+  .nest-raven.flying { animation-duration: 0.8s; }
 }
