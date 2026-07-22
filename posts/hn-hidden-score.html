@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Most of your Hacker News karma comes from comment scores only you can see - NinjaHawk's Nest</title>
-    <meta name="description" content="Hacker News is old and barely changed in twenty years, so I figured it might have a hidden reputation score sitting in plain code. It doesn't. It stores five fields, and the only score among them, karma, is mostly built from comment votes nobody but the author can see.">
+    <meta name="description" content="Hacker News barely changed in twenty years, so I went looking for a hidden reputation score in its plain old code. There isn't one. It keeps five fields per account, and the only score among them is karma, most of which comes from comment votes nobody but the author can see.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
@@ -30,20 +30,20 @@
         <div class="article-head">
             <span class="kicker k-red">Investigation</span>
             <h1>Most of your Hacker News karma comes from comment scores only you can see</h1>
-            <p class="dek">Hacker News is old and barely changed in twenty years, so I figured it might have a hidden reputation score sitting in plain code. It doesn't. It stores five fields, and the only score among them, karma, is mostly built from comment votes nobody but the author can see.</p>
+            <p class="dek">Hacker News barely changed in twenty years, so I went looking for a hidden reputation score in its plain old code. There isn't one. It keeps five fields per account. The only score among them is karma, and most of it comes from comment votes nobody but the author can see.</p>
             <div class="byline">
                 <span class="by-author">NinjaHawk</span>
                 <span class="by-date">July 22, 2026</span>
             </div>
         </div>
         <div class="article-body">
-            <p>Every large platform keeps a private score on you. Twitter, TikTok, YouTube: there's some internal number attached to your account, computed by a model you never see, and it decides how far your posts travel. You can't read it, and nobody is going to tell you what it is.</p>
+            <p>Every big platform runs a private score on you. Twitter, TikTok and YouTube all keep some internal number on your account that decides how far your posts travel, and none of them will tell you what it is.</p>
 
-            <p>Hacker News seemed like it might be the exception, for a specific reason: it's old. The site has barely changed in twenty years and it's famously reluctant to add anything. So either it never bothered building a hidden score, or it has one written in such plain, ancient code that I could probably just read it straight off the public API. I went to find mine.</p>
+            <p>I figured Hacker News might be the exception, because it's old. The site has barely changed in twenty years and adds a feature about once a decade. My guess was that it either never built a hidden score, or built one so long ago that the code would be simple enough to read straight off the public API. So I went looking for mine.</p>
 
-            <h2>There's no hidden score. There are five fields.</h2>
+            <h2>Five fields</h2>
 
-            <p>The public API returns everything HN stores about an account. No key, no login. You request a username and get back a small JSON object:</p>
+            <p>The public API hands back everything HN keeps on an account. No key, no login: you ask for a username and get a small JSON object back.</p>
 
             <ul>
                 <li><code>id</code>, your username.</li>
@@ -53,19 +53,19 @@
                 <li><code>submitted</code>, the ID of every post and comment you've ever made.</li>
             </ul>
 
-            <p>Five fields. I checked a range of accounts and the shape never changes. No <code>trust</code>, no <code>score</code>, no <code>rank</code>, nothing with a suggestive name. The only number that grades you is karma, and karma is already printed next to your username.</p>
+            <p>I pulled a range of accounts and the shape never changes. There's nothing called <code>trust</code>, <code>score</code> or <code>rank</code>, nothing with a suggestive name. The only number that grades you is karma, and karma is already printed next to your username.</p>
 
-            <p>So the premise was wrong. There's no hidden reputation model in the page, in old code, or anywhere else, because there isn't a reputation model at all. Karma is the whole thing. I would have stopped there, except karma turns out to be stranger than it looks.</p>
+            <p>So my premise was wrong before I started. HN isn't hiding a reputation model in the page or in old code, because it doesn't have one to hide. Karma is the entire system. I nearly stopped there, but karma didn't behave the way I assumed it would.</p>
 
             <h2>Where karma comes from</h2>
 
-            <p>Karma reads as a single clean number. It's actually the sum of every vote you've ever received, across stories and comments together, collapsed into one integer. HN shows the sum and never the parts.</p>
+            <p>Karma looks like one clean number. It's the running sum of every vote you've ever received, stories and comments thrown in together and flattened to a single integer. You get the total and nothing underneath it.</p>
 
-            <p>The parts are recoverable, up to a point. There's a second public API, the Algolia index, and it treats stories and comments differently. For a story it returns the score. For a comment it returns everything except the score. The points field is simply absent.</p>
+            <p>You can pull some of that back apart, though not cleanly. HN runs a second public API, the Algolia search index, and it handles the two kinds of item differently. Stories come back with their score attached. Comments come back with everything except the score; the points field just isn't there.</p>
 
-            <p>This is deliberate, and it's one of the oldest rules on the site: a comment has a score, and only its author can see it. Everyone else, the API included, gets the comment with the number removed. The stated reason is to keep people from piling votes onto whatever is already ahead.</p>
+            <p>That's on purpose, and it's one of the oldest rules on the site. Every comment has a score, and only the person who wrote it can see it. Everyone else, the API included, gets the comment with the number stripped out. HN's stated reason is to stop people dogpiling votes onto whatever is already ahead.</p>
 
-            <p>Story scores are public, though, so you can measure how much of an account's karma came from submissions and attribute the rest to comments. I ran that on fourteen well-known accounts:</p>
+            <p>Story scores are public, so you can add up how much of an account's karma came from submissions and chalk the rest up to comments. I ran that on fourteen well-known accounts. Here are eight of them:</p>
 
             <table>
                 <thead>
@@ -83,41 +83,41 @@
                 </tbody>
             </table>
 
-            <p>Look at the third column. For nearly all of them, most of the karma came from comments. The median across the fourteen was about 80%. rayiner and jerf are both above 98%. These are some of the most trusted accounts on the site, their standing is built almost entirely out of comments, and not one of those comment scores is visible to anyone but them.</p>
+            <p>Look at the third column. For almost everyone, the bulk of the karma came from comments. The median across the fourteen was around 80%. rayiner and jerf both clear 98%. These are some of the most trusted names on the site, their standing is built almost entirely out of comments, and every one of those comment scores is invisible to everyone but them.</p>
 
-            <p>So karma, the single public measure of how much HN trusts you, is a sum over thousands of scores that are individually private. The total is public and every term in it is hidden.</p>
+            <p>So the one public measure of how much HN trusts you is built mostly out of numbers nobody is allowed to read, including in some sense the person they belong to, who can only ever see them one at a time.</p>
 
-            <p>The attribution is rough, and I don't want to pretend otherwise. Karma is upvotes minus downvotes; I'm treating story-karma as the sum of public story points, which ignores downvotes and assumes a point of story score is worth a point of karma. sama's ~0% is the estimate hitting its floor: his stories are worth more points than his entire karma, so the subtraction bottoms out at zero. The exact percentages are approximate. The direction isn't. The gap is far too large to be an artifact of the math.</p>
+            <p>The attribution is rough and I won't pretend otherwise. Karma is upvotes minus downvotes; I'm treating story-karma as the sum of public story points, which ignores downvotes and assumes one story point is worth one point of karma. sama's ~0% is the estimate hitting its floor: his stories are worth more points than his whole karma total, so the subtraction bottoms out at zero. Read the exact percentages as approximate. The size of the gap isn't up for debate; it's far too large to come out of the math.</p>
 
-            <h2>What's actually visible: posting style</h2>
+            <h2>What you can see: posting style</h2>
 
-            <p>What you can reconstruct from the public side is how someone submits, and it varies more than karma lets on. Two numbers cover most of it: the fraction of posts that clear 100 points (hit-rate), and the fraction that never get past 1 point (dead on arrival).</p>
+            <p>What the public side does show is how a person submits, and that varies a lot more than karma lets on. Two numbers cover most of it: the share of posts that clear 100 points (hit-rate), and the share that never make it past 1 point (dead on arrival).</p>
 
-            <p>The table splits into two shapes. sama and patio11 post rarely and hit often. sama lands 51% of the time; patio11 has 52 submissions across seventeen years and a third of them hit. At the other end is edw519, one of the most prolific commenters on the site, who also made 3,819 submissions, 40% of which died at 1 point and 2% of which cleared 100. Karma shows none of this. Two accounts can be neighbors on the karma leaderboard and post nothing alike.</p>
+            <p>The table falls into two shapes. sama and patio11 post rarely and land often. sama hits 51% of the time; patio11 has 52 submissions across seventeen years, a third of them over 100. edw519 is the opposite: one of the heaviest commenters on the site, he also filed 3,819 submissions, 40% of which died at 1 point and 2% of which cleared 100. Karma shows none of that. Two accounts can sit next to each other on the leaderboard and post nothing alike.</p>
 
-            <p>One thing holds for everyone: the dead-on-arrival column is never zero. Every account here, including the ones that basically live on the front page, has a floor of posts that went up and died at 1 point. I found that weirdly reassuring.</p>
+            <p>One thing holds across everybody: the dead-on-arrival column never hits zero. Even the accounts that basically live on the front page have a floor of posts that went up and died at 1 point. I found that oddly reassuring.</p>
 
             <h2>The two records disagree</h2>
 
-            <p>A side effect I wasn't looking for: HN's account record and its search index don't match. The account lists everything you've submitted. The index lists everything it can find. For heavy users the two disagree by tens of thousands of items, in both directions.</p>
+            <p>Something I wasn't looking for: HN's account record and its search index don't agree. Your account lists everything you've submitted. The index lists everything it can still find. For heavy users the two numbers come apart by tens of thousands of items, and it goes both ways.</p>
 
-            <p>dang is the clearest case. His account record lists 83,933 submissions. The search index returns 54,007. About thirty thousand of the moderator's own items are in his history and absent from search. Most of that is probably deleted and dead comments, which stay in the raw history but drop out of the index. Still, it's a strange result: the person who runs moderation has the least searchable trail on the site, and neither public source is complete on its own.</p>
+            <p>dang is the clearest example. His account record lists 83,933 submissions; the search index returns 54,007. Roughly thirty thousand of the moderator's own items sit in his history and never turn up in search. Most of that is probably deleted and dead comments, which stay in the raw history but fall out of the index. It's still an odd result: the person who runs moderation has the least searchable trail on the site, and neither public source is complete by itself.</p>
 
             <h2>The one hidden score is yours</h2>
 
-            <p>There is one genuinely hidden score, and it's the stripped column from earlier. Every comment you've written has a point value that only you can see, only while logged in, one comment at a time. Nothing adds it up. But it's your data, behind your own login, and you can walk your whole comment history and sum it yourself. That gives you a number that exists nowhere else: the distribution of your own comment scores, which HN hides from you by never totaling it.</p>
+            <p>There is exactly one genuinely hidden score, and it's the column Algolia strips out. Every comment you've written carries a point value only you can see, only while logged in, one comment at a time. Nothing sums it for you. But it's your data, sitting behind your own login, so you can walk your entire comment history and add it up yourself. What you get is a number that exists nowhere else: the full distribution of your own comment scores, which HN keeps from you purely by never putting it in one place.</p>
 
-            <p>It only works on your own account. Everyone else's comment scores are stripped for you the same way yours are stripped for them. The only hidden reputation number you can recover on Hacker News is the one that was always yours to see, just never in one place.</p>
+            <p>This only works on your own account. Everyone else's comment scores are stripped for you exactly the way yours are stripped for them. The only hidden reputation number you can dig up on Hacker News is the one that already belonged to you.</p>
 
             <h2>What this means</h2>
 
-            <p>I expected to find an old site quietly grading its users. It isn't. HN never built a reputation model; it chose not to, and the one score it does hide, per-comment points, it hides for a reason it has published.</p>
+            <p>I went in expecting to catch an old site quietly grading its users. It isn't doing that. HN never built a reputation model; it decided not to, and the one score it does hide, per-comment points, it hides for a reason it's stated in public.</p>
 
-            <p>What's actually there is smaller and, I think, more accurate. The public reputation number is an aggregate of private ones. Karma is real and it unlocks real permissions on the site, and for most people it's mostly a comment score whose components they aren't allowed to see. There's no file on you. There's a running total, in the open, over a long list of numbers that were each removed on the way in.</p>
+            <p>What's actually there is smaller and, I'd argue, more honest. The public reputation number is an aggregate of private ones. Karma is real, it unlocks real abilities on the site, and for most people it's mostly a comment score whose parts they aren't allowed to see. There's no dossier on you. There's a public running total sitting on top of a long list of numbers that each got removed on the way in.</p>
 
             <h2>Run it yourself</h2>
 
-            <p>It's all read-only and needs no account. Two endpoints. <code>hacker-news.firebaseio.com/v0/user/YOURNAME.json</code> gives you karma, account age, and the full submitted list. <code>hn.algolia.com/api/v1/search?tags=story,author_YOURNAME</code> gives you every story with its score; swap in <code>tags=comment</code> and you get every comment with the score missing. Count both, sum the story points, subtract from karma, and you have your own row of the table. It's about forty lines of Python. Run it on your own username and see how much of your standing came from numbers you were never shown.</p>
+            <p>It's all read-only and needs no account. Two endpoints. <code>hacker-news.firebaseio.com/v0/user/YOURNAME.json</code> returns your karma, account age and full submitted list. <code>hn.algolia.com/api/v1/search?tags=story,author_YOURNAME</code> returns every story with its score; switch to <code>tags=comment</code> and you get every comment with the score missing. Count both, sum the story points, subtract from karma, and you've got your own row of the table. It's about forty lines of Python. Run it on your own username and see how much of your standing came from numbers you were never shown.</p>
         </div>
     </main>
 
