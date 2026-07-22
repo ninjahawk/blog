@@ -306,7 +306,7 @@ a.feed-title:hover { color: var(--accent); text-decoration: none; }
 .article {
   max-width: var(--read);
   margin: 0 auto;
-  padding: 34px 28px 40px;
+  padding: 14px 28px 40px;
 }
 .back {
   display: inline-block;
@@ -316,7 +316,7 @@ a.feed-title:hover { color: var(--accent); text-decoration: none; }
   letter-spacing: 0.8px;
   text-transform: uppercase;
   color: var(--art-link);
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 .back:hover { color: var(--navy); text-decoration: none; }
 
