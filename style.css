@@ -373,11 +373,12 @@ a.feed-title:hover { color: var(--accent); text-decoration: none; }
 
 /* article body ------------------------------------------------------------ */
 .article-body {
-  font-family: var(--headline);   /* sans reading body, same family as the headline */
-  font-size: 19px;
-  color: #1d1d1f;                 /* neutral near-black for contrast */
+  /* Tarski theme body stack — matches terrytao.wordpress.com reading experience */
+  font-family: Verdana, Helvetica, Arial, sans-serif;
+  font-size: 18px;
+  color: #1a1a1a;
 }
-.article-body p { margin-bottom: 22px; line-height: 1.7; }
+.article-body p { margin-bottom: 20px; line-height: 1.55; }
 
 .article-body h2 {
   font-family: var(--headline);
