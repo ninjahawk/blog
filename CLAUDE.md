@@ -58,7 +58,7 @@ script.
 | `posts/api-paywalls.html` | They trained on your posts for free. Reading one back costs half a cent. | July 12, 2026 |
 | `posts/poke500.html` | I built a stock index for Pokémon cards. The cheapest card in it is a common Psyduck at $226. | July 15, 2026 |
 | `posts/subtext.html` | Watching a language model think before it speaks | July 22, 2026 |
-| `posts/hn-hidden-score.html` | I went looking for my secret Hacker News score. There isn't one. Your karma is a public sum of numbers nobody can see. | July 22, 2026 |
+| `posts/hn-hidden-score.html` | Most of your Hacker News karma comes from comment scores only you can see | July 22, 2026 |
 
 Posts are ordered newest-first in `index.html`.
 

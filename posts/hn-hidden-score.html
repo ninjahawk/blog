@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I went looking for my secret Hacker News score - NinjaHawk's Nest</title>
-    <meta name="description" content="Two public APIs, five stored fields, and one column stripped from every comment. There is no hidden reputation grade on Hacker News. Your karma just turns out to be a public sum of numbers nobody is allowed to see.">
+    <title>Most of your Hacker News karma comes from comment scores only you can see - NinjaHawk's Nest</title>
+    <meta name="description" content="I assumed an old site like Hacker News had to be keeping a hidden reputation score on me. It isn't. It stores five fields, and the only score among them, karma, turns out to be mostly built from comment votes the site never lets anyone see.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
@@ -29,15 +29,15 @@
         <a class="back" href="../index.html">&larr;</a>
         <div class="article-head">
             <span class="kicker k-red">Investigation</span>
-            <h1>I went looking for my secret Hacker News score. There isn't one. Your karma is a public sum of numbers nobody can see.</h1>
-            <p class="dek">Two public APIs, five stored fields, and one column that is stripped off every comment on the site. Here is the number, and here is why you are not allowed to see the numbers inside it.</p>
+            <h1>Most of your Hacker News karma comes from comment scores only you can see</h1>
+            <p class="dek">I assumed an old site like Hacker News had to be keeping a hidden reputation score on me. It isn't. It stores five fields, and the only score among them, karma, turns out to be mostly built from comment votes the site never lets anyone see.</p>
             <div class="byline">
                 <span class="by-author">NinjaHawk</span>
                 <span class="by-date">July 22, 2026</span>
             </div>
         </div>
         <div class="article-body">
-            <p>Here is the idea I started with. Every large platform grades you. Twitter, TikTok, YouTube, all of them keep some private reputation number for your account, and they run it through a model you never get to see. It decides who your posts reach. Nobody at those companies will show it to you.</p>
+            <p>This started with a hunch. Every large platform grades you. Twitter, TikTok, YouTube, all of them keep some private reputation number for your account, and they run it through a model you never get to see. It decides who your posts reach. Nobody at those companies will show it to you.</p>
 
             <p>Hacker News is the interesting case, because Hacker News is <em>old</em>. It has looked the same for close to twenty years. It is famously allergic to features. So I had two guesses, and I liked both of them. Either HN was too stubborn to build a hidden score at all, or it had built one so long ago, in such plain un-obfuscated code, that the number was probably just sitting there in the open where I could read it right off the wire.</p>
 
@@ -45,7 +45,7 @@
 
             <h2>There is no hidden score. There are five fields.</h2>
 
-            <p>Hacker News has a public API. No key, no login, no rate-limit dance. You ask it about a username and it hands back a small blob of JSON. Here is the entire thing it knows about you at the account level:</p>
+            <p>Hacker News has a public API. No key, no login, no rate-limit dance. You ask it about a username and it hands back a small blob of JSON. This is everything it knows about you at the account level:</p>
 
             <ul>
                 <li><code>id</code>, your username.</li>
@@ -69,7 +69,7 @@
 
             <p>That is not a bug in the index. It is HN's oldest rule, working as designed: your comment has a score, and you are the only person on Earth allowed to see it. Everyone else, including the search API, gets the comment with the number sanded off. It is meant to stop bandwagoning, where people pile votes onto whatever is already winning.</p>
 
-            <p>Which sets up the thing I actually want to show you. Story scores are public, so I can measure exactly how much of someone's karma came from submissions. Whatever is left over came from comments. I pulled fourteen of the most recognizable accounts on the site and did that subtraction. Here is a slice of it:</p>
+            <p>Which sets up the thing I actually want to show you. Story scores are public, so I can measure exactly how much of someone's karma came from submissions. Whatever is left over came from comments. I pulled fourteen of the most recognizable accounts on the site and did that subtraction. A slice of it looks like this:</p>
 
             <table>
                 <thead>
@@ -87,7 +87,7 @@
                 </tbody>
             </table>
 
-            <p>The middle column is the finding. For most of these accounts, the great majority of their karma came from comments. The median across all fourteen was about eighty percent. For rayiner and jerf it was over ninety-eight. These are the people the site treats as high reputation, and they earned that reputation almost entirely through comments, and <em>every single one of those comment scores is invisible</em>. Not hard to find. Invisible. Stripped at the source.</p>
+            <p>The middle column is the finding. For most of these accounts, the great majority of their karma came from comments. The median across all fourteen was about eighty percent. For rayiner and jerf it was over ninety-eight. These are the people the site treats as high reputation, and they earned that reputation almost entirely through comments, and <em>every single one of those comment scores is invisible</em>. Not just hard to dig up, but genuinely gone, stripped off at the source before anyone else ever loads the page.</p>
 
             <p>So the number Hacker News prints next to your name, the one public signal of your standing on the site, is a sum of thousands of numbers that nobody except you is allowed to see. The scoreboard is public. Every individual score on it is private. I did not expect the answer to my "where is the hidden score" question to be "it is smeared across the one number that was never hidden at all," but that is where it landed.</p>
 
@@ -103,7 +103,7 @@
 
             <h2>The two records do not agree with each other</h2>
 
-            <p>Here is a smaller finding I did not go looking for. HN's account record lists every item you submitted. The search index lists every item it can find. These two public sources are supposed to describe the same history, and for heavy users they disagree, sometimes by tens of thousands of items, in both directions.</p>
+            <p>One more thing fell out of this that I did not go looking for. HN's account record lists every item you submitted. The search index lists every item it can find. These two public sources are supposed to describe the same history, and for heavy users they disagree, sometimes by tens of thousands of items, in both directions.</p>
 
             <p>The clearest case is dang, who runs the place. His account record says he submitted 83,933 things. Public search can surface 54,007 of them. Roughly thirty thousand items are in the moderator's own history and not in the searchable record. The mundane explanation covers most of it: deleted and dead comments fall out of the search index but stay in the raw history. Which is its own quiet finding. The person doing the moderating has the most redacted trail on the site, and neither public source is the complete one. If you want someone's real history you have to reconcile both and accept you still will not get all of it.</p>
 
