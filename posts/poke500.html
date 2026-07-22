@@ -24,7 +24,7 @@
     </header>
 
     <main class="article">
-        <a class="back" href="../index.html">&larr; All stories</a>
+        <a class="back" href="../index.html">&larr;</a>
         <div class="article-head">
             <span class="kicker k-orange">Projects</span>
             <h1>I built a stock index for Pokémon cards. The cheapest card in it is a common Psyduck at $226.</h1>
@@ -35,49 +35,25 @@
             </div>
         </div>
         <div class="article-body">
-            <p>Yesterday's close:</p>
+            <p>On July 14, 2026 the S&amp;Poké 500 closed at 1,074.32, down 1.21% on the day, a drop of 13.20 points. The basket behind it was worth $253,171.28. Twenty-seven cards advanced, 22 declined, and 451 were unchanged. Those are TCGplayer market prices.</p>
 
-            <pre><code>S&amp;Poké 500 (SPK500)
-
-1,074.32   ▼ 1.21% (-13.20) Today
-
-Jul 14, 2026 · TCGplayer market prices
-
-Prev close                 1,087.52
-All-time high              1,107.91
-All-time low                 943.14
-Basket value            $253,171.28
-Advancing / declining       27 / 22
-Unchanged                       451</code></pre>
-
-            <p>That is the front page of <a href="https://poké500.com" target="_blank" rel="noopener">poké500.com</a>, a site I launched this week. It quotes the Pokémon card market like a stock index: one number, one chart, and a table of the 500 constituents. The site calls itself the S&amp;Poké 500. Parody name. It is not affiliated with S&amp;P Global, Nintendo, The Pokémon Company, or TCGplayer.</p>
-
-            <hr>
+            <p>It is a stock index for Pokémon cards, which I launched this week at <a href="https://poké500.com" target="_blank" rel="noopener">poké500.com</a>. One number, one chart, and a table of the 500 constituents. The name is a parody, the S&amp;Poké 500, ticker SPK500. It is not affiliated with S&amp;P Global, Nintendo, The Pokémon Company, or TCGplayer.</p>
 
             <h2>What it is</h2>
 
-            <p>A price-weighted index of the 500 most valuable English, raw (ungraded) Pokémon trading cards. Rebased to 1,000 at the base date. It moves with the combined market price of the basket: up when cards get pricier, down when the market cools. The layout is the Google Finance quote page: hero number, gradient area chart with a scrubber, previous-close reference line, movers, and a searchable table.</p>
-
-            <hr>
+            <p>A price-weighted index of the 500 most valuable English, raw (ungraded) Pokémon trading cards. Rebased to 1,000 at the base date. It moves with the combined market price of the basket: up when cards get pricier, down when the market cools. The layout copies the Google Finance quote page: hero number, gradient area chart with a scrubber, previous-close reference line, movers, and a searchable table.</p>
 
             <h2>The number</h2>
 
-            <p>The index is the sum of the 500 card prices divided by a divisor:</p>
+            <p>The index is the sum of the 500 card prices divided by a divisor. At the February 8, 2024 base date the basket was worth $90,695.71 and the divisor was 90.696, which sets the index to exactly 1,000.00. On July 14, 2026 the basket was worth $253,171.28 and the divisor was 235.657, which puts the index at 1,074.32.</p>
 
-            <pre><code>index = totalValue / divisor
+            <p>The basket value and the divisor are both published in the site's <code>latest.json</code>. The divisor exists for the same reason the Dow has one. Membership churns: cards fall out of the top 500, new cards enter. When the basket changes, the divisor is adjusted so the churn itself doesn't move the number. Only price changes do.</p>
 
-2024-02-08 (base)   $90,695.71  / 90.696   = 1,000.00
-2026-07-14          $253,171.28 / 235.657  = 1,074.32</code></pre>
-
-            <p>Both values are published in the site's <code>latest.json</code>. The divisor exists for the same reason the Dow has one. Membership churns: cards fall out of the top 500, new cards enter. When the basket changes, the divisor is adjusted so the churn itself doesn't move the number. Only price changes do.</p>
-
-            <p>The gap between the two columns is the point. The dollar sum of the basket nearly tripled since February 2024, but almost all of that is composition: new sets entered the top 500 at high prices. The index strips that out and reports price movement alone: +7.4% over the same period.</p>
-
-            <hr>
+            <p>The gap between those two dates is the point. The dollar sum of the basket nearly tripled since February 2024, but almost all of that is composition: new sets entered the top 500 at high prices. The index strips that out and reports price movement alone: up 7.4% over the same period.</p>
 
             <h2>The basket</h2>
 
-            <p>Top of the table on July 14:</p>
+            <p>The ten most valuable cards on July 14:</p>
 
             <table>
                 <thead>
@@ -106,36 +82,25 @@ Unchanged                       451</code></pre>
 
             <p>Two scope rules. Cards are English and ungraded, priced by TCGplayer's market price for the regular printing. And 1st Edition printings are out of scope entirely: they trade too thinly on TCGplayer for reliable daily pricing.</p>
 
-            <hr>
-
             <h2>The data</h2>
 
             <p>Prices are TCGplayer market data via <a href="https://tcgcsv.com" target="_blank" rel="noopener">tcgcsv.com</a>, which publishes one snapshot per day (the July 14 snapshot landed at 20:05 UTC). A scheduled job checks hourly, recomputes the index when a new snapshot appears, and commits fresh <code>latest.json</code> and <code>history.json</code> files. The site itself is static. An open tab polls the JSON every five minutes and ticks over to the new day on its own.</p>
 
-            <p>Look at the breadth line in the quote: 27 advancing, 22 declining, 451 unchanged. That is a normal day. Most of these cards do not trade daily, and TCGplayer's market price is a smoothed estimate, not a last-trade tick. When a thin card does reprice, it jumps. July 14's movers:</p>
+            <p>Breadth on July 14 was 27 cards advancing, 22 declining, and 451 unchanged. That is a normal day. Most of these cards do not trade daily, and TCGplayer's market price is a smoothed estimate, not a last-trade tick. When a thin card does reprice, it jumps. That day the top gainer was Alakazam E4 Lv.X from Rising Rivals, up 50% to $300. The top loser was Jolteon Star from Power Keepers, down 22.5% to $1,549.97.</p>
 
-            <pre><code>Top gainer   Alakazam E4 Lv.X (Rising Rivals)   $300.00    +50.00%
-Top loser    Jolteon Star (Power Keepers)       $1,549.97  -22.50%</code></pre>
-
-            <p>A +50% day on a $300 card is probably one sale. Card-level daily changes are noisy. The index level is where the smoothing happens: 500 mostly-static prices, a handful of jumps, a 1.21% move at the top.</p>
-
-            <hr>
+            <p>A 50% day on a $300 card is probably one sale. Card-level daily changes are noisy. The index level is where the smoothing happens: 500 mostly-static prices, a handful of jumps, and a 1.21% move at the top.</p>
 
             <h2>The chart</h2>
 
-            <p>History runs from February 8, 2024 to now, 129 points. Everything before launch is backfilled from tcgcsv's archive at weekly resolution. From launch forward it records one point per day. Range buttons go from 1W to 5Y; the narrow ones stay disabled until enough daily history exists to fill them.</p>
+            <p>History runs from February 8, 2024 to now, 129 points. Everything before launch is backfilled from tcgcsv's archive at weekly resolution. From launch forward it records one point per day. Range buttons go from 1W to 5Y. The narrow ones stay disabled until enough daily history exists to fill them.</p>
 
             <p>What the line shows so far: the index spent late 2024 underwater, bottoming at 943.14 on October 10, 2024. It recovered through 2025 and set its all-time high of 1,107.91 on June 18, 2026. It has drifted down about 3% since.</p>
 
-            <hr>
-
             <h2>The site</h2>
 
-            <p>Static HTML, one CSS file, one vanilla JavaScript file. No framework, no build step, no dependencies, no chart library. The chart is hand-drawn SVG. Tapping a row opens a lightbox with the card image and a link to its TCGplayer page. The page loads no analytics and no third-party scripts; the only external requests are card thumbnails from TCGplayer's CDN.</p>
+            <p>Static HTML, one CSS file, one vanilla JavaScript file. No framework, no build step, no dependencies, no chart library. The chart is hand-drawn SVG. Tapping a row opens a lightbox with the card image and a link to its TCGplayer page. The page loads no analytics and no third-party scripts. The only external requests are card thumbnails from TCGplayer's CDN.</p>
 
-            <p>The domain has the accent in it. <code>poké500.com</code> is a real registrable name because of internationalized domains; under the hood it is <code>xn--pok500-dva.com</code>. Both resolve to the same place.</p>
-
-            <hr>
+            <p>The domain has the accent in it. <code>poké500.com</code> is a real registrable name because of internationalized domains. Under the hood it is <code>xn--pok500-dva.com</code>. Both resolve to the same place.</p>
 
             <h2>Honest assessment</h2>
 
@@ -143,15 +108,16 @@ Top loser    Jolteon Star (Power Keepers)       $1,549.97  -22.50%</code></pre>
 
             <p>What it means: the top of the raw English card market is up about 7.4% since February 2024 once you strip out new-set churn, with a drawdown through late 2024 and a recovery since. That is what this particular methodology says, from this particular data source.</p>
 
-            <p>What it might mean: less than it looks like. Price weighting overweights expensive cards; the top 10 cards are 11% of the basket, and the $4,000 Charizard Star counts for 17.7 Psyducks. TCGplayer's market price is an estimate with its own smoothing, and 90% of constituents do not move on a given day, so short windows mostly measure which thin cards happened to trade. The multi-month trend is probably real. The daily number is entertainment. The site says as much in the footer: informational and entertainment purposes only, not investment advice.</p>
+            <p>What it might mean: less than it looks like. Price weighting overweights expensive cards. The top 10 cards are 11% of the basket, and the $4,000 Charizard Star counts for 17.7 Psyducks. TCGplayer's market price is an estimate with its own smoothing, and 90% of constituents do not move on a given day, so short windows mostly measure which thin cards happened to trade. The multi-month trend is probably real. The daily number is entertainment. The site says as much in its own footer: informational and entertainment purposes only, not investment advice.</p>
 
-            <p>The site is at <a href="https://poké500.com" target="_blank" rel="noopener">poké500.com</a>. It updates once a day, when the market does.</p></div>
+            <p>The site is at <a href="https://poké500.com" target="_blank" rel="noopener">poké500.com</a>. It updates once a day, when the market does.</p>
+        </div>
     </main>
 
     <footer class="site-footer">
         <div class="wrap">
             <p class="foot-brand">Ninjahawk's Nest</p>
-            <p>&copy; 2026 &middot; <a href="../index.html">All stories</a> &middot; <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a></p>
+            <p>&copy; 2026 Nathan Langley</p>
         </div>
     </footer>
 </body>
