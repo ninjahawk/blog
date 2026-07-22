@@ -316,7 +316,7 @@ a.feed-title:hover { color: var(--accent); text-decoration: none; }
   letter-spacing: 0.8px;
   text-transform: uppercase;
   color: var(--art-link);
-  margin-bottom: 30px;
+  margin-bottom: 12px;
 }
 .back:hover { color: var(--navy); text-decoration: none; }
 
@@ -351,9 +351,7 @@ a.feed-title:hover { color: var(--accent); text-decoration: none; }
   flex-direction: column;
   align-items: flex-start;
   gap: 3px;
-  border-top: 1px solid var(--border);
-  border-bottom: 1px solid var(--border);
-  padding: 13px 0;
+  padding: 0;
   font-family: var(--headline);
 }
 .by-author {
@@ -412,11 +410,7 @@ a.feed-title:hover { color: var(--accent); text-decoration: none; }
 .article-body ul, .article-body ol { margin: 0 0 24px 22px; }
 .article-body li { margin-bottom: 10px; line-height: 1.7; }
 
-hr {
-  border: none;
-  border-top: 1px solid var(--border);
-  margin: 40px 0;
-}
+hr { display: none; }
 
 /* inline + block code */
 code {
