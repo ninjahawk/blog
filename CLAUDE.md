@@ -22,8 +22,11 @@ script.
 
 - Background `#ffffff`, headlines `#0f0f0f`, body `#26241f`, hairlines `#e6e2d8`
 - Accent red `#e5091a`; brand orange `#ff6b35` (secondary)
-- Fonts (Google Fonts): **Oswald** for display/headlines/nav/kickers (uppercase),
-  **Source Serif 4** for body, system monospace for code
+- Fonts (Google Fonts): **Oswald** for homepage display (masthead, brand, nav,
+  feed titles, kickers); **Libre Franklin** for article pages — both the
+  headline and the sans reading body (matching a clean news/blog reading feel);
+  **Source Serif 4** for deks and the masthead tagline; system monospace for code.
+  Article body links are blue (`--art-accent`), plain, underlined on hover.
 - Code blocks (`pre`) render as dark panels; inline `code` is a light chip
 - Widths: `--wrap` 1180px for site chrome/homepage, `--read` 720px for article text
 - Colors are CSS variables in `style.css :root`. Cover-poster colors are the
