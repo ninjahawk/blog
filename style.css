@@ -557,6 +557,11 @@ figcaption {
   .article-body { font-size: 18px; }
   .article-body h2 { font-size: 26px; }
   .picks-lead .card-title { font-size: 32px; }
+  /* shrink data tables so all columns fit a phone without side-scroll */
+  .article-body table { font-size: 12.5px; }
+  .article-body th, .article-body td { padding: 8px 7px; }
+  .article-body th { font-size: 10px; letter-spacing: 0.3px; }
+  .article-body td:first-child { font-size: 11px; }
 }
 
 /* ---------------------------------------------------- pull-to-refresh raven */
