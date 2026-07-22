@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>We spent two years paying models to think longer. Google just shipped one that thinks 17% less. - NinjaHawk's Nest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+    <link rel="stylesheet" href="../style.css">
+    <script data-goatcounter="https://blog-nathanlangley.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script defer src="../nest.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrap nav-inner">
+            <a class="brand" href="../index.html">NINJAHAWK<span>'S NEST</span></a>
+            <nav class="site-nav">
+                <a href="../index.html">Home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://nathanlangley.dev" target="_blank" rel="noopener">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="article">
+        <a class="back" href="../index.html">&larr;</a>
+        <div class="article-head">
+            <span class="kicker k-purple">Field Notes</span>
+            <h1>We spent two years paying models to think longer. Google just shipped one that thinks 17% less and called it the upgrade.</h1>
+            <p class="dek">Output tokens are the serial part of the computation. Everyone kept optimizing the part that was already parallel.</p>
+            <div class="byline">
+                <span class="by-author">NinjaHawk</span>
+                <span class="by-date">July 22, 2026</span>
+            </div>
+        </div>
+        <div class="article-body">
+            <p>Google <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-6-flash-3-5-flash-lite-3-5-flash-cyber/" target="_blank" rel="noopener">shipped Gemini 3.6 Flash</a> yesterday. Most of the release is the stuff you'd expect: output price down from $9 to $7.50 per million tokens, input at $1.50, knowledge cutoff pushed forward to March 2026, Computer Use now built in rather than bolted on. Fine. Good incremental release.</p>
+
+            <p>The one line I keep going back to is this: on the Artificial Analysis index, 3.6 Flash gets to the same or better scores using roughly <strong>17% fewer output tokens</strong> than 3.5 Flash did. On DeepSWE, a long-horizon coding eval, Google claims up to 65% fewer. The headline feature of the model is that it says less.</p>
+
+            <p>I think people are going to under-rate this, so I want to spend a few paragraphs on why the 17% is the most interesting number in the release and not a rounding footnote.</p>
+
+            <hr>
+
+            <h2>Input tokens and output tokens are not the same animal</h2>
+
+            <p>The mental model most people carry is: a token is a token, you're billed per token, fewer tokens is cheaper, moving on. That's true at the invoice level and wrong at every level below it.</p>
+
+            <p>Your input tokens get processed in one parallel prefill pass. The whole prompt goes through the GPU together, the matmuls are wide and saturating, and per token it's cheap and fast. Output tokens come out one at a time. Each one is conditioned on every token before it, so token N+1 cannot start until token N exists. You can't parallelize a sequence against itself. Decode is the autoregressive, memory-bandwidth-bound, one-at-a-time part where the GPU reads the entire KV cache just to emit a single next token, then does it again.</p>
+
+            <p>So output isn't just the expensive half of the bill. It's the <em>serial</em> half of the computation. It's the part you actually sit and wait on. It's why the "tokens per second" everyone quotes is decode throughput, not prefill. And in an agent loop, where each output turns into a tool call turns into an observation turns into the next output, the generated tokens sit on the critical path of every single hop. Shrink them and you shrink the one thing that doesn't parallelize away.</p>
+
+            <hr>
+
+            <h2>What 17% actually buys you</h2>
+
+            <p>Back of the envelope. Take an ordinary agentic coding run and say the model emits about 40k output tokens across the whole trajectory: the reasoning, the tool calls, the final diff. At the old $9/M that's $0.36 of output. At the new $7.50/M the same 40k is $0.30. Now cut the count by 17% to about 33k and you're at roughly $0.25. That's a ~30% drop in the output bill, and it comes from two independent things stacking: the tokens got cheaper and there are fewer of them.</p>
+
+            <p>The dollars are the boring half. The other 17% is latency you don't pay in money, you pay in wall-clock. Call it 150 tokens/sec of decode. 40k tokens is about four and a half minutes of pure generation; 33k is about three and a half. Across a loop with dozens of hops that difference compounds into the gap between an agent that feels like it's working and one that feels like it's stuck. Nobody puts "feels stuck" on a benchmark, but it's most of the actual experience of running these things.</p>
+
+            <p>The 65% on DeepSWE I'd hold at arm's length. It's a vendor number on an eval the vendor picked, and long-horizon coding is exactly where you can cherry-pick a favorable trajectory. But even a third of that on real workloads is a large number for anyone running agents at volume, and the direction is not in doubt.</p>
+
+            <hr>
+
+            <h2>The turn</h2>
+
+            <p>Here's what's strange if you zoom out. For about two years the entire direction of travel was: get the model to emit <em>more</em> tokens. Chain of thought. "Think step by step." Explicit reasoning traces. Test-time compute. Models that will cheerfully spend ten thousand tokens muttering to themselves before they answer. The whole scaling story of that era was "let it think longer," and more output was, roughly, more capability.</p>
+
+            <p>And the failure mode of that era is real and everyone who runs agents has watched it happen. The model gets into a reflection loop. It re-reads its own reasoning, second-guesses a decision it already made, calls the same tool four times with tiny variations, writes three paragraphs about what it is about to do and then does something else. A great deal of output, negative marginal information. People started calling it agentic spiraling because it looks exactly like an anxious person talking themselves in a circle.</p>
+
+            <p>So the pitch for 3.6 Flash is, stripped down: it does that less. Fewer reasoning steps, fewer tool calls per task, less circling. The frontier moved from "think longer" to "think in fewer tokens," and that's a genuine turn worth naming out loud, because a year ago the marketing was pointed the other way.</p>
+
+            <hr>
+
+            <h2>What I'm actually watching for</h2>
+
+            <p>What happened is clear enough and not really in dispute: Google shipped a cheaper Flash that hits its numbers with materially fewer output tokens, and priced it accordingly.</p>
+
+            <p>What it means is that output tokens have quietly become a first-class training objective rather than a thing you tune away at the end. Somebody decided the count of tokens on the critical path was worth optimizing directly, and built a release around it. That's new enough to notice.</p>
+
+            <p>What it might mean is the part I don't know, and it's the part the benchmarks are structurally bad at telling you. There is an honest way to spend 17% fewer output tokens, which is to get smarter and stop wasting them. There is also a cheap way, which is to just train the model to stop reasoning sooner. On the median task those two are indistinguishable: same answer, fewer tokens, lower bill. The difference only shows up on the 5% of tasks that genuinely needed the extra thinking, where the second model quietly gets it wrong, faster and cheaper than before. Terseness and under-thinking produce the identical token count. The eval average cannot see which one you bought.</p>
+
+            <p>For what it's worth I don't think that's what happened here, because the coding scores went up rather than down, so at minimum they didn't trade accuracy for brevity in the aggregate. But "in the aggregate" is carrying the whole sentence. The place to stay nervous is the long-horizon tail, which is exactly where the 65% number lives and exactly where you can least afford a model that has learned to decide it's finished thinking. I'll believe the terseness is free when I've watched one of these run for a few hundred hops on a problem that actually bites. Until then it's a promising number I'm choosing to like.</p>
+
+            <hr>
+
+            <h2>The rest of the release, briefly</h2>
+
+            <p>3.5 Flash-Lite landed alongside it at $0.30 in, $2.50 out, for the workloads where you want cheap and don't need the reasoning. There's a 3.5 Flash Cyber variant that's a security-tuned model gated to governments and trusted partners, which is its own conversation. The flagship 3.5 Pro slipped again, and Google says it's already started its largest pretraining run yet on Gemini 4, which is the sort of thing you announce when the current flagship is late.</p>
+
+            <p>The pricing pressure underneath all of this is the open-weight release calendar. DeepSeek V4's stable weights are due July 24, Kimi K3's are due July 27. When a comparable model is free to self-host two days after your paid launch, "we use 17% fewer output tokens" stops being a nice-to-have and starts being the entire pitch. Efficiency is what you sell when you can't sell scarcity anymore.</p>
+
+            <hr>
+
+            <p>The unit of account for this whole industry is shifting, quietly, from tokens to tokens you actually needed. 3.6 Flash is the first release I've seen that's priced and benchmarked as if that's the thing that matters. It will not be the last.</p></div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <p class="foot-brand">Ninjahawk's Nest</p>
+            <p>&copy; 2026 Nathan Langley</p>
+        </div>
+    </footer>
+</body>
+</html>
