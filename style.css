@@ -41,7 +41,7 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; overflow-x: hidden; }
 
 body {
   background: var(--bg);
@@ -51,6 +51,9 @@ body {
   line-height: 1.75;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
+  /* never let a wide child scroll the whole page sideways */
+  overflow-x: hidden;
+  max-width: 100%;
 }
 
 .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 28px; }
@@ -377,6 +380,8 @@ a.feed-title:hover { color: var(--accent); text-decoration: none; }
   font-size: 18px;
   line-height: 1.7;
   color: #1a1a1a;
+  /* long tokens (URLs, paths) wrap instead of overflowing the column */
+  overflow-wrap: break-word;
 }
 .article-body p { margin-bottom: 24px; line-height: 1.7; }
 
@@ -420,6 +425,9 @@ code {
   border: 1px solid var(--border);
   border-radius: 3px;
   padding: 1px 5px;
+  /* a long unbroken string (e.g. an API URL) breaks rather than overflows */
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 pre {
   background: var(--panel);
@@ -454,9 +462,13 @@ blockquote {
   text-transform: none;
 }
 
-/* tables */
+/* tables — a wide table scrolls inside its own box, never the page */
 table {
+  display: block;
   width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border-collapse: collapse;
   margin: 28px 0;
   font-family: var(--sans);
