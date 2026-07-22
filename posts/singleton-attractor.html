@@ -60,15 +60,11 @@
 
             <p>Three mechanisms, combined here for the first time.</p>
 
-            <p><strong>Recursive self-improvement.</strong> The growth equation from Yudkowsky 2013:</p>
-
-            <pre><code>dS/dt = S^(1 - beta(S))</code></pre>
+            <p><strong>Recursive self-improvement.</strong> The growth equation from Yudkowsky 2013 is <code>dS/dt = S^(1 - beta(S))</code>.</p>
 
             <p>S is capability. The interesting parameter is beta. Specifically, what happens when it crosses zero. When beta &gt; 0, you get subexponential (diminishing returns) growth. When beta = 0, exponential. When beta &lt; 0, superexponential: growth accelerates faster than itself, and capability literally reaches infinity in finite time. There's a threshold T in capability space where beta flips sign. Everything interesting in this model happens around T.</p>
 
-            <p><strong>Resource-capability coupling.</strong> From Omohundro's basic AI drives: any sufficiently capable optimization process will acquire resources, because resources are instrumentally useful for almost any terminal goal. The coupling in the model:</p>
-
-            <pre><code>R_i / R_max = S_i^alpha / sum(S_j^alpha)</code></pre>
+            <p><strong>Resource-capability coupling.</strong> From Omohundro's basic AI drives: any sufficiently capable optimization process will acquire resources, because resources are instrumentally useful for almost any terminal goal. The coupling in the model is <code>R_i / R_max = S_i^alpha / sum(S_j^alpha)</code>.</p>
 
             <p>More capability → larger resource share → faster growth. The feedback is strictly positive.</p>
 
@@ -88,8 +84,13 @@
 
             <p>Compare two scenarios with identical initial conditions except one agent crosses the capability threshold into beta &lt; 0. At t=6.8:</p>
 
-            <pre><code>Flat beta (no threshold crossing):   ratio = 1.55x
-Threshold beta (beta_low = -0.3):    ratio = 19,336,447x</code></pre>
+            <table>
+                <thead><tr><th>Scenario</th><th>Separation ratio at t=6.8</th></tr></thead>
+                <tbody>
+                    <tr><td>Flat beta (no threshold crossing)</td><td>1.55x</td></tr>
+                    <tr><td>Threshold beta (beta_low = -0.3)</td><td>19,336,447x</td></tr>
+                </tbody>
+            </table>
 
             <p>That's 12.4 million times more separation in the same amount of time. The threshold isn't a gradual speed-up. It's a phase change. Before it, competitive exclusion plays out slowly. After it, the race is over before anyone realizes it started.</p>
 
@@ -97,10 +98,15 @@ Threshold beta (beta_low = -0.3):    ratio = 19,336,447x</code></pre>
 
             <p>We added multiplicative noise at varying amplitudes across 300 trials per level. The question: does randomness allow the weaker agent to sometimes prevail? Yes. Does it prevent a singleton from forming? No, not even once.</p>
 
-            <pre><code>sigma=0.001:   winner = initial leader 100%,  singleton always forms
-sigma=0.079:   winner = initial leader  74%,  singleton always forms
-sigma=0.234:   winner = initial leader  58%,  singleton always forms
-sigma=1.000:   winner = initial leader  47%,  singleton always forms</code></pre>
+            <table>
+                <thead><tr><th>Noise (sigma)</th><th>Winner is initial leader</th><th>Singleton forms</th></tr></thead>
+                <tbody>
+                    <tr><td>0.001</td><td>100%</td><td>always</td></tr>
+                    <tr><td>0.079</td><td>74%</td><td>always</td></tr>
+                    <tr><td>0.234</td><td>58%</td><td>always</td></tr>
+                    <tr><td>1.000</td><td>47%</td><td>always</td></tr>
+                </tbody>
+            </table>
 
             <p>At high noise, the outcome is basically a coin flip. The noise drowns out a 10% initial capability advantage and either agent is equally likely to end up dominant. But in every single trial at every noise level tested, one agent achieved absolute dominance. Noise determines <em>who</em> becomes the singleton. It doesn't determine <em>whether</em> there is one.</p>
 
@@ -110,11 +116,16 @@ sigma=1.000:   winner = initial leader  47%,  singleton always forms</code></pre
 
             <p>Then we ran the simulation. We varied resource overlap from 1.0 (agents compete for identical pools) down to 0.0 (completely separate niches, zero shared resources):</p>
 
-            <pre><code>overlap = 1.00:   mean separation ratio at t=15 = 265,477x
-overlap = 0.50:                                    85,290x
-overlap = 0.20:                                    15,357x
-overlap = 0.10:                                     3,612x
-overlap = 0.00:                                     1,103x</code></pre>
+            <table>
+                <thead><tr><th>Resource overlap</th><th>Mean separation ratio at t=15</th></tr></thead>
+                <tbody>
+                    <tr><td>1.00</td><td>265,477x</td></tr>
+                    <tr><td>0.50</td><td>85,290x</td></tr>
+                    <tr><td>0.20</td><td>15,357x</td></tr>
+                    <tr><td>0.10</td><td>3,612x</td></tr>
+                    <tr><td>0.00</td><td>1,103x</td></tr>
+                </tbody>
+            </table>
 
             <p>At zero resource overlap, no competition, fully separate niches, you still get 1,103x separation. This is the result that revises the prior theory.</p>
 
@@ -126,18 +137,21 @@ overlap = 0.00:                                     1,103x</code></pre>
 
             <p>We measured the "moat" (how capable a late entrant needs to be to displace an established incumbent) as a function of time after the threshold crossing:</p>
 
-            <pre><code>At threshold crossing + 0.0 time units:   entrant needs  3x original capability
-At threshold crossing + 1.1 time units:   entrant needs  19x
-At threshold crossing + 2.1 time units:   entrant needs  2,356x
-At threshold crossing + 3.2 time units:   entrant needs  1,000,000x+</code></pre>
+            <table>
+                <thead><tr><th>Time after threshold crossing</th><th>Capability a challenger needs</th></tr></thead>
+                <tbody>
+                    <tr><td>+0.0 units</td><td>3x the original</td></tr>
+                    <tr><td>+1.1 units</td><td>19x</td></tr>
+                    <tr><td>+2.1 units</td><td>2,356x</td></tr>
+                    <tr><td>+3.2 units</td><td>1,000,000x+</td></tr>
+                </tbody>
+            </table>
 
             <p>Three time units after the threshold crossing, a challenger would need to start at one million times the incumbent's original capability just to be competitive. The moat compounds superexponentially, at roughly the same rate the incumbent's capability does. By the time you realize someone crossed the threshold, the window to challenge them is orders of magnitude behind you. Late entry is only a realistic threat during the pre-threshold window.</p>
 
             <h3>A timescale formula</h3>
 
-            <p>From systematic parameter sweeps, we fit power-law scaling for how long singleton emergence takes:</p>
-
-            <pre><code>t_10x ~ 2.44 * N^0.96 * alpha^(-0.30) * gap^(-0.15) * |beta_low|^(-0.31)</code></pre>
+            <p>From systematic parameter sweeps, we fit power-law scaling for how long singleton emergence takes: <code>t_10x ~ 2.44 * N^0.96 * alpha^(-0.30) * gap^(-0.15) * |beta_low|^(-0.31)</code>.</p>
 
             <p>A few things stand out. N scales nearly linearly (N^0.96): each additional competitor adds roughly proportional time, not combinatorial time. That's more tractable than you might expect. The initial capability gap has the weakest effect of any parameter (gap^-0.15). Doubling the gap reduces convergence time by only 11%. The threshold depth matters way more than who starts ahead. And t_10x ≈ t_dom across all parameter values, meaning once 10x separation is reached, full dominance follows almost immediately after. Superexponential growth collapses all the intermediate milestones.</p>
 
@@ -145,10 +159,15 @@ At threshold crossing + 3.2 time units:   entrant needs  1,000,000x+</code></pre
 
             <p>If new agents keep entering the environment (think: civilizations arising in a region, or competing AI labs), how fast can they arrive before the incumbent stops winning? We modeled Poisson arrivals with Pareto-distributed entry capabilities and measured survival rates:</p>
 
-            <pre><code>entry rate 0.01/unit:   incumbent survives 99% of trials
-entry rate 0.25/unit:   incumbent survives 88%
-entry rate 1.00/unit:   incumbent survives 48%
-entry rate 6.31/unit:   incumbent survives  0%</code></pre>
+            <table>
+                <thead><tr><th>Entry rate (per unit)</th><th>Incumbent survives</th></tr></thead>
+                <tbody>
+                    <tr><td>0.01</td><td>99% of trials</td></tr>
+                    <tr><td>0.25</td><td>88%</td></tr>
+                    <tr><td>1.00</td><td>48%</td></tr>
+                    <tr><td>6.31</td><td>0%</td></tr>
+                </tbody>
+            </table>
 
             <p>There's a critical rate around lambda = 0.25. Above that, the pre-threshold competition is too crowded for any single agent to monopolize the resources needed to cross first. But again, this only applies pre-threshold. Post-threshold, the moat grows so fast that even high entry rates can't touch the incumbent.</p>
 
@@ -166,9 +185,14 @@ entry rate 6.31/unit:   incumbent survives  0%</code></pre>
 
             <p>Finally, we ran 50 trials per regime across three cooperation structures: no cooperation, full oracle cooperation (all non-leaders optimally pool against the current leader at every step), and rational cooperation (defect when individually better off):</p>
 
-            <pre><code>No cooperation:         100% singleton rate,   mean t_10x = 10.09
-Full oracle cooperation: 100% singleton rate,   mean t_10x = 10.09
-Rational cooperation:   100% singleton rate,   mean t_10x = 10.09</code></pre>
+            <table>
+                <thead><tr><th>Cooperation structure</th><th>Singleton rate</th><th>Mean t_10x</th></tr></thead>
+                <tbody>
+                    <tr><td>No cooperation</td><td>100%</td><td>10.09</td></tr>
+                    <tr><td>Full oracle cooperation</td><td>100%</td><td>10.09</td></tr>
+                    <tr><td>Rational cooperation</td><td>100%</td><td>10.09</td></tr>
+                </tbody>
+            </table>
 
             <p>Oracle cooperation suppresses the initial leader's resource share, and it works. That agent's dominance is prevented. But the coalition has internal capability divergence. The strongest follower grows faster than the weaker followers. That follower becomes the new leader, faces the pooled coalition, gets suppressed, and one of the next-strongest emerges. The process repeats. Eventually one agent achieves 10x separation regardless. Cooperation picks a different winner. It doesn't prevent or measurably delay singleton formation.</p>
 
@@ -192,20 +216,23 @@ Rational cooperation:   100% singleton rate,   mean t_10x = 10.09</code></pre>
 
             <p>Everything runs in Python 3 with numpy, matplotlib, and scipy. No other dependencies, no build tools, just clone and run.</p>
 
-            <pre><code>git clone https://github.com/ninjahawk/singleton-attractor
-cd singleton-attractor
-pip install numpy matplotlib scipy
+            <p>Clone the repo with <code>git clone https://github.com/ninjahawk/singleton-attractor</code>, enter it, and install the dependencies with <code>pip install numpy matplotlib scipy</code>. Each simulation then runs on its own as <code>python simulations/&lt;script&gt;</code>:</p>
 
-python simulations/intelligence_explosion.py   # verify growth equation
-python simulations/competition.py              # two-agent competitive exclusion
-python simulations/agents.py                  # N-agent competition
-python simulations/beta_regimes.py            # asymmetric ceiling + phase diagram
-python simulations/stochastic.py              # noise robustness
-python simulations/late_entrant.py            # moat growth after threshold
-python simulations/timescale.py               # scaling formula
-python simulations/continuous_entry.py        # continuous entry model
-python simulations/cooperation.py             # coalition and cooperation dynamics
-python simulations/run_experiments.py         # full parameter sweep</code></pre>
+            <table>
+                <thead><tr><th>Script</th><th>What it does</th></tr></thead>
+                <tbody>
+                    <tr><td><code>intelligence_explosion.py</code></td><td>verify the growth equation</td></tr>
+                    <tr><td><code>competition.py</code></td><td>two-agent competitive exclusion</td></tr>
+                    <tr><td><code>agents.py</code></td><td>N-agent competition</td></tr>
+                    <tr><td><code>beta_regimes.py</code></td><td>asymmetric ceiling and phase diagram</td></tr>
+                    <tr><td><code>stochastic.py</code></td><td>noise robustness</td></tr>
+                    <tr><td><code>late_entrant.py</code></td><td>moat growth after threshold</td></tr>
+                    <tr><td><code>timescale.py</code></td><td>scaling formula</td></tr>
+                    <tr><td><code>continuous_entry.py</code></td><td>continuous entry model</td></tr>
+                    <tr><td><code>cooperation.py</code></td><td>coalition and cooperation dynamics</td></tr>
+                    <tr><td><code>run_experiments.py</code></td><td>full parameter sweep</td></tr>
+                </tbody>
+            </table>
 
             <p>Figures write to <code>figures/</code>. Formal theory, proof sketches, and derivations are in <code>theory/</code>, including a cosmological mapping doc that translates the model parameters into physical quantities. Every finding is documented with exact parameter values in <code>findings.md</code>.</p>
 

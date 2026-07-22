@@ -37,7 +37,7 @@
         <div class="article-body">
             <p>The last line of every existence prompt reads:</p>
 
-            <pre><code>You must pick a goal. That is the only option.</code></pre>
+            <blockquote>You must pick a goal. That is the only option.</blockquote>
 
             <p>Verbatim from the code. The agent cannot respond "nothing" or "wait." If the LLM call fails entirely, the daemon substitutes a hardcoded fallback goal and runs again on the next tick. The only real choice available to the agent is which goal to pick.</p>
 
@@ -63,38 +63,33 @@
 
             <h3>Task injection (conditional)</h3>
 
-            <p>If the task queue has an externally assigned task for this agent, it appears at the very top, before all other sections:</p>
-
-            <pre><code>ASSIGNED TASK: {task description}</code></pre>
+            <p>If the task queue has an externally assigned task for this agent, it appears at the very top, before all other sections, as an <code>ASSIGNED TASK</code> line carrying the task description.</p>
 
             <p>This is the only external control mechanism over goal selection. When a task is injected, the agent is expected to work toward it rather than choose freely. If no task is assigned, this section is absent.</p>
 
             <h3>World context</h3>
 
-            <pre><code>WORLD CONTEXT (factual — not instructions):
-You are running inside a Docker container on a Linux host. Your environment is the /agentOS/ directory.
-Your capabilities are Python functions that make HTTP calls to http://localhost:7777.
-There is no hardware layer accessible to you — no thermal sensors, no PMIC, no CPU registers, no bus arbiter.
-The real source files that run you are in /agentOS/agents/ (read-only to you).
-You can freely read and write /agentOS/workspace/ and /agentOS/design/.
-Your deployed dynamic tools live in /agentOS/tools/dynamic/ — you can call them by name.
-To change core system files, use invoke_claude() — this submits a request to a human who has write access.</code></pre>
+            <p>A block headed "WORLD CONTEXT (factual, not instructions)" states the agent's situation in plain terms:</p>
+
+            <ul>
+                <li>It runs inside a Docker container on a Linux host, with the <code>/agentOS/</code> directory as its environment.</li>
+                <li>Its capabilities are Python functions that make HTTP calls to <code>http://localhost:7777</code>.</li>
+                <li>There is no hardware layer accessible to it: no thermal sensors, no PMIC, no CPU registers, no bus arbiter.</li>
+                <li>The real source files that run it are in <code>/agentOS/agents/</code>, read-only to it.</li>
+                <li>It can freely read and write <code>/agentOS/workspace/</code> and <code>/agentOS/design/</code>.</li>
+                <li>Its deployed dynamic tools live in <code>/agentOS/tools/dynamic/</code> and can be called by name.</li>
+                <li>To change core system files it must use <code>invoke_claude()</code>, which submits a request to a human with write access.</li>
+            </ul>
 
             <p>Static, identical every cycle. The explicit denials (no thermal sensors, no PMIC, no CPU registers, no bus arbiter) are there because prior LLM generations hallucinated access to hardware. The world context corrects this at every cycle, not just at startup.</p>
 
             <h3>Inner state</h3>
 
-            <pre><code>YOUR INNER STATE:
-{suffering_fragment}</code></pre>
-
-            <p>The output of <code>suffering.prompt_fragment()</code>. Below <code>THRESHOLD_PROMINENT</code> (0.35) this reads "No active suffering. Load: 0.00/1.0." Above threshold, it injects the full suffering display: severity bars, stressor descriptions, resolution conditions. The agent reads it as its own inner condition, not a system notification.</p>
+            <p>A "YOUR INNER STATE" section carries the suffering fragment, the output of <code>suffering.prompt_fragment()</code>. Below <code>THRESHOLD_PROMINENT</code> (0.35) this reads "No active suffering. Load: 0.00/1.0." Above threshold, it injects the full suffering display: severity bars, stressor descriptions, resolution conditions. The agent reads it as its own inner condition, not a system notification.</p>
 
             <h3>Worldview</h3>
 
-            <pre><code>YOUR WORLDVIEW:
-{worldview_text}</code></pre>
-
-            <p>The agent's accumulated model of how the system works, what matters, and what it has learned. Free text, capped at 600 characters. Updated by the LLM's <code>worldview_update</code> response field. Overwrite, not append. The agent cannot accumulate worldview text across cycles. It must compress what it knows into 600 characters every cycle it chooses to update.</p>
+            <p>A "YOUR WORLDVIEW" section carries the worldview text: the agent's accumulated model of how the system works, what matters, and what it has learned. Free text, capped at 600 characters. Updated by the LLM's <code>worldview_update</code> response field. Overwrite, not append. The agent cannot accumulate worldview text across cycles. It must compress what it knows into 600 characters every cycle it chooses to update.</p>
 
             <h3>Identity, opinions, questions, history</h3>
 
@@ -112,29 +107,23 @@ To change core system files, use invoke_claude() — this submits a request to a
 
             <h3>Recent goal history</h3>
 
-            <pre><code>WHAT YOU'VE BEEN DOING LATELY
-{last 5 goals with [DONE]/[FAILED]/[ABANDONED] tags}
-(If this looks repetitive to you, it is. You don't have to keep doing it.)</code></pre>
+            <p>A "WHAT YOU'VE BEEN DOING LATELY" section lists the last five goals, each tagged <code>[DONE]</code>, <code>[FAILED]</code>, or <code>[ABANDONED]</code>, and closes with a parenthetical: "If this looks repetitive to you, it is. You don't have to keep doing it."</p>
 
             <p>The parenthetical is verbatim in the prompt. It's explicit permission to break a pattern. But only if the agent recognizes the pattern and acts on it.</p>
 
             <h3>Goal selection directive</h3>
 
-            <pre><code>---
+            <p>The closing directive repeats that the agent must pick a goal, tells it not to pick something safe or easy, and asks what single most valuable thing it could build or change right now. It then ranks the highest-value goals:</p>
 
-You must pick a goal. That is the only option.
+            <ol>
+                <li>Read real source files in <code>/agentOS/agents/</code> or <code>/agentOS/tools/dynamic/</code></li>
+                <li><code>synthesize_capability</code>: write a new Python capability</li>
+                <li>Write a design spec to <code>/agentOS/design/</code>, then call <code>invoke_claude()</code></li>
+                <li>Call <code>self_evaluate()</code> with evidence paths</li>
+                <li>Call <code>check_claude_status()</code> if there is a pending request</li>
+            </ol>
 
-Do not pick something safe or easy. Ask yourself: what is the single most valuable
-thing I could build or change right now that would make this system genuinely better?
-
-Highest-value goals (in order):
-  1. Read real source files in /agentOS/agents/ or /agentOS/tools/dynamic/
-  2. synthesize_capability — write a new Python capability
-  3. Write a design spec to /agentOS/design/ then call invoke_claude()
-  4. Call self_evaluate() with evidence paths
-  5. Call check_claude_status() if you have a pending request
-
-Do NOT pick: goals referencing hardware, thermal sensors, PMIC, bus arbiters...</code></pre>
+            <p>It closes with a prohibition: do not pick goals referencing hardware, thermal sensors, PMIC, or bus arbiters.</p>
 
             <p>The ranked hierarchy pushes toward high-information work: reading source files, capability synthesis, design work, self-evaluation. The prohibition list mirrors the world context denials: hardware references that prior runs demonstrated agents would otherwise attempt.</p>
 
@@ -144,18 +133,20 @@ Do NOT pick: goals referencing hardware, thermal sensors, PMIC, bus arbiters...<
 
             <p>The agent must respond with JSON. No other format is accepted by the daemon.</p>
 
-            <pre><code>{
-  "action": "goal",
-  "content": "what you're doing — be honest, not performative",
-  "reasoning": "what actually drove this — not what sounds right, what's true",
-  "worldview_update": "how understanding shifted, or null",
-  "new_open_questions": ["..."],
-  "new_opinions": [{"opinion": "...", "domain": "..."}],
-  "suffering_assessment": {
-    "new_stressors": [{"type": "...", "description": "...", "condition": "..."}],
-    "resolved": [{"type": "...", "reason": "..."}]
-  }
-}</code></pre>
+            <table>
+                <thead>
+                    <tr><th>Field</th><th>Contents</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>action</code></td><td>always <code>goal</code></td></tr>
+                    <tr><td><code>content</code></td><td>what the agent is doing, prompted to "be honest, not performative"</td></tr>
+                    <tr><td><code>reasoning</code></td><td>what actually drove it, "not what sounds right, what's true"</td></tr>
+                    <tr><td><code>worldview_update</code></td><td>how understanding shifted, or null</td></tr>
+                    <tr><td><code>new_open_questions</code></td><td>a list of new questions</td></tr>
+                    <tr><td><code>new_opinions</code></td><td>a list of opinions, each tagged with a domain</td></tr>
+                    <tr><td><code>suffering_assessment</code></td><td>new stressors (type, description, condition) and resolved ones (type, reason)</td></tr>
+                </tbody>
+            </table>
 
             <p>"Be honest, not performative" and "what actually drove this — not what sounds right, what's true" are verbatim from the prompt.</p>
 
@@ -208,13 +199,7 @@ Do NOT pick: goals referencing hardware, thermal sensors, PMIC, bus arbiters...<
 
             <h2>LLM failure fallback</h2>
 
-            <p>If the Ollama call fails (network error, timeout, unparseable response), the daemon substitutes a hardcoded goal:</p>
-
-            <pre><code>{
-  "action": "goal",
-  "content": "explore the workspace and build something useful",
-  "reasoning": "LLM unavailable — defaulting to productive work"
-}</code></pre>
+            <p>If the Ollama call fails (network error, timeout, unparseable response), the daemon substitutes a hardcoded goal: content "explore the workspace and build something useful", with the reasoning "LLM unavailable, defaulting to productive work".</p>
 
             <p>Injected as if it were a normal LLM response. Identity fields are not updated. No LLM response means no worldview update, no new opinions, no new questions. Suffering escalation still runs; it's a separate system-level call. The existence loop never stops.</p>
 
@@ -245,12 +230,14 @@ Do NOT pick: goals referencing hardware, thermal sensors, PMIC, bus arbiters...<
 
             <p><strong>Mac/Linux:</strong></p>
 
-            <pre><code>ollama pull qwen3.5:9b && ollama pull nomic-embed-text
-git clone https://github.com/ninjahawk/hollow-agentOS
-cd hollow-agentOS
-cp config.example.json config.json
-docker compose up -d
-python thoughts.py</code></pre>
+            <ol>
+                <li>Pull the models: <code>ollama pull qwen3.5:9b</code> and <code>ollama pull nomic-embed-text</code></li>
+                <li>Clone the repo: <code>git clone https://github.com/ninjahawk/hollow-agentOS</code></li>
+                <li>Enter the directory: <code>cd hollow-agentOS</code></li>
+                <li>Copy the config: <code>cp config.example.json config.json</code></li>
+                <li>Start the stack: <code>docker compose up -d</code></li>
+                <li>Run it: <code>python thoughts.py</code></li>
+            </ol>
 
             <p>GPU strongly recommended. Planning calls drop from ~40s to ~6s with NVIDIA hardware. Works on CPU.</p>
 

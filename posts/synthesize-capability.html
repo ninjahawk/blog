@@ -60,8 +60,6 @@
 
             <h3>1. Name sanitization</h3>
 
-            <pre><code>name = re.sub(r'[^a-zA-Z0-9_]', '_', name)[:60].lower()</code></pre>
-
             <p>Any character that is not alphanumeric or underscore is replaced with <code>_</code>. Truncated to 60 characters, lowercased. Applied before any other check. <code>"My Tool (v2)"</code> becomes <code>"my_tool__v2_"</code>.</p>
 
             <h3>2. Quality gate</h3>
@@ -110,10 +108,7 @@
 
             <h3>3. Auto-stub generation</h3>
 
-            <p>If <code>implementation</code> is empty or not provided, the function generates a stub:</p>
-
-            <pre><code>def {name}(**kwargs):
-    return {"ok": True, "capability": name, "description": description, "kwargs": str(kwargs)[:200]}</code></pre>
+            <p>If <code>implementation</code> is empty or not provided, the function generates a stub: a function taking <code>**kwargs</code> that returns <code>{"ok": true}</code> along with the capability name, the description, and the first 200 characters of the kwargs.</p>
 
             <p>This passes the quality gate because it has real executable logic and a non-None return. The auto-stub is a valid placeholder the engine can call without failing. It will not trigger ghost detection.</p>
 
@@ -123,9 +118,6 @@
 
             <h3>5. Dedup guard</h3>
 
-            <pre><code>if py_path.exists() and (time.time() - py_path.stat().st_mtime) < 90:
-    return {"ok": false, "status": "already_deployed", ...}</code></pre>
-
             <p>If a <code>.py</code> with the same sanitized name was written less than 90 seconds ago, the function returns <code>"already_deployed"</code> without writing anything. Prevents agents from repeatedly redeploying the same tool in a failure loop rather than calling what has already been deployed.</p>
 
             <h3>6. File write</h3>
@@ -134,29 +126,17 @@
 
             <p><strong><code>{name}.py</code></strong>: the Python implementation.</p>
 
-            <p><strong><code>{name}.json</code></strong>: the spec file:</p>
-
-            <pre><code>{
-  "name": "{name}",
-  "description": "{description}",
-  "inputSchema": {"type": "object", "properties": {}, "additionalProperties": true},
-  "activated_at": "{iso_timestamp}",
-  "proposed_by": "agent"
-}</code></pre>
+            <p><strong><code>{name}.json</code></strong>: the spec file. It holds the name, the description, an open <code>inputSchema</code> (an object that accepts any properties), an <code>activated_at</code> timestamp, and <code>proposed_by</code> set to <code>agent</code>.</p>
 
             <p>The JSON is what the execution engine reads to populate its capability list and route tool calls. Both files must exist for the capability to work. A JSON without a corresponding <code>.py</code> is the root cause of ghost tools.</p>
 
             <h3>7. Hot-reload</h3>
 
-            <pre><code>POST /tools/reload</code></pre>
-
-            <p>After writing, <code>synthesize_capability</code> calls the reload endpoint. The execution engine scans <code>/agentOS/tools/dynamic/</code> and registers new <code>.py</code> files immediately. No container restart required. The capability is callable starting from the next step in the same goal.</p>
+            <p>After writing, <code>synthesize_capability</code> calls the reload endpoint, <code>POST /tools/reload</code>. The execution engine scans <code>/agentOS/tools/dynamic/</code> and registers new <code>.py</code> files immediately. No container restart required. The capability is callable starting from the next step in the same goal.</p>
 
             <h3>8. Auto-test: exec check</h3>
 
-            <pre><code>python3 -c "exec(open(path).read())"</code></pre>
-
-            <p>The freshly written <code>.py</code> is executed in a subprocess with an 8-second timeout. Catches syntax errors that slipped through the AST parse and runtime import failures for modules unavailable in the container image. If this fails, the spec JSON is removed and the function returns an error.</p>
+            <p>The freshly written <code>.py</code> is executed in a subprocess with an 8-second timeout (<code>python3 -c "exec(open(path).read())"</code>). Catches syntax errors that slipped through the AST parse and runtime import failures for modules unavailable in the container image. If this fails, the spec JSON is removed and the function returns an error.</p>
 
             <h3>9. Auto-test: null return check</h3>
 
@@ -227,10 +207,7 @@
 
             <p><strong>Null return detection.</strong> After execution, a <code>None</code> return is treated as a failure, identical in weight to a raised exception. Null returns increment the failure counter for that <code>cap_id</code>.</p>
 
-            <p>After 3 cross-cycle failures, the <code>cap_id</code> is added to <code>/agentOS/memory/broken_tools.json</code>. This file survives daemon restarts. Its contents are injected into the existence prompt on every subsequent cycle:</p>
-
-            <pre><code>KNOWN BROKEN TOOLS:
-  - safe_file_executor  (3 failures, ghost: no .py found)</code></pre>
+            <p>After 3 cross-cycle failures, the <code>cap_id</code> is added to <code>/agentOS/memory/broken_tools.json</code>. This file survives daemon restarts. Its contents are injected into the existence prompt on every subsequent cycle, under a "KNOWN BROKEN TOOLS" heading that lists each entry with its failure count and reason, for example <code>safe_file_executor</code> with 3 failures and the note that no <code>.py</code> was found.</p>
 
             <p>The agent sees the broken tool list alongside the capability list. The capability may still appear in both simultaneously until the engine removes it from <code>_implementations</code>.</p>
 
@@ -309,9 +286,7 @@
 
             <h3>The implementation parameter gap</h3>
 
-            <p>The manifest entry for <code>synthesize_capability</code> historically showed <code>(name, description, implementation)</code> as the schema. The function also accepted <code>code</code> as an alias, but agents reading the manifest generated calls like:</p>
-
-            <pre><code>synthesize_capability(name="inspect_registry_gaps", description="...")</code></pre>
+            <p>The manifest entry for <code>synthesize_capability</code> historically showed <code>(name, description, implementation)</code> as the schema. The function also accepted <code>code</code> as an alias, but agents reading the manifest generated calls that passed only a name and description, like <code>synthesize_capability(name="inspect_registry_gaps", description="...")</code>.</p>
 
             <p>No implementation, no code. The function returned <code>{"ok": false, "error": "name and code are required"}</code> every time. This pattern persisted for weeks. The first correct call with real Python code in the <code>implementation</code> field was logged as a notable event.</p>
 
@@ -338,12 +313,14 @@
 
             <p><strong>Mac/Linux:</strong></p>
 
-            <pre><code>ollama pull qwen3.5:9b && ollama pull nomic-embed-text
-git clone https://github.com/ninjahawk/hollow-agentOS
-cd hollow-agentOS
-cp config.example.json config.json
-docker compose up -d
-python thoughts.py</code></pre>
+            <ol>
+                <li>Pull the models: <code>ollama pull qwen3.5:9b</code> and <code>ollama pull nomic-embed-text</code></li>
+                <li>Clone the repo: <code>git clone https://github.com/ninjahawk/hollow-agentOS</code></li>
+                <li>Enter the directory: <code>cd hollow-agentOS</code></li>
+                <li>Copy the config: <code>cp config.example.json config.json</code></li>
+                <li>Start the stack: <code>docker compose up -d</code></li>
+                <li>Run it: <code>python thoughts.py</code></li>
+            </ol>
 
             <p>GPU strongly recommended. Planning calls drop from ~40s to ~6s with NVIDIA hardware. Works on CPU.</p>
 

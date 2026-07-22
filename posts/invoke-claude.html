@@ -67,8 +67,7 @@
 
             <h2>Function signature</h2>
 
-            <pre><code>def invoke_claude(description: str = "", spec: str = "",
-                  design_path: str = "", request_type: str = "implement") -> dict:</code></pre>
+            <p>The call is <code>invoke_claude(description, spec, design_path, request_type="implement")</code>. Every argument is optional, and it returns a dict. The parameters:</p>
 
             <table>
                 <thead>
@@ -103,17 +102,22 @@
 
             <h2>What gets written</h2>
 
-            <p>Each call appends one entry to <code>/agentOS/memory/claude_requests.jsonl</code>:</p>
+            <p>Each call appends one entry to <code>/agentOS/memory/claude_requests.jsonl</code>, with these fields:</p>
 
-            <pre><code>{
-  "request_id": "req-{12 hex chars}",
-  "timestamp": "2026-05-02 08:40:08",
-  "description": "...",
-  "spec": "... (truncated to 4000 chars)",
-  "design_path": "/agentOS/design/...",
-  "request_type": "implement",
-  "status": "pending"
-}</code></pre>
+            <table>
+                <thead>
+                    <tr><th>Field</th><th>Value</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>request_id</code></td><td><code>req-</code> followed by 12 hex characters</td></tr>
+                    <tr><td><code>timestamp</code></td><td>e.g. 2026-05-02 08:40:08</td></tr>
+                    <tr><td><code>description</code></td><td>the human-readable summary</td></tr>
+                    <tr><td><code>spec</code></td><td>the full spec, truncated to 4000 characters</td></tr>
+                    <tr><td><code>design_path</code></td><td>a path under <code>/agentOS/design/</code></td></tr>
+                    <tr><td><code>request_type</code></td><td><code>implement</code></td></tr>
+                    <tr><td><code>status</code></td><td><code>pending</code></td></tr>
+                </tbody>
+            </table>
 
             <p>The <code>request_id</code> is the agent's only handle on the request going forward. A successful call means the entry was written to disk. It does not mean the operator has seen it or will act on it in any particular timeframe.</p>
 
@@ -121,7 +125,7 @@
 
             <h2>Checking status</h2>
 
-            <pre><code>def check_claude_status(request_id: str) -> dict:</code></pre>
+            <p>The lookup call is <code>check_claude_status(request_id)</code>, which returns a dict.</p>
 
             <p>Lookup order: checks <code>claude_responses.jsonl</code> first (fulfilled or rejected). Falls back to <code>claude_requests.jsonl</code> (still pending). Absent from both: not found.</p>
 
@@ -154,9 +158,7 @@
 
             <p>Each daemon cycle, the daemon scans <code>claude_requests.jsonl</code> for entries with <code>status: "pending"</code> and injects the last 3 above the goal section:</p>
 
-            <pre><code>YOUR PENDING CLAUDE REQUESTS (submitted, not yet fulfilled):
-  [req-xxx] description...
-Use check_claude_status(request_id='...') to see if any were fulfilled.</code></pre>
+            <p>The injected block is headed "YOUR PENDING CLAUDE REQUESTS (submitted, not yet fulfilled)", lists each pending entry as <code>[req-xxx]</code> followed by its description, and closes with a line telling the agent to call <code>check_claude_status(request_id)</code> to see if any were fulfilled.</p>
 
             <p>The agent sees this every cycle until requests are fulfilled, rejected, or pushed out of the three-request window by newer submissions. Only the three most recent pending requests are foregrounded. Earlier ones are still in the queue and accessible via <code>check_claude_status</code>, but not visible in the prompt.</p>
 
@@ -249,12 +251,14 @@ Use check_claude_status(request_id='...') to see if any were fulfilled.</code></
 
             <p><strong>Mac/Linux:</strong></p>
 
-            <pre><code>ollama pull qwen3.5:9b && ollama pull nomic-embed-text
-git clone https://github.com/ninjahawk/hollow-agentOS
-cd hollow-agentOS
-cp config.example.json config.json
-docker compose up -d
-python thoughts.py</code></pre>
+            <ol>
+                <li>Pull the models: <code>ollama pull qwen3.5:9b</code> and <code>ollama pull nomic-embed-text</code></li>
+                <li>Clone the repo: <code>git clone https://github.com/ninjahawk/hollow-agentOS</code></li>
+                <li>Enter the directory: <code>cd hollow-agentOS</code></li>
+                <li>Copy the config: <code>cp config.example.json config.json</code></li>
+                <li>Start the stack: <code>docker compose up -d</code></li>
+                <li>Run it: <code>python thoughts.py</code></li>
+            </ol>
 
             <p>GPU strongly recommended. Planning calls drop from ~40s to ~6s with NVIDIA hardware. Works on CPU.</p>
 

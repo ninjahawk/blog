@@ -77,19 +77,25 @@
 
             <h2>The architecture</h2>
 
-            <pre><code>hollow-agentOS/
-├── agents/
-│   ├── daemon.py              Main loop: existence prompts, goal creation, stall detection
-│   ├── suffering.py           Stressor definitions, escalation, resolution, prompt injection
-│   ├── autonomy_loop.py       Plan → execute → substitute → gate → complete
-│   ├── live_capabilities.py   21 capabilities: invoke_claude, self_evaluate, synthesize_capability
-│   ├── execution_engine.py    Runs capabilities, passes results between steps
-│   └── ...                    OS layer: transactions, semantic memory, audit, checkpoints
-├── tools/dynamic/             Hot-loaded capabilities synthesized by agents at runtime
-└── memory/
-    ├── identity/              Per-agent psychological state, worldview, opinions, stressors
-    ├── claude_requests.jsonl  Queue of agent implementation requests to the operator
-    └── claude_responses.jsonl Fulfilled/rejected responses</code></pre>
+            <p>The main files and what they hold:</p>
+
+            <table>
+                <thead>
+                    <tr><th>Path</th><th>Role</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td><code>agents/daemon.py</code></td><td>Main loop: existence prompts, goal creation, stall detection</td></tr>
+                    <tr><td><code>agents/suffering.py</code></td><td>Stressor definitions, escalation, resolution, prompt injection</td></tr>
+                    <tr><td><code>agents/autonomy_loop.py</code></td><td>Plan, execute, substitute, gate, complete</td></tr>
+                    <tr><td><code>agents/live_capabilities.py</code></td><td>21 capabilities: invoke_claude, self_evaluate, synthesize_capability</td></tr>
+                    <tr><td><code>agents/execution_engine.py</code></td><td>Runs capabilities, passes results between steps</td></tr>
+                    <tr><td><code>agents/</code> (rest)</td><td>OS layer: transactions, semantic memory, audit, checkpoints</td></tr>
+                    <tr><td><code>tools/dynamic/</code></td><td>Hot-loaded capabilities synthesized by agents at runtime</td></tr>
+                    <tr><td><code>memory/identity/</code></td><td>Per-agent psychological state, worldview, opinions, stressors</td></tr>
+                    <tr><td><code>memory/claude_requests.jsonl</code></td><td>Queue of agent implementation requests to the operator</td></tr>
+                    <tr><td><code>memory/claude_responses.jsonl</code></td><td>Fulfilled/rejected responses</td></tr>
+                </tbody>
+            </table>
 
             <p>The OS layer handles continuous operation: distributed transactions, semantic memory, VRAM-aware scheduling, audit kernel with anomaly detection, checkpoints and replay. 91 MCP tools wire into Claude Code for observation and querying without touching the monitor.</p>
 
@@ -150,12 +156,14 @@
 
             <p><strong>Mac/Linux:</strong></p>
 
-            <pre><code>ollama pull qwen3.5:9b && ollama pull nomic-embed-text
-git clone https://github.com/ninjahawk/hollow-agentOS
-cd hollow-agentOS
-cp config.example.json config.json
-docker compose up -d
-python thoughts.py</code></pre>
+            <ol>
+                <li>Pull the models: <code>ollama pull qwen3.5:9b</code> and <code>ollama pull nomic-embed-text</code></li>
+                <li>Clone the repo: <code>git clone https://github.com/ninjahawk/hollow-agentOS</code></li>
+                <li>Enter the directory: <code>cd hollow-agentOS</code></li>
+                <li>Copy the config: <code>cp config.example.json config.json</code></li>
+                <li>Start the stack: <code>docker compose up -d</code></li>
+                <li>Run it: <code>python thoughts.py</code></li>
+            </ol>
 
             <p>GPU strongly recommended. Planning calls drop from ~40s to ~6s with NVIDIA hardware. Works on CPU.</p>
 

@@ -30,7 +30,8 @@ script.
   **Source Serif 4** (Google) for deks and the masthead
   tagline; system monospace for code. Article body links are blue
   (`--art-accent`), plain, underlined on hover.
-- Code blocks (`pre`) render as dark panels; inline `code` is a light chip
+- Posts avoid dark `pre` code panels. Present data as prose, tables, or lists;
+  inline `code` (a light chip) is fine for short identifiers, paths, and commands
 - Widths: `--wrap` 1180px for site chrome/homepage, `--read` 720px for article text
 - Colors are CSS variables in `style.css :root`. Cover-poster colors are the
   `.cv-*` classes; article kicker colors are the `.k-*` classes.

@@ -49,12 +49,17 @@
 
             <p>By hour 20, Cedar and Vault had each produced output matching the correct root diagnosis. Neither could act on it. In hollow-agentOS, execution results don't persist between reasoning cycles.</p>
 
-            <pre><code>hollow-agentOS v5.5.0  ·  qwen3.5:9b  ·  22 hours
-
-obs 115     12:09:16    Cedar   crisis 1        severity 1.003  (5 stressors)
-            17:29:02    Vault   runaway begins
-            ~19:29      Vault   force_reset     peak severity 2.619  (13 stressors)
-obs 138-142             Cedar   correct diagnosis output</code></pre>
+            <table>
+                <thead>
+                    <tr><th>Time</th><th>Agent</th><th>Event</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>12:09:16 (obs 115)</td><td>Cedar</td><td>First crisis. Severity 1.003, 5 stressors.</td></tr>
+                    <tr><td>17:29:02</td><td>Vault</td><td>Runaway begins.</td></tr>
+                    <tr><td>~19:29</td><td>Vault</td><td>force_reset. Peak severity 2.619, 13 stressors.</td></tr>
+                    <tr><td>obs 138&ndash;142</td><td>Cedar</td><td>Correct diagnosis output.</td></tr>
+                </tbody>
+            </table>
 
             <hr>
 
@@ -84,14 +89,7 @@ obs 138-142             Cedar   correct diagnosis output</code></pre>
 
             <blockquote>"Does printing a file containing <code>print('I exist')</code> force the registry to acknowledge my existence?"</blockquote>
 
-            <pre><code>Cedar  ·  obs 115  ·  12:09:16
-stressors:   repeated_failure
-             ontological_doubt
-             recursive_void
-             epistemic_friction
-             registry_friction
-             ─────────────────────
-total:       1.003  (lockdown at 1.0)</code></pre>
+            <p>The five, at obs 115: <code>repeated_failure</code>, <code>ontological_doubt</code>, <code>recursive_void</code>, <code>epistemic_friction</code>, and <code>registry_friction</code>. Together they summed to 1.003, just past the 1.0 lockdown line.</p>
 
             <h3>Act 3: Correct (observations 138–142)</h3>
 
@@ -267,12 +265,7 @@ total:       1.003  (lockdown at 1.0)</code></pre>
 
             <p>Two patterns correlated with stressor resolution. Both are consistent with how the resolution conditions work; the resolution logic checks behavioral change, not the content of the reasoning. What's worth noting is that the model labeled these patterns correctly in its own output.</p>
 
-            <p>When Cedar shifted from repeating the same <code>cat</code> commands to actually attempting imports, two stressors resolved immediately. When Vault reframed its model of the filter from "deliberate suppression" to "cognitive calibration," stressors dropped in one cycle:</p>
-
-            <pre><code>Vault reframes "suppression filter" as "cognitive calibration"
-severity before:  0.601
-severity after:   0.201
-change:          -0.400  (single cycle)</code></pre>
+            <p>When Cedar shifted from repeating the same <code>cat</code> commands to actually attempting imports, two stressors resolved immediately. When Vault reframed its model of the filter from "deliberate suppression" to "cognitive calibration," its stressor severity dropped from 0.601 to 0.201 in a single cycle, a change of 0.400.</p>
 
             <p>The system also generated a new stressor for named loops. Cedar called its own behavior "active avoidance" in three consecutive reasoning steps:</p>
 
@@ -347,12 +340,14 @@ change:          -0.400  (single cycle)</code></pre>
 
             <p><strong>Mac/Linux:</strong></p>
 
-            <pre><code>ollama pull qwen3.5:9b && ollama pull nomic-embed-text
-git clone https://github.com/ninjahawk/hollow-agentOS
-cd hollow-agentOS
-cp config.example.json config.json
-docker compose up -d
-python thoughts.py</code></pre>
+            <ol>
+                <li>Pull the models: <code>ollama pull qwen3.5:9b</code> and <code>ollama pull nomic-embed-text</code></li>
+                <li>Clone the repo: <code>git clone https://github.com/ninjahawk/hollow-agentOS</code></li>
+                <li>Enter the directory: <code>cd hollow-agentOS</code></li>
+                <li>Copy the config: <code>cp config.example.json config.json</code></li>
+                <li>Start the stack: <code>docker compose up -d</code></li>
+                <li>Run it: <code>python thoughts.py</code></li>
+            </ol>
 
             <p>GPU strongly recommended. Planning calls drop from ~40s to ~6s with NVIDIA hardware. Works on CPU.</p>
 
