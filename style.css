@@ -244,6 +244,43 @@ a:hover { text-decoration: underline; }
 .more-grid .card-title { font-size: 20px; }
 .more-grid .card-cover { min-height: 150px; }
 
+/* homepage story feed — lined-up ruled list (section-front style) */
+.feed {
+  list-style: none;
+  max-width: 860px;
+  margin-top: 12px;
+  border-top: 2px solid var(--rule);
+}
+.feed-item {
+  padding: 26px 0;
+  border-bottom: 1px solid var(--border);
+}
+.feed-item .kicker {
+  display: block;
+  margin-bottom: 10px;
+  font-size: 12px;
+  letter-spacing: 1.8px;
+}
+.feed-title {
+  display: block;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: clamp(24px, 3.4vw, 34px);
+  line-height: 1.06;
+  letter-spacing: -0.3px;
+  color: var(--ink);
+}
+a.feed-title:hover { color: var(--accent); text-decoration: none; }
+.feed-date {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--sans);
+  font-size: 12px;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  color: var(--light);
+}
+
 /* cover palette */
 .cv-orange { --cv-bg:#ff6b35; --cv-fg:#120a05; }
 .cv-red    { --cv-bg:#e5091a; --cv-fg:#fff; }

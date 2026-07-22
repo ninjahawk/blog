@@ -5,7 +5,7 @@ Static blog at https://ninjahawk.github.io/blog. HTML/CSS, no build tools.
 ## Structure
 
 ```
-index.html                  Homepage (WIRED-style magazine grid)
+index.html                  Homepage (lined-up story feed — kicker + title + date rows)
 style.css                   Shared stylesheet — drives homepage + every post
 posts/*.html                Individual post pages (link ../style.css)
 deploy.sh                   Interactive deploy script (don't use — push directly with git)
@@ -52,7 +52,7 @@ Posts are ordered newest-first in `index.html`.
 1. Copy a standard post (e.g. `posts/suffering-system.html`). It links `../style.css` and the Google Fonts — leave the `<head>` links as-is.
 2. Update `<title>`, and in the `.article-head` block: the `.kicker` (label + `k-*` color class), the `<h1>`, the `.dek` (subhead), and the `.by-date`. Keep `.by-author` as `NinjaHawk`.
 3. Write the post body inside `<div class="article-body">…</div>`. Use plain `<p>`, `<h2>`, `<h3>`, `<pre><code>`, `<table>`, `<blockquote>`, `<figure>` — the shared stylesheet styles them all.
-4. Add a card to `index.html`. Newest post is the `.picks-lead` hero; older ones move down through `.picks-side`, the `.picks-recent` list, and the `.more-grid`. Give the cover a `.cv-*` color and set the kicker.
+4. Add a `.feed-item` row to the `.feed` list in `index.html`, at the top (newest first): a `.kicker` with a `k-*` color class, a `.feed-title` link to the post, and a `.feed-date`. (The old magazine-grid classes — `.picks*`, `.card*`, `.cv-*`, `.more-grid` — still live in `style.css` but are no longer used on the homepage.)
 5. Commit and push: `git add index.html posts/your-post.html && git commit -m "..." && git push origin master`
 
 Do not use `deploy.sh` — it prompts interactively for GitHub credentials and will hang.

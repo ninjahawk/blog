@@ -31,123 +31,64 @@
         <main class="home">
             <span class="eyebrow">Latest</span>
 
-            <div class="picks">
-                <!-- lead / hero -->
-                <div class="picks-lead">
-                    <article class="card cv-orange">
-                        <a class="card-cover" href="posts/poke500.html">
-                            <span class="kicker">Projects</span>
-                            <h2 class="card-title">I Built a Stock Index for Pokémon Cards</h2>
-                        </a>
-                        <div class="card-info">
-                            <p class="card-dek">The S&amp;Poké 500: a price-weighted index of the 500 most valuable English raw Pokémon cards, rebased to 1,000 and updated daily from TCGplayer prices. The dollar value of the basket nearly tripled since 2024. The index is up 7.4%. The gap is the point.</p>
-                            <div class="meta"><span>NinjaHawk</span><span>Jul 15, 2026</span></div>
-                        </div>
-                    </article>
-                </div>
-
-                <!-- left side stack -->
-                <div class="picks-side">
-                    <article class="card cv-red">
-                        <a class="card-cover" href="posts/api-paywalls.html">
-                            <span class="kicker">Business</span>
-                            <h2 class="card-title">They Trained on Your Posts for Free</h2>
-                        </a>
-                        <div class="card-info">
-                            <p class="card-dek">X charges $0.005 per post read via API. Reddit's price shut down Apollo, then Reddit sold the same data to Google for $60M a year. Train on it, meter it, ban you.</p>
-                            <div class="meta"><span>NinjaHawk</span><span>Jul 12, 2026</span></div>
-                        </div>
-                    </article>
-
-                    <article class="card cv-yellow">
-                        <a class="card-cover" href="posts/doors-are-inefficient.html">
-                            <span class="kicker">Ideas</span>
-                            <h2 class="card-title">Doors Are Inefficient</h2>
-                        </a>
-                        <div class="card-info">
-                            <p class="card-dek">A door has had 5,000 years to get good at one job. Using real government data, it is costing us $14,270 per household and 1.58 billion hours a year. The math is not close.</p>
-                            <div class="meta"><span>NinjaHawk</span><span>May 20, 2026</span></div>
-                        </div>
-                    </article>
-                </div>
-
-                <!-- right rail: most recent -->
-                <aside class="picks-recent">
-                    <span class="eyebrow">Most Recent</span>
-                    <ul class="recent-list">
-                        <li class="recent-item">
-                            <span class="kicker k-blue">Ideas</span>
-                            <a href="posts/singleton-attractor.html">Godlike Causal Eventuality</a>
-                            <div class="meta"><span>May 12, 2026</span></div>
-                        </li>
-                        <li class="recent-item">
-                            <span class="kicker k-teal">Systems</span>
-                            <a href="posts/what-hollow-is.html">AI: Apologies, I Was Only Doing What Was Instructed</a>
-                            <div class="meta"><span>May 10, 2026</span></div>
-                        </li>
-                        <li class="recent-item">
-                            <span class="kicker k-purple">Field Notes</span>
-                            <a href="posts/invoke-claude.html">The Operator Fulfilled the Request. Cedar Submitted It 31 More Times.</a>
-                            <div class="meta"><span>May 3, 2026</span></div>
-                        </li>
-                        <li class="recent-item">
-                            <span class="kicker k-teal">Teardown</span>
-                            <a href="posts/synthesize-capability.html">How synthesize_capability Works</a>
-                            <div class="meta"><span>May 3, 2026</span></div>
-                        </li>
-                    </ul>
-                </aside>
-            </div>
+            <ul class="feed">
+                <li class="feed-item">
+                    <span class="kicker k-orange">Projects</span>
+                    <a class="feed-title" href="posts/poke500.html">I Built a Stock Index for Pokémon Cards</a>
+                    <span class="feed-date">Jul 15, 2026</span>
+                </li>
+                <li class="feed-item">
+                    <span class="kicker k-red">Business</span>
+                    <a class="feed-title" href="posts/api-paywalls.html">They Trained on Your Posts for Free</a>
+                    <span class="feed-date">Jul 12, 2026</span>
+                </li>
+                <li class="feed-item">
+                    <span class="kicker k-blue">Ideas</span>
+                    <a class="feed-title" href="posts/doors-are-inefficient.html">Doors Are Inefficient</a>
+                    <span class="feed-date">May 20, 2026</span>
+                </li>
+                <li class="feed-item">
+                    <span class="kicker k-blue">Ideas</span>
+                    <a class="feed-title" href="posts/singleton-attractor.html">Godlike Causal Eventuality</a>
+                    <span class="feed-date">May 12, 2026</span>
+                </li>
+                <li class="feed-item">
+                    <span class="kicker k-teal">Systems</span>
+                    <a class="feed-title" href="posts/what-hollow-is.html">AI: Apologies, I Was Only Doing What Was Instructed</a>
+                    <span class="feed-date">May 10, 2026</span>
+                </li>
+                <li class="feed-item">
+                    <span class="kicker k-purple">Field Notes</span>
+                    <a class="feed-title" href="posts/invoke-claude.html">The Operator Fulfilled the Request. Cedar Submitted It 31 More Times.</a>
+                    <span class="feed-date">May 3, 2026</span>
+                </li>
+                <li class="feed-item">
+                    <span class="kicker k-teal">Teardown</span>
+                    <a class="feed-title" href="posts/synthesize-capability.html">How synthesize_capability Works</a>
+                    <span class="feed-date">May 3, 2026</span>
+                </li>
+                <li class="feed-item">
+                    <span class="kicker k-teal">Teardown</span>
+                    <a class="feed-title" href="posts/existence-loop.html">There Is No Other Loop</a>
+                    <span class="feed-date">May 3, 2026</span>
+                </li>
+                <li class="feed-item">
+                    <span class="kicker k-teal">Teardown</span>
+                    <a class="feed-title" href="posts/suffering-system.html">How the Suffering System Works</a>
+                    <span class="feed-date">May 3, 2026</span>
+                </li>
+                <li class="feed-item">
+                    <span class="kicker k-slate">Experiment</span>
+                    <a class="feed-title" href="posts/22-hour-session.html">By Hour 20 It'll Have the Correct Diagnosis</a>
+                    <span class="feed-date">May 1, 2026</span>
+                </li>
+                <li class="feed-item">
+                    <span class="kicker k-slate">Experiment</span>
+                    <a class="feed-title" href="posts/local-llm-psychological-states.html">Leave a 9B Model Alone Overnight</a>
+                    <span class="feed-date">Apr 30, 2026</span>
+                </li>
+            </ul>
         </main>
-
-        <section class="more">
-            <span class="eyebrow">More Stories</span>
-            <div class="more-grid">
-                <article class="card cv-pink">
-                    <a class="card-cover" href="posts/existence-loop.html">
-                        <span class="kicker">Teardown</span>
-                        <h2 class="card-title">There Is No Other Loop</h2>
-                    </a>
-                    <div class="card-info">
-                        <p class="card-dek">Every six seconds a 9B model reads its own prior outputs and picks a goal. The existence prompt is the single driver of all agent behavior.</p>
-                        <div class="meta"><span>May 3, 2026</span></div>
-                    </div>
-                </article>
-
-                <article class="card cv-slate">
-                    <a class="card-cover" href="posts/suffering-system.html">
-                        <span class="kicker">Teardown</span>
-                        <h2 class="card-title">How the Suffering System Works</h2>
-                    </a>
-                    <div class="card-info">
-                        <p class="card-dek">Six stressor types. Time-based escalation. No self-dismissal. Persistent aversive pressure agents can't clear without changing behavior.</p>
-                        <div class="meta"><span>May 3, 2026</span></div>
-                    </div>
-                </article>
-
-                <article class="card cv-blue">
-                    <a class="card-cover" href="posts/22-hour-session.html">
-                        <span class="kicker">Experiment</span>
-                        <h2 class="card-title">By Hour 20 It'll Have the Correct Diagnosis</h2>
-                    </a>
-                    <div class="card-info">
-                        <p class="card-dek">Give a 9B model broken tools. Every call returned null for 22 hours. It produced the correct diagnosis at hour 20. It couldn't act on it.</p>
-                        <div class="meta"><span>May 1, 2026</span></div>
-                    </div>
-                </article>
-
-                <article class="card cv-teal">
-                    <a class="card-cover" href="posts/local-llm-psychological-states.html">
-                        <span class="kicker">Experiment</span>
-                        <h2 class="card-title">Leave a 9B Model Alone Overnight</h2>
-                    </a>
-                    <div class="card-info">
-                        <p class="card-dek">Three qwen3.5:9b agents. Twelve hours. No prompts after setup. What Cedar did at hour twelve is hard to explain away.</p>
-                        <div class="meta"><span>Apr 30, 2026</span></div>
-                    </div>
-                </article>
-            </div>
-        </section>
     </div>
 
     <footer class="site-footer">
