@@ -36,11 +36,11 @@
             </div>
         </div>
         <div class="article-body">
-            <p>I've been poking at Gemini 3.6 Flash since it <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-6-flash-3-5-flash-lite-3-5-flash-cyber/" target="_blank" rel="noopener">showed up yesterday</a>, and there's one number in the announcement that I think basically everyone is going to scroll straight past. Not the price (output down to $7.50 per million from $9), not the March 2026 cutoff, not the Computer Use stuff being built in now. It's this: Google says 3.6 Flash hits the same or better scores than 3.5 Flash while emitting about 17% fewer output tokens to get there. On DeepSWE, one of the long-horizon coding evals, they claim up to 65% fewer.</p>
+            <p>Ok so I've been messing with Gemini 3.6 Flash since it <a href="https://blog.google/innovation-and-ai/models-and-research/gemini-models/gemini-3-6-flash-3-5-flash-lite-3-5-flash-cyber/" target="_blank" rel="noopener">dropped yesterday</a>, and there's one number in the announcement that I'm pretty sure most people are going to scroll right past. It's not the price (output's down to $7.50 per million from $9), not the March 2026 cutoff, not Computer Use being built in now. It's this: Google says 3.6 Flash hits the same or better scores than 3.5 Flash while spending about 17% fewer output tokens to get there. On DeepSWE, one of the long-horizon coding evals, they're claiming up to 65% fewer.</p>
 
-            <p>Read that again, because it's a strange thing to lead a launch with. Part of the pitch for the new model is that it talks less.</p>
+            <p>Read that again, because it's a genuinely odd thing to build a launch around. Part of the sell for the new model is that it talks less.</p>
 
-            <p>I think this is a much bigger deal than a 17% line item makes it look, and to see why you have to remember something that your invoice actively hides from you: an output token and an input token are not the same kind of object.</p>
+            <p>And I think it's a bigger deal than a 17% line item makes it look, but to see why you have to remember something your invoice actively papers over: an output token and an input token are not the same kind of thing at all.</p>
 
             <hr>
 
@@ -52,9 +52,9 @@
 
             <p>Which means output tokens aren't just the expensive half of the bill. They're the <em>serial</em> half of the computation. They're the part you actually sit there and wait on. It's why the "tokens per second" number everyone quotes is always the decode number and nobody ever quotes prefill. And for agents specifically this is the whole ballgame, because in a loop the output is on the critical path of every single step. The model writes, that becomes a tool call, that comes back, it writes again. The tokens it generates are the thing standing between one step and the next, every hop, all the way down.</p>
 
-            <p>So cutting output tokens by 17% is not shaving 17% off some line item. It's shaving it off the one part of the system that flatly refuses to parallelize.</p>
+            <p>So cutting output tokens by 17% isn't shaving 17% off some line item. It's shaving it off the one part of the system that flatly refuses to go faster.</p>
 
-            <p>Let me just do the napkin math, it's kind of fun. Say a normal-ish agent run emits 40k output tokens over the whole trajectory: the reasoning, the tool calls, the final diff. Old price, that's $0.36. New price, $0.30. Knock 17% off the count and you're down around 33k, call it $0.25. So ~30% off the output bill, and it's coming from two things stacking at once, cheaper tokens and fewer of them.</p>
+            <p>Let me just do the napkin math, it's kind of fun. Say a normal-ish agent run spits out 40k output tokens over the whole trajectory: the reasoning, the tool calls, the final diff. Old price, that's $0.36. New price, $0.30. Knock 17% off the count and you're down around 33k, so call it $0.25. That's ~30% off the output bill, and it's coming from two things at once, cheaper tokens and fewer of them. (Yes I'm hand-waving the input side. Point stands.)</p>
 
             <p>But honestly the money is the boring half. The other half is time. Decode at maybe 150 tokens/sec means 40k tokens is something like four and a half minutes of pure generating; 33k is more like three and a half. Doesn't sound like much until you've got a loop doing that thirty times, and then it's the difference between an agent that feels alive and one that feels like it's buffering. Nobody benchmarks "feels like it's buffering," but that's 90% of what running these things is actually like.</p>
 
@@ -76,7 +76,7 @@
 
             <p>Here's the part I don't know, and I don't think the benchmarks can tell me either. There are two completely different ways to get a model to output 17% fewer tokens. One is that it got smarter and stopped wasting them. The other is that you trained it to quit thinking sooner. And the annoying thing is that on most tasks those look identical: same answer, fewer tokens, smaller bill, everyone's happy. The gap only opens up on the tasks that actually needed the extra thinking, where the second model quietly gets it wrong, just faster and cheaper than it used to. Being concise and giving up early produce the exact same token count. The average on the eval can't see which one you paid for.</p>
 
-            <p>I don't actually think that's what Google did here, to be clear. The coding scores went up, not down, so at least in aggregate they didn't buy the brevity by trading away correctness. But "in aggregate" is doing a lot of quiet work in that sentence. The place I'd stay nervous is the long tail of the long-horizon stuff, which, surprise, is exactly where that 65% number comes from, and exactly where a model that's learned to decide it's done thinking is the last thing you want in the loop. I'll believe the terseness is free when I've watched one grind through a few hundred hops on something that actually fights back. For now it's a number I like and don't fully trust, which is a fine place to leave it.</p>
+            <p>I don't actually think that's what Google did here, to be clear. The coding scores went up, not down, so at least in aggregate they didn't buy the brevity by trading away correctness. But "in aggregate" is doing a lot of quiet work in that sentence. The place I'd stay nervous is the long tail of the long-horizon stuff, which, surprise, is exactly where that 65% number comes from, and exactly where a model that's learned to call it quits early is the last thing you want in the loop. I'll believe the terseness is free when I've watched one grind through a few hundred hops on something that actually fights back. For now it's a number I like and don't totally trust, and honestly that's a fine place to leave it for a day-one release.</p>
 
             <hr>
 
