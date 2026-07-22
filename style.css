@@ -550,9 +550,9 @@ figcaption {
 /* ---------------------------------------------------- pull-to-refresh raven */
 /* Injected by nest.js on touch devices. Sprite: CC0 "Pixel Raven" (opengameart). */
 html { overscroll-behavior-y: contain; }
+/* In-flow element at the very top of <body>; growing its height physically
+   pushes the whole page down (real slide-down), with the raven inside it. */
 #nest-ptr {
-  position: fixed;
-  top: 0; left: 0; right: 0;
   height: 0;
   overflow: hidden;
   display: flex;
@@ -560,7 +560,6 @@ html { overscroll-behavior-y: contain; }
   justify-content: center;
   background: var(--bg);
   pointer-events: none;
-  z-index: -1;              /* behind the page content, revealed as it pulls down */
 }
 .nest-raven {
   width: 64px; height: 64px;
