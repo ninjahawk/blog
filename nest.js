@@ -1,6 +1,6 @@
-/* Pull-to-refresh: a pixel raven perches, then takes off to refresh.
-   Sprite: CC0 "Pixel Raven" by JsRobin (opengameart.org), no credits required.
-   Touch devices only. Suppresses the native pull-to-refresh, no text. */
+/* Pull-to-refresh: the page pulls down, a pixel raven flaps in the gap, release
+   reloads. Sprite: CC0 "Pixel Raven" (opengameart.org), no credits required.
+   Touch devices only. Takes over the native pull-to-refresh. */
 (function () {
   if (!('ontouchstart' in window) && !navigator.maxTouchPoints) return;
 
@@ -8,36 +8,44 @@
   ptr.id = 'nest-ptr';
   ptr.setAttribute('aria-hidden', 'true');
   ptr.innerHTML = '<div class="nest-raven"></div>';
-  document.body.appendChild(ptr);
-
+  // Sits behind the page content; revealed as the content is pulled down.
+  document.documentElement.insertBefore(ptr, document.body);
   var raven = ptr.querySelector('.nest-raven');
+  var body = document.body;
 
-  var H = 120;           // full reveal height (px)
-  var THRESHOLD = 84;    // pull distance to trigger a refresh
-  var startY = 0, dist = 0, pulling = false, refreshing = false;
+  var MAX = 150, THRESHOLD = 82;
+  var startY = 0, gap = 0, pulling = false, refreshing = false;
 
-  function render(d) {
-    dist = d;
-    var shown = Math.min(d, H);
-    ptr.style.transform = 'translateY(' + (shown - H) + 'px)';
-    if (d >= THRESHOLD) { raven.classList.add('flying'); ptr.classList.add('ready'); }
-    else { raven.classList.remove('flying'); ptr.classList.remove('ready'); }
+  function setGap(g) {
+    gap = g;
+    body.style.transform = 'translateY(' + g + 'px)';
+    ptr.style.height = g + 'px';
+    if (g >= THRESHOLD) raven.classList.add('flying');
+    else raven.classList.remove('flying');
   }
 
-  function retract() {
-    ptr.style.transition = 'transform 0.4s cubic-bezier(0.16,1,0.3,1)';
-    ptr.style.transform = 'translateY(-' + H + 'px)';
+  function ease(prop, val) {
+    body.style.transition = 'transform 0.35s cubic-bezier(0.16,1,0.3,1)';
+    ptr.style.transition = 'height 0.35s cubic-bezier(0.16,1,0.3,1)';
+  }
+
+  function reset() {
+    ease();
+    body.style.transform = 'translateY(0)';
+    ptr.style.height = '0px';
     raven.classList.remove('flying');
-    setTimeout(function () { ptr.style.transition = ''; }, 420);
+    setTimeout(function () {
+      body.style.transition = ''; ptr.style.transition = '';
+      body.style.transform = ''; body.style.willChange = '';
+    }, 380);
   }
 
   window.addEventListener('touchstart', function (e) {
     if (window.scrollY <= 0 && !refreshing) {
       startY = e.touches[0].clientY;
       pulling = true;
-      raven.classList.remove('gone');
-      raven.style.transform = '';
-      ptr.style.transition = '';
+      body.style.transition = ''; ptr.style.transition = '';
+      body.style.willChange = 'transform';
     } else {
       pulling = false;
     }
@@ -47,27 +55,28 @@
     if (!pulling || refreshing) return;
     var d = e.touches[0].clientY - startY;
     if (d > 0 && window.scrollY <= 0) {
-      e.preventDefault();       // take over from the native pull-to-refresh
-      render(d * 0.55);         // rubber-band resistance
+      e.preventDefault();               // take over from the native pull-to-refresh
+      setGap(Math.min(d * 0.5, MAX));   // rubber-band resistance
     } else if (d < 0) {
       pulling = false;
-      retract();
+      reset();
     }
   }, { passive: false });
 
   window.addEventListener('touchend', function () {
     if (!pulling || refreshing) return;
     pulling = false;
-    if (dist >= THRESHOLD) {
+    if (gap >= THRESHOLD) {
       refreshing = true;
       raven.classList.add('flying');
-      // the raven flaps, then flies up and off before the reload
-      raven.style.transition = 'transform 0.6s ease-in, opacity 0.6s ease-in';
-      raven.style.transform = 'translateY(-130px)';
-      raven.style.opacity = '0';
-      setTimeout(function () { location.reload(); }, 640);
+      // settle to a steady spot, flap, then actually reload the page
+      body.style.transition = 'transform 0.2s ease';
+      ptr.style.transition = 'height 0.2s ease';
+      body.style.transform = 'translateY(72px)';
+      ptr.style.height = '72px';
+      setTimeout(function () { location.reload(); }, 620);
     } else {
-      retract();
+      reset();
     }
   }, { passive: true });
 })();
