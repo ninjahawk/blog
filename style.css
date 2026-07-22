@@ -400,7 +400,7 @@ a.feed-title:hover { color: var(--accent); text-decoration: none; }
   margin: 32px 0 10px;
 }
 
-.article-body a { color: var(--art-accent); box-shadow: none; }
+.article-body a { color: var(--art-accent); box-shadow: none; text-decoration: underline; text-underline-offset: 2px; }
 .article-body a:hover { text-decoration: underline; box-shadow: none; }
 
 .article-body strong { color: var(--ink); font-weight: 700; }
