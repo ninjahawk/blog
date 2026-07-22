@@ -2,6 +2,12 @@
 
 Static blog at https://ninjahawk.github.io/blog. HTML/CSS, no build tools.
 
+> **Stable UI: v1.0** — current stable UI baseline. News-style reading layout
+> (system-sans body, blue links, no dark code panels), lined-up homepage feed,
+> arrow-only back link, "© 2026 Nathan Langley" footer, Contact →
+> nathanlangley.dev, and the pixel-raven pull-to-refresh (real in-flow page
+> slide-down). Treat this as the known-good UI to return to.
+
 ## Structure
 
 ```
