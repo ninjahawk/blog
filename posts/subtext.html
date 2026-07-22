@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watching a language model think before it speaks - NinjaHawk's Nest</title>
+    <meta name="description" content="Subtext hooks a local 4B model's residual stream and projects it into vocabulary space, so you can watch the words show up in its head a beat before they show up in its mouth.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+    <link rel="stylesheet" href="../style.css">
+    <script data-goatcounter="https://blog-nathanlangley.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script defer src="../nest.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrap nav-inner">
+            <a class="brand" href="../index.html">NINJAHAWK<span>'S NEST</span></a>
+            <nav class="site-nav">
+                <a href="../index.html">Home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://nathanlangley.dev" target="_blank" rel="noopener">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="article">
+        <a class="back" href="../index.html">&larr;</a>
+        <div class="article-head">
+            <span class="kicker k-orange">Projects</span>
+            <h1>Watching a language model think before it speaks</h1>
+            <p class="dek">A 4B model, a lens on its residual stream, and a browser tab where the words show up in its head a beat before they show up in its mouth.</p>
+            <div class="byline">
+                <span class="by-author">NinjaHawk</span>
+                <span class="by-date">July 22, 2026</span>
+            </div>
+        </div>
+        <div class="article-body">
+            <p>I typed <em>"Is this correct? 12 + 5 = 1"</em> and hit enter, and before the model wrote a single character of a reply, three words were already sitting in a little panel off to the side: <code>math</code>, <code>addition</code>, <code>incorrect</code>. It hadn't said anything yet. It was still reading my message. But it had clearly already made up its mind, and I was watching that happen, live, one layer at a time.</p>
+
+            <p>I've been playing with this for about a week and I still get a small jolt every time. So I cleaned it up and put it on GitHub. It's called <a href="https://github.com/ninjahawk/Subtext" target="_blank" rel="noopener">Subtext</a>, and the whole idea is very simple to state: instead of only reading what a model says, you get to read what it's <em>about</em> to say, at every step, while it reads and while it writes.</p>
+
+            <h2>What it actually shows you</h2>
+
+            <p>Normally you interact with a model through the one channel it's optimized to make look good: its output. Subtext taps the channel underneath. It hooks the residual stream at nine layers, and at every token it takes those internal activations and projects them into vocabulary space, so you get a ranked list of the words the model is leaning toward internally. Not the word it emits. The words it's <em>disposed</em> to emit. You watch those readouts stream past as it reads your prompt and as it generates its answer.</p>
+
+            <p>The part that surprised me is how much is going on before the first output token. There's a whole "reading" phase where the model is just ingesting your message, and the workspace is already busy: categories, judgments, the gist of where this is going. By the time it starts typing, a lot of the interesting decisions look like they've already been made.</p>
+
+            <h2>How it works, roughly</h2>
+
+            <p>The trick underneath is an old interpretability idea with a sharper new version. The old idea is the logit lens: take the hidden state at some middle layer, pretend it's the final layer, run it through the model's unembedding, and read off the top words. It sort of works. Each layer is holding a fuzzy running guess about what comes next, and if you squint at it through the output matrix you can read the guess.</p>
+
+            <p>The sharper version Subtext uses is the Jacobian lens, from a recent interpretability paper. Roughly: instead of naively decoding the raw hidden state, it isolates the slice of the representation that the model can actually verbally report and reuse downstream (the paper calls it a global workspace, a "J-space"), and decodes <em>that</em>. In practice it's one small matrix-vector product per layer plus an unembedding per token, which is cheap enough that generation still streams at basically native speed. You're not waiting on the introspection. It just runs alongside.</p>
+
+            <p>Nine layers means you don't get one answer, you get a little cross-section of the network. You can watch a concept show up shallow and vague and then sharpen as it climbs.</p>
+
+            <h2>Three things I didn't expect</h2>
+
+            <p><strong>It settles the verdict before it says a word.</strong> That 12+5 example wasn't a fluke. Over and over, the workspace holds <code>incorrect</code> at high strength while the model is still politely typing "Let me take a look at that." The conclusion is locked in several tokens before the sentence that delivers it. Watching a model be diplomatic on the surface while it's already decided underneath is a weird feeling.</p>
+
+            <p><strong>It plans ahead of its own mouth.</strong> Mid-explanation, the technical term it's about to reach for is frequently already parked in the workspace, a few tokens early, waiting its turn. The output reads left to right. The thinking clearly doesn't.</p>
+
+            <p><strong>You can watch it hop.</strong> This is my favorite. There's a known "two-hop" behavior where a model answers "what's the currency of the boot-shaped country" by internally going boot-shaped &rarr; Italy &rarr; euro. In Subtext you can actually see both feet land: <code>Italy</code> shows up around layer 20, <code>euros</code> shows up around layer 26, and this is all before it generates anything. It's one of those things you've read about in papers and it hits differently when it's scrolling by on your own screen.</p>
+
+            <h2>The caveats, which you should actually read</h2>
+
+            <p>I want to be careful here, because this is exactly the kind of demo that's easy to over-read, and I'd rather you trust the honest version.</p>
+
+            <p>It's a lens, which means it's an approximation. I checked it against the reference implementation and the top-5 readouts match with cosine similarity above 0.99998, so the decode itself is faithful. But a faithful decode of a projection is still a projection. These words are what a linear readout says the model is disposed toward. Calling them the model's "thoughts" is a metaphor, and a generous one.</p>
+
+            <p>It's also a 4B model. Small. And the display is filtered down to word-initial tokens so it's legible, so you're seeing a cleaned-up view, not the raw vocabulary. Most importantly: this is correlation. The lens can light up <code>incorrect</code> without that reading being the thing that <em>causes</em> the output. It is a beautiful instrument. It is not a lie detector, and I'd push back on anyone who sells it as one.</p>
+
+            <h2>Why I think this matters anyway</h2>
+
+            <p>Even with all that, something shifted for me. Reading a model has always meant reading the surface it was trained to polish. This is a look at the layer under the paint, streaming, at native speed, on a GPU I already own. My honest guess is that "just watch the model think" becomes a normal move: for debugging a prompt, for catching a model that's confidently wrong before it commits, for teaching people what these things are actually doing instead of hand-waving at a black box. For an afternoon it stopped feeling like a wall and started feeling like a window.</p>
+
+            <p>And the replay part makes it shareable, which I didn't expect to care about but do. Every session exports to JSON with all the lens frames, and the frontend can replay the whole thing in a browser with no GPU at all. So you can capture a weird moment and hand it to someone and they can scrub through it on a laptop.</p>
+
+            <h2>Running it</h2>
+
+            <p>It's a local thing. You need roughly 10GB of VRAM on an NVIDIA card, or an Apple Silicon Mac with 16GB or more. It's Python plus a single HTML file that talks to the server over a websocket. First launch pulls the model and the pre-fitted lens (about 9GB) and builds a token mask, which takes a minute; after that it's instant.</p>
+
+            <ol>
+                <li>Clone it: <code>git clone https://github.com/ninjahawk/Subtext</code></li>
+                <li>Enter the directory: <code>cd Subtext</code></li>
+                <li>Install the deps: <code>pip install -r requirements.txt</code></li>
+                <li>Start the server: <code>python server.py</code></li>
+                <li>Open <code>http://localhost:8765</code></li>
+            </ol>
+
+            <p>Then ask it something you already know is wrong, and watch <code>incorrect</code> light up before it's polite enough to tell you. It's the most fun I've had staring at a residual stream.</p>
+
+            <p>Repo: <a href="https://github.com/ninjahawk/Subtext" target="_blank" rel="noopener">github.com/ninjahawk/Subtext</a>. It's Apache-2.0, and it's an independent project, not affiliated with Anthropic.</p>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <p class="foot-brand">Ninjahawk's Nest</p>
+            <p>&copy; 2026 Nathan Langley</p>
+        </div>
+    </footer>
+</body>
+</html>

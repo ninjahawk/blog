@@ -57,6 +57,7 @@ script.
 | `posts/doors-are-inefficient.html` | Doors Are Inefficient: A Mathematical Indictment | May 20, 2026 |
 | `posts/api-paywalls.html` | They trained on your posts for free. Reading one back costs half a cent. | July 12, 2026 |
 | `posts/poke500.html` | I built a stock index for Pokémon cards. The cheapest card in it is a common Psyduck at $226. | July 15, 2026 |
+| `posts/subtext.html` | Watching a language model think before it speaks | July 22, 2026 |
 
 Posts are ordered newest-first in `index.html`.
 
