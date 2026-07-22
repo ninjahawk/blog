@@ -24,9 +24,10 @@ script.
 - Accent red `#e5091a`; brand orange `#ff6b35` (secondary)
 - Fonts: **Oswald** (Google) for homepage display (masthead, brand, nav, feed
   titles, kickers); **Libre Franklin** (Google) for article headlines and the
-  in-body section subheads; **Verdana** (`Verdana, Helvetica, Arial, sans-serif`)
-  for the article reading body — deliberately matching the Tarski theme used on
-  terrytao.wordpress.com; **Source Serif 4** (Google) for deks and the masthead
+  in-body section subheads; the **system UI sans** (`--sans`) for the article
+  reading body — matching the mobile terrytao.wordpress.com view, rendering each
+  reader's native font (18px / 1.7) for a free-flowing, easy read;
+  **Source Serif 4** (Google) for deks and the masthead
   tagline; system monospace for code. Article body links are blue
   (`--art-accent`), plain, underlined on hover.
 - Code blocks (`pre`) render as dark panels; inline `code` is a light chip

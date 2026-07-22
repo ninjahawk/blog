@@ -373,12 +373,15 @@ a.feed-title:hover { color: var(--accent); text-decoration: none; }
 
 /* article body ------------------------------------------------------------ */
 .article-body {
-  /* Tarski theme body stack — matches terrytao.wordpress.com reading experience */
-  font-family: Verdana, Helvetica, Arial, sans-serif;
+  /* system UI sans — matches the mobile terrytao.wordpress.com reading view;
+     renders the device's native font (SF on iOS, Segoe on Windows, Roboto on
+     Android) and inherits the reader's system text-weight preference */
+  font-family: var(--sans);
   font-size: 18px;
+  line-height: 1.7;
   color: #1a1a1a;
 }
-.article-body p { margin-bottom: 20px; line-height: 1.55; }
+.article-body p { margin-bottom: 24px; line-height: 1.7; }
 
 .article-body h2 {
   font-family: var(--headline);
