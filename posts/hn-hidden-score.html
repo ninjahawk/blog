@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Most of your Hacker News karma comes from comment scores only you can see - NinjaHawk's Nest</title>
-    <meta name="description" content="Hacker News barely changed in twenty years, so I went looking for a hidden reputation score in its plain old code. There isn't one. It keeps five fields per account, and the only score among them is karma, most of which comes from comment votes nobody but the author can see.">
+    <meta name="description" content="Hacker News hides the score on every comment, but it publishes the order those scores produce. The number is stripped from the API; the ranking it feeds is left in plain sight, on everyone's comments, for free. Here's how to recover it.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
@@ -30,7 +30,7 @@
         <div class="article-head">
             <span class="kicker k-red">Investigation</span>
             <h1>Most of your Hacker News karma comes from comment scores only you can see</h1>
-            <p class="dek">Hacker News barely changed in twenty years, so I went looking for a hidden reputation score in its plain old code. There isn't one. It keeps five fields per account. The only score among them is karma, and most of it comes from comment votes nobody but the author can see.</p>
+            <p class="dek">Hacker News barely changed in twenty years, so I went looking for a hidden reputation score in its plain old code. There isn't one. Karma is mostly built from comment scores the API strips out. But it strips the number and leaves the ranking, so you can recover the order of scores you were told only their authors can see.</p>
             <div class="byline">
                 <span class="by-author">NinjaHawk</span>
                 <span class="by-date">July 22, 2026</span>
@@ -103,11 +103,36 @@
 
             <p>dang is the clearest example. His account record lists 83,933 submissions; the search index returns 54,007. Roughly thirty thousand of the moderator's own items sit in his history and never turn up in search. Most of that is probably deleted and dead comments, which stay in the raw history but fall out of the index. It's still an odd result: the person who runs moderation has the least searchable trail on the site, and neither public source is complete by itself.</p>
 
+            <h2>The order is public</h2>
+
+            <p>The score is stripped from every comment the API hands back. The order that score produces is not. Ask the Firebase API for a story and you get a <code>kids</code> array: the IDs of its top-level comments. That array is not in time order. It's in HN's display order, and HN displays comments ranked by the score it won't show you.</p>
+
+            <p>You can prove this without reading a single score. HN item IDs count up with time, so a chronological list would come back sorted low to high. It doesn't. I pulled the <code>kids</code> array for five threads and lined it up against the same IDs sorted by time:</p>
+
+            <table>
+                <thead>
+                    <tr><th>Thread</th><th>Top-level comments</th><th>Rank of the oldest comment</th><th>Adjacent pairs out of time order</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Dropbox launch (2007)</td><td>33</td><td>15th</td><td>16 / 32</td></tr>
+                    <tr><td>Norvig AMA (2011)</td><td>11</td><td>4th</td><td>5 / 10</td></tr>
+                    <tr><td>Tao on ChatGPT (2026)</td><td>60</td><td>42nd</td><td>32 / 59</td></tr>
+                    <tr><td>Passkeys (2026)</td><td>88</td><td>53rd</td><td>43 / 87</td></tr>
+                    <tr><td>Moonshot distillation (2026)</td><td>149</td><td>137th</td><td>71 / 148</td></tr>
+                </tbody>
+            </table>
+
+            <p>If the array were chronological the oldest comment would sit at the top and no pair would be out of time order. Instead the oldest comment lands wherever its score puts it, and about half of every thread runs against the clock. That reordering is the hidden score, exposed as a sort.</p>
+
+            <p>Take the 2007 Dropbox launch, the thread with the most-quoted comment on the site: the one explaining you could already build Dropbox yourself with rsync and an FTP account. That comment, by BrandonM, is ranked first. Drew Houston's own comment, the oldest top-level reply in the thread, sits at rank 15. Fourteen later comments outscore it. None of those positions carry a number, but the order is exact, and it's public.</p>
+
+            <p>So the value of a comment score is private and its rank is not. You can't read that one comment scored some number and another scored a lower one, but you can read, without logging in, that the thread was sorted the first over the second over the rest. Do it for every comment under a story and you've reconstructed the full ranking of scores you were told only their authors can see. It's ordinal, not exact: HN folds comment penalties and a controversy adjustment into the sort, so what you recover is the ranking the site actually uses, not the raw point totals. It works on anyone's comments, which is the part that isn't supposed to be possible.</p>
+
             <h2>The one hidden score is yours</h2>
 
-            <p>There is exactly one genuinely hidden score, and it's the column Algolia strips out. Every comment you've written carries a point value only you can see, only while logged in, one comment at a time. Nothing sums it for you. But it's your data, sitting behind your own login, so you can walk your entire comment history and add it up yourself. What you get is a number that exists nowhere else: the full distribution of your own comment scores, which HN keeps from you purely by never putting it in one place.</p>
+            <p>There is exactly one genuinely hidden score you can recover as a number, and it's the column Algolia strips out. Every comment you've written carries a point value only you can see, only while logged in, one comment at a time. Nothing sums it for you. But it's your data, sitting behind your own login, so you can walk your entire comment history and add it up yourself. What you get is a number that exists nowhere else: the full distribution of your own comment scores, which HN keeps from you purely by never putting it in one place.</p>
 
-            <p>This only works on your own account. Everyone else's comment scores are stripped for you exactly the way yours are stripped for them. The only hidden reputation number you can dig up on Hacker News is the one that already belonged to you.</p>
+            <p>This only works on your own account. Everyone else's comment scores are stripped for you exactly the way yours are stripped for them. So the hidden layer splits in two: your own scores you can recover as numbers, and everyone else's you can only recover as a ranking, never as values.</p>
 
             <h2>What this means</h2>
 
@@ -115,9 +140,13 @@
 
             <p>What's actually there is smaller and, I'd argue, more honest. The public reputation number is an aggregate of private ones. Karma is real, it unlocks real abilities on the site, and for most people it's mostly a comment score whose parts they aren't allowed to see. There's no dossier on you. There's a public running total sitting on top of a long list of numbers that each got removed on the way in.</p>
 
+            <p>The removal is less complete than it looks. HN strips the value off every comment and then publishes the order those values produce. So the number is gone and the ranking it feeds is left in the open, on everyone, for free. If you wanted the thing HN actually hides, it turns out most of it is sitting in the sort.</p>
+
             <h2>Run it yourself</h2>
 
             <p>It's all read-only and needs no account. Two endpoints. <code>hacker-news.firebaseio.com/v0/user/YOURNAME.json</code> returns your karma, account age and full submitted list. <code>hn.algolia.com/api/v1/search?tags=story,author_YOURNAME</code> returns every story with its score; switch to <code>tags=comment</code> and you get every comment with the score missing. Count both, sum the story points, subtract from karma, and you've got your own row of the table. It's about forty lines of Python. Run it on your own username and see how much of your standing came from numbers you were never shown.</p>
+
+            <p>For the ranking, drop the account entirely. Ask <code>hacker-news.firebaseio.com/v0/item/STORY_ID.json</code> for any thread, take its <code>kids</code> array, and compare it to the same IDs sorted low to high. Where the two lists disagree, you're looking at the hidden comment scores doing their job. Every gap between them is a score HN decided you shouldn't see, showing through in the one place it forgot to hide.</p>
         </div>
     </main>
 
