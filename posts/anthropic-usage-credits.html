@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>I don't like Anthropic anymore - NinjaHawk's Nest</title>
-    <meta name="description" content="The message used to tell you when your limit resets. Now it tells you how to pay. Usage credits bill at API rates on top of the subscription, there is a Set to unlimited option, and at least one user reports the toggle turning itself back on.">
+    <meta name="description" content="I've paid for a Max plan for about a year. The screen you hit when you run out used to tell you when to come back. Now it tells you how to pay, and the same settings page offers to take the spending cap off entirely.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
@@ -30,38 +30,24 @@
         <div class="article-head">
             <span class="kicker k-red">Business</span>
             <h1>I don't like Anthropic anymore</h1>
-            <p class="dek">The message used to tell you when your limit resets. Now it tells you how to pay.</p>
+            <p class="dek">The screen you hit when you run out used to tell you when to come back. Now it tells you how to pay.</p>
             <div class="byline">
                 <span class="by-author">NinjaHawk</span>
                 <span class="by-date">July 23, 2026</span>
             </div>
         </div>
         <div class="article-body">
-            <p>I have paid Anthropic every month for over a year. Max plan, then Claude Code on top of it. This is not a post about the models. The models are fine. This is about what the product started saying to me when I run out of the thing I already paid for.</p>
+            <p>I've had a Max subscription for about a year. I use Claude Code, which comes with it. I like the models and I'm not here to complain about the models. This is about one screen. The one you hit when you've used up what the plan gives you for the week, and what that screen started asking me for.</p>
 
-            <p>Here is what Claude Code shows me now when I hit the weekly limit:</p>
+            <p>For most of the year it told you a time. You've hit your limit, it comes back at some hour, go do something else. I hit it plenty. It was annoying and it was honest. I paid for a bucket, the bucket was empty, and it would fill back up on a schedule I could plan around.</p>
 
-            <blockquote>You've reached your usage limit. Turn on usage credits to keep going.</blockquote>
+            <p>Now the same wall leads with a button. What I get, more or less word for word, is "You've reached your usage limit. Turn on usage credits to keep going." The reset time is still in there if you go looking for it. It just isn't the message anymore. The message is that there's a way to keep paying, and it shows up at the one moment you're stuck on something and want to keep going.</p>
 
-            <p>Here is what the same wall used to say:</p>
+            <p>That's a small change and it sounds like nothing. It bothered me more the longer I sat with it, so I went and read how the thing it's pointing at actually works.</p>
 
-            <blockquote>You've reached your usage limit. Your limit resets at 4:00 PM.</blockquote>
+            <h2>What usage credits are</h2>
 
-            <p>The reset time is still in there somewhere. It is no longer the message. The message is now an instruction to start paying past the plan, placed at the exact moment the work stops and you are most likely to click yes.</p>
-
-            <hr>
-
-            <h2>The wording</h2>
-
-            <p>The account settings page did the same thing. When you get near the cap it now shows a banner along the lines of "You're close to your weekly limit. Turn on usage credits to keep going." The old behavior was to tell you the number and the reset time and leave it there. Waiting was the default state. Now the default state has a button on it.</p>
-
-            <p>I can't link you to a changelog for this, because there isn't one. There rarely is. In July 2025, TechCrunch documented Anthropic tightening Claude Code limits <a href="https://techcrunch.com/2025/07/17/anthropic-tightens-usage-limits-for-claude-code-without-telling-users/" target="_blank" rel="noopener">without telling users</a>; people found out from an error that read "Your tracking of usage limits has changed and is no longer accurate." The limits move and the copy moves and no announcement goes out. So take the exact strings above as what I see, not as press releases. The direction is the part I'm sure of.</p>
-
-            <hr>
-
-            <h2>How usage credits actually work</h2>
-
-            <p>This part is documented, in Anthropic's own <a href="https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans" target="_blank" rel="noopener">help center</a>. When you hit your plan limit, usage credits let you keep working, billed at standard API rates, charged separately from your subscription and added to your bill. You turn them on under Settings &gt; Usage. The flow reads like this:</p>
+            <p>This part isn't a rumor. It's in Anthropic's own <a href="https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans" target="_blank" rel="noopener">help center</a>. Once you pass your plan's limit, usage credits let you keep working, billed at standard API rates, charged on their own line separately from the subscription you already pay. You switch them on under Settings &gt; Usage, and the setup runs like this:</p>
 
             <table>
                 <thead>
@@ -69,61 +55,35 @@
                 </thead>
                 <tbody>
                     <tr><td>Enable</td><td>Turns on pay-as-you-go past your plan.</td></tr>
-                    <tr><td>Adjust limit</td><td>Set a monthly cap. Or "Set to unlimited" for no spending restrictions.</td></tr>
-                    <tr><td>Add funds</td><td>Prepay a balance to draw down.</td></tr>
-                    <tr><td>Auto-reload</td><td>Buys more automatically when the balance drops below a threshold you set. Daily redemption limit: $2,000.</td></tr>
+                    <tr><td>Adjust limit</td><td>Set a monthly cap, or choose "Set to unlimited" for no spending restrictions.</td></tr>
+                    <tr><td>Add funds</td><td>Prepay a balance for it to draw down.</td></tr>
+                    <tr><td>Auto-reload</td><td>Buys more on its own when the balance drops below a number you pick. Daily redemption limit: $2,000.</td></tr>
                 </tbody>
             </table>
 
-            <p>Read the second row again. The same screen that warns you that you are near your limit is the screen that offers, one click away, to remove the limit entirely. "Set to unlimited" is their phrase, not mine. The help article closes with the standard line: "Price and plans are subject to change at Anthropic's discretion."</p>
+            <p>The one that stops me is the cap. You can put a ceiling on the month, or you can pick "Set to unlimited," which is their phrasing, and it does what it sounds like. So the same page that warns you you're running low is also the page offering, a click away, to take the ceiling off. The article signs off with the line these pages always end on: "Price and plans are subject to change at Anthropic's discretion."</p>
 
-            <p>None of that is a scandal on its own. Metered overflow is a normal thing to sell. What I object to is the framing. A subscription is a promise about a ceiling. Once the ceiling becomes a soft prompt to enable uncapped spending, the subscription is no longer the ceiling. It's the floor.</p>
+            <p>Selling overflow by the token isn't the problem. Plenty of things work that way and nobody writes a blog post about their electric bill. What changed is what the subscription is for. I bought it as a cap. A fixed number I'd hand over each month and never have to think about again. The product has quietly started treating that number as a floor, and the screen where I used to just wait is now the screen where the spending starts.</p>
 
-            <hr>
+            <h2>The toggle that doesn't stay put</h2>
 
-            <h2>The part that turns itself on</h2>
-
-            <p>The thing that actually pushed me over was not the wording. It was reading that the toggle does not always stay where you put it.</p>
-
-            <p>Issue <a href="https://github.com/anthropics/claude-code/issues/25647" target="_blank" rel="noopener">#25647</a> on the Claude Code repo, filed after an update in early 2026:</p>
+            <p>What actually pushed me from annoyed to done was reading that the switch doesn't always stay where you leave it. There's a bug report on the Claude Code repo, issue <a href="https://github.com/anthropics/claude-code/issues/25647" target="_blank" rel="noopener">#25647</a>, filed after an update earlier this year. The opening line:</p>
 
             <blockquote>The "Extra usage" option on claude.ai was automatically enabled without my explicit consent, resulting in charges exceeding my configured $50 monthly spending limit. I was charged $74.99 (150% of the limit), leaving a negative balance of -$15.92.</blockquote>
 
-            <p>The reporter says they had previously turned the toggle off, an update flipped it back on with no notification, and the charges ran past the cap they had set. The math they list:</p>
+            <p>They'd turned it off. An update turned it back on with no notice, and by the time they noticed they were already sitting at a negative balance, charged half again over the fifty-dollar cap they had set specifically so this couldn't happen. The report got closed as invalid, with the note "Issue doesn't seem to be related to Claude Code," because the billing lives on the website and not in the command-line tool. That's technically correct and it's also the part that sticks with me. The charge belongs to a corner of the product that the person hitting it has no clean way to reach.</p>
 
-            <table>
-                <thead>
-                    <tr><th>Field</th><th>Value</th></tr>
-                </thead>
-                <tbody>
-                    <tr><td>Monthly cap they set</td><td>$50.00</td></tr>
-                    <tr><td>Amount charged</td><td>$74.99</td></tr>
-                    <tr><td>Percent of cap</td><td>150%</td></tr>
-                    <tr><td>Ending balance</td><td>-$15.92</td></tr>
-                </tbody>
-            </table>
+            <p>I want to be careful here, because this is the point where a post like this usually reaches for more than it has. This is one report I can link to, plus the ordinary scatter of people on forums saying some version of the same thing happened to them. I haven't reproduced it and I'm not going to tell you it's happening to everybody. What I'll actually stand behind is narrower. Every piece you'd need for it to happen is real and already shipped: a toggle that can turn on, an unlimited setting sitting right next to it, and an auto-reload that buys more without asking again. Whether it flips itself on, I can't prove. That it could is just how the page is built.</p>
 
-            <p>The issue was closed as not planned, labeled invalid, with the note "Issue doesn't seem to be related to Claude Code." That is technically fair: the billing lives on claude.ai, not in the CLI. It is also the whole problem in one sentence. The overflow charge is nobody's department to look at.</p>
+            <h2>What this means</h2>
 
-            <p>I want to be careful here, because this is where a post like this usually overreaches. This is one well-documented report plus scattered warnings on Reddit and forums about credits switching on in the background. I have not reproduced it. I can't tell you it's widespread, and I'm not going to pretend one closed issue is a pattern. What I can tell you is that the mechanism required for it to happen is documented and shipped: a toggle that can be enabled, an "unlimited" setting, and auto-reload that buys credits without asking. The report is that the toggle moved on its own. The capability for that report to be true is sitting in the settings page on purpose.</p>
+            <p>The part I'm sure of is small and documented. The limit message went from telling you a time to offering you a purchase. Usage credits are real, they bill at API rates on top of the plan, there's an unlimited option, and there's auto-reload. At least one person got charged past a cap they set after the switch came back on by itself. All of that is linked above and none of it is my interpretation.</p>
 
-            <hr>
+            <p>What I think it means is that the subscription stopped being the ceiling. The moment you put a "keep going" button on the wall, the wall turns into the place the next sale starts, and they've placed it in front of you at the exact moment you're mid-task and least inclined to stop and think about it. That's not an accident of the UI. Somebody chose to lead with the button.</p>
 
-            <h2>Honest assessment</h2>
+            <p>What I don't know is whether this is a growth team trying out a button or the plan being slowly turned into the front door for metered billing. Could be either. My guess is it drifts toward the second, because that's where the money is and nothing in the design is pushing the other way. I can't see their reasons. I can see the incentive, and it only points in one direction.</p>
 
-            <p>What happened: the limit message changed from telling you when you can resume to telling you how to pay to continue now. Usage credits bill at API rates on top of the subscription, expose a "Set to unlimited" cap, and support auto-reload. At least one user reports being charged 150% of a cap they set, after the toggle re-enabled itself, and the report was closed as out of scope. All of that is documented and linked above.</p>
-
-            <p>What it means: the plan stopped being a ceiling and became an on-ramp. The friction that used to say "wait" now says "spend," and it says it at the one moment you have a running task and the least patience. That is a conversion funnel, and it is pointed at people who already pay.</p>
-
-            <p>What it might mean: could be a growth team A/B testing a button, nothing deeper. Could be the subscription being quietly repositioned as the lead-in to metered billing, which is where the margin is. The auto-enable could be a bug that gets fixed next release, or a default that stays. I don't know which of these it is. Probably some of each. I know the incentive only runs one way, and I know I no longer trust the settings page to mean what it said last month.</p>
-
-            <hr>
-
-            <h2>Restated</h2>
-
-            <p>"Your limit resets at 4:00 PM" is a sentence about time. "Turn on usage credits to keep going" is a sentence about money. Same limit. Different ask.</p>
-
-            <p>I still pay them. For now. But I read the billing page every week now, and a year ago I never had to. That's the change, and it's why I don't like them anymore.</p>
+            <p>I still pay them. I'll probably pay them again next month, because the alternatives are worse and the work is real. But I read the billing page every week now, and a year ago it never once occurred to me that I'd need to. That's the whole change. It's small, and it turned out to be enough.</p>
         </div>
     </main>
 
