@@ -59,6 +59,7 @@ script.
 | `posts/poke500.html` | I built a stock index for Pokémon cards. The cheapest card in it is a common Psyduck at $226. | July 15, 2026 |
 | `posts/subtext.html` | Watching a language model think before it speaks | July 22, 2026 |
 | `posts/hn-hidden-score.html` | Most of your Hacker News karma comes from comment scores only you can see | July 22, 2026 |
+| `posts/anthropic-usage-credits.html` | I don't like Anthropic anymore | July 23, 2026 |
 
 Posts are ordered newest-first in `index.html`.
 

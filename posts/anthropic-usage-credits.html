@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I don't like Anthropic anymore - NinjaHawk's Nest</title>
+    <meta name="description" content="The message used to tell you when your limit resets. Now it tells you how to pay. Usage credits bill at API rates on top of the subscription, there is a Set to unlimited option, and at least one user reports the toggle turning itself back on.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+    <link rel="stylesheet" href="../style.css">
+    <script data-goatcounter="https://blog-nathanlangley.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script defer src="../nest.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrap nav-inner">
+            <a class="brand" href="../index.html">NINJAHAWK<span>'S NEST</span></a>
+            <nav class="site-nav">
+                <a href="../index.html">Home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://nathanlangley.dev" target="_blank" rel="noopener">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="article">
+        <a class="back" href="../index.html">&larr;</a>
+        <div class="article-head">
+            <span class="kicker k-red">Business</span>
+            <h1>I don't like Anthropic anymore</h1>
+            <p class="dek">The message used to tell you when your limit resets. Now it tells you how to pay.</p>
+            <div class="byline">
+                <span class="by-author">NinjaHawk</span>
+                <span class="by-date">July 23, 2026</span>
+            </div>
+        </div>
+        <div class="article-body">
+            <p>I have paid Anthropic every month for over a year. Max plan, then Claude Code on top of it. This is not a post about the models. The models are fine. This is about what the product started saying to me when I run out of the thing I already paid for.</p>
+
+            <p>Here is what Claude Code shows me now when I hit the weekly limit:</p>
+
+            <blockquote>You've reached your usage limit. Turn on usage credits to keep going.</blockquote>
+
+            <p>Here is what the same wall used to say:</p>
+
+            <blockquote>You've reached your usage limit. Your limit resets at 4:00 PM.</blockquote>
+
+            <p>The reset time is still in there somewhere. It is no longer the message. The message is now an instruction to start paying past the plan, placed at the exact moment the work stops and you are most likely to click yes.</p>
+
+            <hr>
+
+            <h2>The wording</h2>
+
+            <p>The account settings page did the same thing. When you get near the cap it now shows a banner along the lines of "You're close to your weekly limit. Turn on usage credits to keep going." The old behavior was to tell you the number and the reset time and leave it there. Waiting was the default state. Now the default state has a button on it.</p>
+
+            <p>I can't link you to a changelog for this, because there isn't one. There rarely is. In July 2025, TechCrunch documented Anthropic tightening Claude Code limits <a href="https://techcrunch.com/2025/07/17/anthropic-tightens-usage-limits-for-claude-code-without-telling-users/" target="_blank" rel="noopener">without telling users</a>; people found out from an error that read "Your tracking of usage limits has changed and is no longer accurate." The limits move and the copy moves and no announcement goes out. So take the exact strings above as what I see, not as press releases. The direction is the part I'm sure of.</p>
+
+            <hr>
+
+            <h2>How usage credits actually work</h2>
+
+            <p>This part is documented, in Anthropic's own <a href="https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans" target="_blank" rel="noopener">help center</a>. When you hit your plan limit, usage credits let you keep working, billed at standard API rates, charged separately from your subscription and added to your bill. You turn them on under Settings &gt; Usage. The flow reads like this:</p>
+
+            <table>
+                <thead>
+                    <tr><th>Step</th><th>What it does</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Enable</td><td>Turns on pay-as-you-go past your plan.</td></tr>
+                    <tr><td>Adjust limit</td><td>Set a monthly cap. Or "Set to unlimited" for no spending restrictions.</td></tr>
+                    <tr><td>Add funds</td><td>Prepay a balance to draw down.</td></tr>
+                    <tr><td>Auto-reload</td><td>Buys more automatically when the balance drops below a threshold you set. Daily redemption limit: $2,000.</td></tr>
+                </tbody>
+            </table>
+
+            <p>Read the second row again. The same screen that warns you that you are near your limit is the screen that offers, one click away, to remove the limit entirely. "Set to unlimited" is their phrase, not mine. The help article closes with the standard line: "Price and plans are subject to change at Anthropic's discretion."</p>
+
+            <p>None of that is a scandal on its own. Metered overflow is a normal thing to sell. What I object to is the framing. A subscription is a promise about a ceiling. Once the ceiling becomes a soft prompt to enable uncapped spending, the subscription is no longer the ceiling. It's the floor.</p>
+
+            <hr>
+
+            <h2>The part that turns itself on</h2>
+
+            <p>The thing that actually pushed me over was not the wording. It was reading that the toggle does not always stay where you put it.</p>
+
+            <p>Issue <a href="https://github.com/anthropics/claude-code/issues/25647" target="_blank" rel="noopener">#25647</a> on the Claude Code repo, filed after an update in early 2026:</p>
+
+            <blockquote>The "Extra usage" option on claude.ai was automatically enabled without my explicit consent, resulting in charges exceeding my configured $50 monthly spending limit. I was charged $74.99 (150% of the limit), leaving a negative balance of -$15.92.</blockquote>
+
+            <p>The reporter says they had previously turned the toggle off, an update flipped it back on with no notification, and the charges ran past the cap they had set. The math they list:</p>
+
+            <table>
+                <thead>
+                    <tr><th>Field</th><th>Value</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Monthly cap they set</td><td>$50.00</td></tr>
+                    <tr><td>Amount charged</td><td>$74.99</td></tr>
+                    <tr><td>Percent of cap</td><td>150%</td></tr>
+                    <tr><td>Ending balance</td><td>-$15.92</td></tr>
+                </tbody>
+            </table>
+
+            <p>The issue was closed as not planned, labeled invalid, with the note "Issue doesn't seem to be related to Claude Code." That is technically fair: the billing lives on claude.ai, not in the CLI. It is also the whole problem in one sentence. The overflow charge is nobody's department to look at.</p>
+
+            <p>I want to be careful here, because this is where a post like this usually overreaches. This is one well-documented report plus scattered warnings on Reddit and forums about credits switching on in the background. I have not reproduced it. I can't tell you it's widespread, and I'm not going to pretend one closed issue is a pattern. What I can tell you is that the mechanism required for it to happen is documented and shipped: a toggle that can be enabled, an "unlimited" setting, and auto-reload that buys credits without asking. The report is that the toggle moved on its own. The capability for that report to be true is sitting in the settings page on purpose.</p>
+
+            <hr>
+
+            <h2>Honest assessment</h2>
+
+            <p>What happened: the limit message changed from telling you when you can resume to telling you how to pay to continue now. Usage credits bill at API rates on top of the subscription, expose a "Set to unlimited" cap, and support auto-reload. At least one user reports being charged 150% of a cap they set, after the toggle re-enabled itself, and the report was closed as out of scope. All of that is documented and linked above.</p>
+
+            <p>What it means: the plan stopped being a ceiling and became an on-ramp. The friction that used to say "wait" now says "spend," and it says it at the one moment you have a running task and the least patience. That is a conversion funnel, and it is pointed at people who already pay.</p>
+
+            <p>What it might mean: could be a growth team A/B testing a button, nothing deeper. Could be the subscription being quietly repositioned as the lead-in to metered billing, which is where the margin is. The auto-enable could be a bug that gets fixed next release, or a default that stays. I don't know which of these it is. Probably some of each. I know the incentive only runs one way, and I know I no longer trust the settings page to mean what it said last month.</p>
+
+            <hr>
+
+            <h2>Restated</h2>
+
+            <p>"Your limit resets at 4:00 PM" is a sentence about time. "Turn on usage credits to keep going" is a sentence about money. Same limit. Different ask.</p>
+
+            <p>I still pay them. For now. But I read the billing page every week now, and a year ago I never had to. That's the change, and it's why I don't like them anymore.</p>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <p class="foot-brand">Ninjahawk's Nest</p>
+            <p>&copy; 2026 Nathan Langley</p>
+        </div>
+    </footer>
+</body>
+</html>
