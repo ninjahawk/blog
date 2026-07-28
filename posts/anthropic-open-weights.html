@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Their position on open-weights models sucks - NinjaHawk's Nest</title>
+    <meta name="description" content="Anthropic is the only frontier lab that has never shipped an open-weight model, and the only one that didn't sign the open-weights letter. Six weeks ago one government order pulled a Claude model from every customer on earth.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+    <link rel="stylesheet" href="../style.css">
+    <script data-goatcounter="https://blog-nathanlangley.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script defer src="../nest.js"></script>
+
+<style>
+  /* Private chart block for this post only — same pattern as doors-are-inefficient.
+     Palette validated for CVD separation and contrast against the newsprint well:
+     blue #0b66c3 / red #e5091a / green #0e8a5f / violet #5b28c4 */
+  .fig {
+    margin: 34px 0;
+    padding: 20px 18px 16px;
+    background: var(--paper);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    font-family: var(--sans);
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  .fig-num {
+    font-family: var(--display);
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--art-accent);
+    font-weight: 600;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .fig-title {
+    font-family: var(--headline);
+    font-size: 1.02rem;
+    font-weight: 700;
+    color: var(--ink);
+    line-height: 1.3;
+    margin-bottom: 3px;
+  }
+  .fig-sub {
+    font-size: 0.78rem;
+    color: var(--muted);
+    line-height: 1.45;
+    margin-bottom: 16px;
+  }
+  .fig-note {
+    font-size: 0.74rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-top: 14px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+  }
+
+  /* legend */
+  .fig-key { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 14px; }
+  .fig-key span { display: flex; align-items: center; gap: 6px; font-size: 0.74rem; color: var(--text); }
+  .fig-key i { width: 11px; height: 11px; border-radius: 2px; display: inline-block; flex-shrink: 0; }
+
+  /* horizontal bars */
+  .cbars { display: flex; flex-direction: column; gap: 4px; }
+  .crow { display: grid; grid-template-columns: 92px 1fr; align-items: center; gap: 10px; }
+  .crow-lbl { font-size: 0.74rem; color: var(--text); text-align: right; line-height: 1.25; }
+  .crow-lbl small { display: block; color: var(--muted); font-size: 0.68rem; }
+  .ctrack { position: relative; height: 19px; display: flex; align-items: center; }
+  .cbar {
+    height: 15px;
+    border-radius: 0 3px 3px 0;
+    min-width: 2px;
+    transition: width 1.1s cubic-bezier(0.16,1,0.3,1);
+    width: 0;
+  }
+  .cval {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--ink);
+    margin-left: 7px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .cval.dim { font-weight: 500; color: var(--muted); }
+  .s-blue   { background: #0b66c3; }
+  .s-red    { background: #e5091a; }
+  .s-green  { background: #0e8a5f; }
+  .s-violet { background: #5b28c4; }
+  .s-grey   { background: #b4afa4; }
+
+  /* grouped: two bars sharing one label */
+  .cgroup { margin-bottom: 11px; }
+  .cgroup .crow + .crow { margin-top: 3px; }
+  .cgroup .crow + .crow .crow-lbl { visibility: hidden; }
+
+  /* axis for the log chart */
+  .caxis {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    gap: 10px;
+    margin-top: 6px;
+    font-size: 0.66rem;
+    color: var(--light);
+  }
+  .caxis-ticks { display: flex; justify-content: space-between; font-variant-numeric: tabular-nums; }
+
+  /* svg line chart */
+  .cline { width: 100%; height: auto; display: block; }
+  .cline text { font-family: var(--sans); fill: var(--muted); font-size: 11px; }
+  .cline .pt-lbl { fill: var(--ink); font-weight: 700; font-size: 12px; }
+  .cline .grid { stroke: var(--border); stroke-width: 1; }
+  .cline .axis { stroke: #c3c2b7; stroke-width: 1; }
+
+  @media (max-width: 640px) {
+    .fig { padding: 16px 12px 13px; }
+    /* the SVG scales down to ~0.55 on a phone — scale its type back up in
+       viewBox units so it lands near 10px rendered instead of 6px */
+    .cline text { font-size: 18px; }
+    .cline .pt-lbl { font-size: 19px; }
+    .crow, .caxis { grid-template-columns: 66px 1fr; gap: 7px; }
+    .crow-lbl { font-size: 0.68rem; }
+    .crow-lbl small { font-size: 0.62rem; }
+    .cval { font-size: 0.66rem; margin-left: 5px; }
+  }
+</style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrap nav-inner">
+            <a class="brand" href="../index.html">NINJAHAWK<span>'S NEST</span></a>
+            <nav class="site-nav">
+                <a href="../index.html">Home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://nathanlangley.dev" target="_blank" rel="noopener">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="article">
+        <a class="back" href="../index.html">&larr;</a>
+        <div class="article-head">
+            <span class="kicker k-red">Opinion</span>
+            <h1>Their position on open-weights models sucks</h1>
+            <p class="dek">Half the industry signed the letter in a day. Signing costs nothing. Their name isn't on it.</p>
+            <div class="byline">
+                <span class="by-author">NinjaHawk</span>
+                <span class="by-date">July 28, 2026</span>
+            </div>
+        </div>
+        <div class="article-body">
+
+            <p>I assume by now we've at least heard about the latest blog post from Dario of Anthropic. He claims as he has for years that open-weights models are a possible way for the Chinese and other governments to use our hard earned models for possible repression and geopolitical/military terror.</p>
+
+            <p>"We worked real hard distilling and stealing all of humanity's information, it's ours, you can't have it! *spits in disgust*"</p>
+
+            <p>That's a direct quote from Dario by the way.</p>
+
+            <p>I'll be going over some of the practices and problems that I've seen, and will try to use as much data and analysis as possible from this point forward. Buckle up. If anyone from OpenAI is reading, you're in for a treat.</p>
+
+            <h2>What he actually said</h2>
+
+            <p>Deep breath. Let me be fair for a minute, because the real post is more reasonable than the one I just invented, and I'd rather argue with the actual thing.</p>
+
+            <p>Quoted properly: "Anthropic has never advocated for a ban on open-weights models." He calls them "a public good" when they don't carry dangerous capabilities. The actual worry is narrower than the version in my head. Open models "do potentially present a higher risk than closed models, because it is very difficult to apply guardrails to them or monitor their usage."</p>
+
+            <p>And instead of a ban he wants three things. Restrict powerful chip sales to China and crack down on smuggling. Go after industrial-scale distillation. Mandatory safety testing for every sufficiently capable model, "open and closed."</p>
+
+            <p>Read cold, that's fine? I don't hate any of it. Volunteering closed models for mandatory testing is more than most labs would put their hand up for.</p>
+
+            <p>So why am I writing this.</p>
+
+            <h2>Because of what's missing</h2>
+
+            <p>On July 24 a letter went out called "Open Weights and American AI Leadership." The argument is that downloadable model weights are strategic infrastructure for the country: competition, cybersecurity research, economic diffusion, technological sovereignty. Twenty-five signatures on day one. Microsoft. NVIDIA. Meta. IBM. Hugging Face. Mistral. Mozilla. CrowdStrike. Palantir. Perplexity. Y Combinator. Dell. Andreessen Horowitz.</p>
+
+            <p>Within a day it was fifty. AMD, Cisco, Cloudflare, GitHub, Block, Ollama. And Google.</p>
+
+            <p>And OpenAI.</p>
+
+            <p>Here's the treat I promised you.</p>
+
+            <h2>For the OpenAI readers</h2>
+
+            <p>You spent three years as the joke. The "Open" in the name turned into a running gag the second the models stopped being open and the nonprofit started converting itself into a for-profit. I have personally made that joke. I made it in a post five days ago.</p>
+
+            <p>You signed the letter.</p>
+
+            <p>Anthropic didn't. Not in the first twenty-five, not in the second tranche that doubled it. Amazon didn't either, which is its own story for another day, but Anthropic is the only frontier lab whose name is missing from a document saying open weights are good for America.</p>
+
+            <p>Enjoy it. By my count you've earned exactly one of these.</p>
+
+            <h2>The part that isn't a joke</h2>
+
+            <p>Anthropic has never released an open-weight model. Not a small one. Not an old one. Not a research artifact from four years ago. Zero, across the entire existence of the company.</p>
+
+            <p>Meta shipped Llama. Google shipped Gemma. xAI put out Grok's weights. Mistral's whole identity is open weights. Microsoft has Phi, NVIDIA has Nemotron, and OpenAI has GPT-2, Whisper and gpt-oss.</p>
+
+            <p>Anthropic has a blog post explaining why it hasn't.</p>
+
+            <p>I want to be careful here, because it's easy to slide into "Anthropic wants open models banned" and he said the opposite on the record. That's not the accusation. The accusation is thinner and I think harder to wriggle out of. If you believe open-weight models without dangerous capabilities are a public good, and you've believed it for years, and half your industry signs a letter saying exactly that, then signing costs you nothing. You don't have to ship anything. You don't have to open a single checkpoint. You just have to write your name down.</p>
+
+            <p>They didn't write their name down.</p>
+
+            <p>White House AI adviser David Sacks put it less politely and accused Amodei of using safety concerns to defend a closed-model business. I don't think it's that clean. You can be sincere and conveniently sincere at the same time. I'll get to why the convenience is worth about two hundred billion dollars in a minute.</p>
+
+            <h2>Six weeks ago this stopped being theoretical</h2>
+
+            <p>June 12, 2026. The US government ordered Anthropic to suspend Claude Fable 5 and Mythos 5 for all foreign nationals, following reports of a jailbreak that stripped the guardrails off. Anthropic complied by pulling both models worldwide. For everybody. Paying customers included.</p>
+
+            <p>One order. One afternoon. Every user on earth.</p>
+
+            <p>Now watch the week that followed, because it's the entire argument compressed into seven days. North Mini Code had shipped three days before the order. Kimi K2.7-Code shipped the same day it landed. Zhipu opened GLM-5.2 the next day under an MIT license. Within a week GLM-5.2 was on top of the open-weight leaderboards, running on Huawei silicon, and it was the most capable model a lot of people outside the US could legally touch.</p>
+
+            <p>Not one of those could be recalled. That isn't a policy position, it's a property of the file already being on your disk.</p>
+
+            <p>Here's the uncomfortable part, and it cuts both ways. The ability to switch a model off for the entire planet in an afternoon is exactly the safety feature Anthropic is defending. It worked. It did the thing it was built to do. And in the same afternoon it demonstrated that your access to a closed model is a permission rather than a possession, and that the permission isn't granted by the company you're paying.</p>
+
+            <p>I'll give them this much: they complied with a government order. They didn't wake up and choose it. But they built the architecture that makes such an order executable in one afternoon, and they're the loudest voice arguing everyone else should build it too.</p>
+
+            <h2>Now the money</h2>
+
+            <p>I said the convenience is worth about two hundred billion dollars. Here's that arithmetic.</p>
+
+            <p>Anthropic has publicly committed more than $100 billion to AWS over ten years, more than $40 billion to SpaceX through May 2029 at $1.25 billion a month, $50 billion to build its own datacenters with Fluidstack in Texas and New York, and "tens of billions" to Google Cloud. Call it two hundred billion and change.</p>
+
+            <p>The company has raised about $132 billion total across eighteen rounds, finishing with a $65 billion Series H in May at a $965 billion valuation.</p>
+
+            <p>So the compute bill is larger than every dollar the company has ever been handed.</p>
+
+            <div class="fig">
+                <span class="fig-num">Figure 1</span>
+                <div class="fig-title">What they owe, what they've raised, what they earn</div>
+                <div class="fig-sub">Billions of dollars. Announced compute commitments exceed all capital raised across 18 rounds.</div>
+                <div class="cbars">
+                    <div class="crow">
+                        <div class="crow-lbl">Compute<small>committed</small></div>
+                        <div class="ctrack"><div class="cbar s-red" data-w="100"></div><span class="cval">$200B+</span></div>
+                    </div>
+                    <div class="crow">
+                        <div class="crow-lbl">Capital<small>ever raised</small></div>
+                        <div class="ctrack"><div class="cbar s-violet" data-w="66"></div><span class="cval">$132B</span></div>
+                    </div>
+                    <div class="crow">
+                        <div class="crow-lbl">Revenue<small>annualized</small></div>
+                        <div class="ctrack"><div class="cbar s-blue" data-w="22"></div><span class="cval">$43.6B</span></div>
+                    </div>
+                    <div class="crow">
+                        <div class="crow-lbl">Revenue<small>H1 2026 actual</small></div>
+                        <div class="ctrack"><div class="cbar s-green" data-w="8"></div><span class="cval">$15.7B</span></div>
+                    </div>
+                </div>
+                <p class="fig-note">Annualized revenue is Q2 2026 ($10.9B) &times; 4. H1 actual is Q1 ($4.8B) + Q2. Anthropic does not publish audited financials; the quarterly figures come from investor reporting, so treat them as reported rather than confirmed.</p>
+            </div>
+
+            <p>And most of the capacity in those headlines does not exist yet.</p>
+
+            <div class="fig">
+                <span class="fig-num">Figure 2</span>
+                <div class="fig-title">Compute online versus compute on paper</div>
+                <div class="fig-sub">Gigawatts, by partner. Anthropic has contracted roughly 3.7&times; the capacity it is currently running.</div>
+                <div class="fig-key">
+                    <span><i class="s-blue"></i>Online or ramping in 2026</span>
+                    <span><i class="s-grey"></i>Contracted, not yet delivered</span>
+                </div>
+                <div class="cbars">
+                    <div class="cgroup">
+                        <div class="crow">
+                            <div class="crow-lbl">Amazon<small>Trainium2/3</small></div>
+                            <div class="ctrack"><div class="cbar s-blue" data-w="20"></div><span class="cval">~1.0 GW</span></div>
+                        </div>
+                        <div class="crow">
+                            <div class="crow-lbl">Amazon</div>
+                            <div class="ctrack"><div class="cbar s-grey" data-w="100"></div><span class="cval dim">up to 5.0 GW</span></div>
+                        </div>
+                    </div>
+                    <div class="cgroup">
+                        <div class="crow">
+                            <div class="crow-lbl">Google<small>TPU</small></div>
+                            <div class="ctrack"><div class="cbar s-blue" data-w="20"></div><span class="cval">~1.0 GW</span></div>
+                        </div>
+                        <div class="crow">
+                            <div class="crow-lbl">Google</div>
+                            <div class="ctrack"><div class="cbar s-grey" data-w="70"></div><span class="cval dim">~3.5 GW</span></div>
+                        </div>
+                    </div>
+                    <div class="cgroup">
+                        <div class="crow">
+                            <div class="crow-lbl">SpaceX<small>Colossus 1</small></div>
+                            <div class="ctrack"><div class="cbar s-blue" data-w="6"></div><span class="cval">~0.3 GW</span></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="fig-note">Colossus 1 is 220,000 NVIDIA GPUs near Memphis, rented from SpaceX and originally built for xAI's Grok. Its power draw is estimated, not disclosed. The $50B Fluidstack build is excluded because no capacity figure has been published for it.</p>
+            </div>
+
+            <p>Roughly 2.3 gigawatts is running or coming online through the end of this year. About 8.5 gigawatts is signed. The AWS "up to 5 gigawatts" is a ten-year number. The Google and Broadcom expansion starts in 2027. Project Rainier in Indiana is real and roughly 500,000 Trainium2 chips, and the Memphis GPUs are real, though they're rented and they were built for Grok.</p>
+
+            <p>Anthropic did post its first operating profit last quarter, $559 million on $10.9 billion of revenue. Worth noticing that the SpaceX contract only started billing in May, so two of that quarter's three months got charged instead of three. Anthropic also told its own investors not to expect profitability to hold.</p>
+
+            <p>I'm not saying the safety argument is a lie. I'm saying that when a company owes two hundred billion dollars against forty-three billion of annualized revenue, and the single biggest threat to what it charges is a free file that does most of the job, I would like that argument to be coming from someone with less at stake.</p>
+
+            <div class="fig">
+                <span class="fig-num">Figure 3</span>
+                <div class="fig-title">Output token price across the frontier</div>
+                <div class="fig-sub">Dollars per million output tokens, July 2026. Logarithmic scale &mdash; each gridline is 10&times; the last.</div>
+                <div class="cbars">
+                    <div class="crow">
+                        <div class="crow-lbl">Claude Opus 5</div>
+                        <div class="ctrack"><div class="cbar s-red" data-w="80"></div><span class="cval">$25.00</span></div>
+                    </div>
+                    <div class="crow">
+                        <div class="crow-lbl">Claude Sonnet 5</div>
+                        <div class="ctrack"><div class="cbar s-red" data-w="72"></div><span class="cval">$15.00</span></div>
+                    </div>
+                    <div class="crow">
+                        <div class="crow-lbl">Kimi K3<small>open weights</small></div>
+                        <div class="ctrack"><div class="cbar s-green" data-w="72"></div><span class="cval">$15.00</span></div>
+                    </div>
+                    <div class="crow">
+                        <div class="crow-lbl">Claude Haiku 4.5</div>
+                        <div class="ctrack"><div class="cbar s-red" data-w="57"></div><span class="cval">$5.00</span></div>
+                    </div>
+                    <div class="crow">
+                        <div class="crow-lbl">GLM-5.2<small>open weights</small></div>
+                        <div class="ctrack"><div class="cbar s-green" data-w="55"></div><span class="cval">$4.40</span></div>
+                    </div>
+                    <div class="crow">
+                        <div class="crow-lbl">DeepSeek V4 Pro<small>open weights</small></div>
+                        <div class="ctrack"><div class="cbar s-green" data-w="15"></div><span class="cval">$0.28</span></div>
+                    </div>
+                </div>
+                <div class="caxis">
+                    <div></div>
+                    <div class="caxis-ticks"><span>$0.10</span><span>$1</span><span>$10</span><span>$100</span></div>
+                </div>
+                <div class="fig-key" style="margin-top:14px;margin-bottom:0;">
+                    <span><i class="s-red"></i>Closed weights (Anthropic)</span>
+                    <span><i class="s-green"></i>Open weights</span>
+                </div>
+                <p class="fig-note">Opus 5 costs 89&times; DeepSeek V4 Pro and 5.7&times; GLM-5.2 per output token. Capability is not equivalent and the gap narrows on cost per finished task ($0.04 for V4 Pro, $0.32 for GLM-5.2, $0.94 for Kimi K3).</p>
+            </div>
+
+            <p>Opus 5 is $25 per million output tokens. DeepSeek V4 Pro is 28 cents. That's 89 times. GLM-5.2, the MIT-licensed one that ate Fable 5's lunch in June, is $4.40, so call that 5.7 times.</p>
+
+            <p>Caveats, honestly, because I said I'd use the data properly. They aren't the same models and capability differs. Cost per finished task narrows the gap a lot. And Chinese labs may well be pricing under cost on cheaper domestic silicon to buy market share, which would make the comparison unfair in their favor. The gap narrows. It doesn't close.</p>
+
+            <h2>Where I have to argue against myself</h2>
+
+            <p>I started this wanting to write that Anthropic gouges people like me. I spent a while in the numbers and I can't write it. So here's the correction instead.</p>
+
+            <p>Prices went down. Not a little.</p>
+
+            <div class="fig">
+                <span class="fig-num">Figure 4</span>
+                <div class="fig-title">Claude Opus list price, output tokens</div>
+                <div class="fig-sub">Dollars per million output tokens. A 67% cut in November 2025, unchanged across four model generations since.</div>
+                <svg class="cline" viewBox="0 0 620 240" role="img" aria-label="Opus output token price fell from $75 per million tokens in March 2024 to $25 in November 2025 and has stayed at $25 through July 2026.">
+                    <line class="grid" x1="52" y1="34"  x2="600" y2="34"></line>
+                    <line class="grid" x1="52" y1="86"  x2="600" y2="86"></line>
+                    <line class="grid" x1="52" y1="138" x2="600" y2="138"></line>
+                    <line class="axis" x1="52" y1="190" x2="600" y2="190"></line>
+                    <text x="44" y="38"  text-anchor="end">$75</text>
+                    <text x="44" y="90"  text-anchor="end">$50</text>
+                    <text x="44" y="142" text-anchor="end">$25</text>
+                    <text x="44" y="194" text-anchor="end">$0</text>
+                    <polyline points="96,34 300,34 300,138 560,138"
+                              fill="none" stroke="#0b66c3" stroke-width="2"
+                              stroke-linejoin="round" stroke-linecap="round"></polyline>
+                    <circle cx="96"  cy="34"  r="5" fill="#0b66c3" stroke="#f5f3ee" stroke-width="2"></circle>
+                    <circle cx="300" cy="138" r="5" fill="#0b66c3" stroke="#f5f3ee" stroke-width="2"></circle>
+                    <circle cx="560" cy="138" r="5" fill="#0b66c3" stroke="#f5f3ee" stroke-width="2"></circle>
+                    <text class="pt-lbl" x="96"  y="24"  text-anchor="start">$75.00</text>
+                    <text class="pt-lbl" x="300" y="128" text-anchor="middle">$25.00</text>
+                    <text class="pt-lbl" x="560" y="128" text-anchor="end">$25.00</text>
+                    <text x="96"  y="210" text-anchor="start">Mar 2024</text>
+                    <text x="96"  y="224" text-anchor="start">Claude 3 Opus</text>
+                    <text x="300" y="210" text-anchor="middle">Nov 2025</text>
+                    <text x="300" y="224" text-anchor="middle">Opus 4.5</text>
+                    <text x="560" y="210" text-anchor="end">Jul 2026</text>
+                    <text x="560" y="224" text-anchor="end">Opus 5</text>
+                </svg>
+                <p class="fig-note">Batch processing takes another 50% off and prompt caching cuts cached input by 90%. Opus 4.5 also emitted roughly 76% fewer output tokens for equivalent work, so cost per finished task fell further than the headline rate.</p>
+            </div>
+
+            <p>Claude 3 Opus launched at $15 in and $75 out per million tokens. Opus 4.5 cut it to $5 and $25 in November, a 67% cut, and it has been flat through 4.6, 4.7, 4.8 and Opus 5. Batch knocks another half off, caching takes 90% off cached input, and Opus 4.5 emitted about 76% fewer output tokens for the same work, so the real cost of getting a job done fell further than the sticker did.</p>
+
+            <p>Individual subscribers also aren't the profit center. Consumer Pro and Max lands somewhere between 8 and 20 percent of revenue depending on whose estimate you take, and Anthropic publishes no audited segment breakdown, so the honest answer is that nobody outside the building knows. API and enterprise is about 80% either way.</p>
+
+            <p>And the heaviest individual users cost more than they pay.</p>
+
+            <div class="fig">
+                <span class="fig-num">Figure 5</span>
+                <div class="fig-title">What a subscriber pays against what they cost</div>
+                <div class="fig-sub">Dollars per month. Compute cost modeled at 25% of API list price, consistent with a 75% gross margin.</div>
+                <div class="fig-key">
+                    <span><i class="s-blue"></i>What you pay</span>
+                    <span><i class="s-red"></i>What your usage costs to serve</span>
+                </div>
+                <div class="cbars">
+                    <div class="cgroup">
+                        <div class="crow">
+                            <div class="crow-lbl">Light Pro<small>$5 of usage</small></div>
+                            <div class="ctrack"><div class="cbar s-blue" data-w="5"></div><span class="cval">$20</span></div>
+                        </div>
+                        <div class="crow">
+                            <div class="crow-lbl">Light Pro</div>
+                            <div class="ctrack"><div class="cbar s-red" data-w="1"></div><span class="cval">$1.25</span></div>
+                        </div>
+                    </div>
+                    <div class="cgroup">
+                        <div class="crow">
+                            <div class="crow-lbl">Typical Max 20x<small>$600 of usage</small></div>
+                            <div class="ctrack"><div class="cbar s-blue" data-w="50"></div><span class="cval">$200</span></div>
+                        </div>
+                        <div class="crow">
+                            <div class="crow-lbl">Typical Max 20x</div>
+                            <div class="ctrack"><div class="cbar s-red" data-w="38"></div><span class="cval">$150</span></div>
+                        </div>
+                    </div>
+                    <div class="cgroup">
+                        <div class="crow">
+                            <div class="crow-lbl">Heavy Max 20x<small>$1,588 of usage</small></div>
+                            <div class="ctrack"><div class="cbar s-blue" data-w="50"></div><span class="cval">$200</span></div>
+                        </div>
+                        <div class="crow">
+                            <div class="crow-lbl">Heavy Max 20x</div>
+                            <div class="ctrack"><div class="cbar s-red" data-w="99"></div><span class="cval">$397</span></div>
+                        </div>
+                    </div>
+                </div>
+                <p class="fig-note">The $1,588 figure is a single case tracked and reported by a power user; $600&ndash;$1,500 is the commonly reported band. Anthropic publishes no token quotas for any plan, only multipliers, so none of this can be checked from inside the product.</p>
+            </div>
+
+            <p>At a 75% gross margin a Max 20x plan breaks even when you burn about $800 a month of API-list value. Heavy users get reported at $600 to $1,500 routinely, and one guy tracked his at $1,588. That account costs roughly $397 to serve against $200 of revenue. Meanwhile the person who opens Claude twice a week and uses five dollars of tokens is running a 94% margin for them.</p>
+
+            <p>So the subsidy runs from casual subscribers toward power users. If you're in Claude Code eight hours a day, you're the one being carried.</p>
+
+            <p>Which means the thing I complained about five days ago, that "turn on usage credits" button sitting on the limit wall, reads differently to me now. I still think leading with a purchase button at the exact moment somebody is stuck mid-task is a choice a person made on purpose. But it's probably cost recovery on accounts running at a loss rather than a margin grab. I was wrong about the motive. The button still bugs me.</p>
+
+            <h2>What this means</h2>
+
+            <p>What I'm confident about. Anthropic is the only frontier lab that has never shipped open weights, and the only one missing from a letter saying open weights are good for the country. A government order removed a Claude model from every customer on the planet six weeks ago, and the open models that replaced it inside a week could not be removed by anybody. Committed compute spend exceeds every dollar the company has ever raised.</p>
+
+            <p>What I think it means. The safety case for closed weights is real and it is also extremely convenient, and Anthropic is the last organization on earth positioned to tell those two apart from the inside. Centralized control is the feature and the failure mode at once, and Fable 5 was both of them in the same week.</p>
+
+            <p>What I don't know is whether any of this is cynical. Probably not, honestly. Amodei has been saying more or less the same thing since long before there was two hundred billion dollars riding on it, and that's the strongest evidence in his favor, so I'll grant it. It's entirely possible he's right and I read this post back in three years and wince.</p>
+
+            <p>But the letter was free. That's the part I keep coming back to. It cost nothing, it said a thing he claims to believe, half the industry put their name on it inside of a day, and Anthropic's isn't there.</p>
+
+            <p>Their position on open-weights models sucks.</p>
+
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <p class="foot-brand">Ninjahawk's Nest</p>
+            <p>&copy; 2026 Nathan Langley</p>
+        </div>
+    </footer>
+
+<script>
+  // Grow bars when each figure scrolls into view — same pattern as the doors post.
+  (function () {
+    var figs = document.querySelectorAll('.fig');
+    if (!figs.length) return;
+
+    function grow(fig) {
+      fig.querySelectorAll('.cbar').forEach(function (bar) {
+        bar.style.width = bar.dataset.w + '%';
+      });
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      figs.forEach(grow);
+      return;
+    }
+
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        grow(e.target);
+        obs.unobserve(e.target);
+      });
+    }, { threshold: 0.25 });
+
+    figs.forEach(function (f) { obs.observe(f); });
+  })();
+</script>
+</body>
+</html>
