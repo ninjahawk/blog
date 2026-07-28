@@ -60,6 +60,7 @@ script.
 | `posts/subtext.html` | Watching a language model think before it speaks | July 22, 2026 |
 | `posts/hn-hidden-score.html` | Most of your Hacker News karma comes from comment scores only you can see | July 22, 2026 |
 | `posts/anthropic-usage-credits.html` | I don't like Anthropic anymore | July 23, 2026 |
+| `posts/anthropic-compute-economics.html` | Anthropic has signed for 8.5 gigawatts and is running about two | July 28, 2026 |
 
 Posts are ordered newest-first in `index.html`.
 
@@ -97,6 +98,7 @@ Raw notes used to write posts. Not part of the blog.
 - `existence_prompt_reference.md`
 - `synthesize_capability_reference.md`
 - `invoke_claude_reference.md`
+- `anthropic_pricing_reference.md`
 
 ## Authorship
 
