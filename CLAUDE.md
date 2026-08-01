@@ -61,6 +61,7 @@ script.
 | `posts/hn-hidden-score.html` | Most of your Hacker News karma comes from comment scores only you can see | July 22, 2026 |
 | `posts/anthropic-usage-credits.html` | I don't like Anthropic anymore | July 23, 2026 |
 | `posts/anthropic-open-weights.html` | Their position on open-weights models sucks | July 28, 2026 |
+| `posts/proactive-ai.html` | Proactive v Reactive: From a Startup Founder's Perspective | Aug 1, 2026 |
 
 Posts are ordered newest-first in `index.html`.
 
