@@ -393,7 +393,7 @@ a.feed-title:hover { color: var(--accent); text-decoration: none; }
   letter-spacing: -0.3px;
   text-transform: none;
   color: var(--navy);
-  margin: 46px 0 14px;
+  margin: 34px 0 12px;
 }
 .article-body h3 {
   font-family: var(--headline);
