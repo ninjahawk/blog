@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Accidentally Hacked Three Family Members - NinjaHawk's Nest</title>
+    <meta name="description" content="An old iPhone 4 from the laundry room. Four owners, every one of them factory reset it, and three hours later I had all of it.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+    <link rel="stylesheet" href="../style.css">
+    <script data-goatcounter="https://blog-nathanlangley.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <script defer src="../nest.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrap nav-inner">
+            <a class="brand" href="../index.html">NINJAHAWK<span>'S NEST</span></a>
+            <nav class="site-nav">
+                <a href="../index.html">Home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://nathanlangley.dev" target="_blank" rel="noopener">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="article">
+        <a class="back" href="../index.html">&larr;</a>
+        <div class="article-head">
+            <span class="kicker k-purple">Field Notes</span>
+            <h1>Accidentally Hacked Three Family Members</h1>
+            <p class="dek">One iPhone 4. Four owners. Every one of them wiped it first.</p>
+            <div class="byline">
+                <span class="by-author">NinjaHawk</span>
+                <span class="by-date">August 30, 2026</span>
+            </div>
+        </div>
+        <div class="article-body">
+
+            <p>Recently I found an old iPhone in the laundry room of my parents house, I asked if I could have it and they said sure. I tried to guess the password but couldn’t since based on the wallpaper, it seemed to have been my brothers. I could’ve just asked him for it but I decided that would be far, far too easy.</p>
+
+            <p>I went to my laptop and prepared to attempt to brute force the password since <code>limera1n</code> makes this trivial. This luckily was the past iPhone generation that makes brute forcing the password easy. So I got to work.</p>
+
+            <p>As I was going more though, I noticed that I can simply dump a tarball of all the phone’s data onto my laptop, I wanted to do that in case I somehow ruined everything so data like 15 year old photos were still recoverable if I somehow found a way to brick the device, which would be incredibly difficult since I was operating in the RAM while doing this “attack.”</p>
+
+            <p>The phone was still locked at this point and actually currently still is, I kind of gave up on the password since for my specific version I was gonna have to reverse engineer some stuff and I didn’t want to. But that hardly mattered since I’d already dumped all the data, the only remaining things on the device were passwords to their gmails and probably banking information, which I didn’t need.</p>
+
+            <p>Out of curiosity, I try to see what I can learn about what my 8 year old brother used his iPhone 4 for 10-15 years ago. Which is when the story takes a weird turn.</p>
+
+            <h2>These weren’t from an 8 year old</h2>
+
+            <p>As I’m looking through the pictures, I see a LOT of images of my uncle’s kids. I see a good amount of messages with several adults at the time, and then I see somewhere else that has normal memes and pictures of basketball players of the day which is what I expected. I see texts about ordering paint…you get the drift.</p>
+
+            <p>These weren’t from an 8 year old.</p>
+
+            <p>So who were they from?</p>
+
+            <p>I ask my mom if she knew who had the phone before my brother, she says it was my dad’s before it was his. Gotcha. So that explains the paint stuff and the birthday wishes.</p>
+
+            <p>But why so many pictures of my uncle’s kids?</p>
+
+            <p>No, not what you’re thinking. This story doesn’t go there.</p>
+
+            <p>I look at a video, it’s my uncle’s wife and his kids at a basketball game. I hear his voice. So here’s what I’m putting together at this point:</p>
+
+            <blockquote>
+                <p>My uncle owned the phone &lt; gave it to my dad &lt; my dad gave it to my 8 year old brother</p>
+            </blockquote>
+
+            <p>Phone is still locked, I still haven’t actually gotten into the device. This was all reconstructed from the tarball.</p>
+
+            <p>Then I notice that the iCloud address was to my grandmas email.</p>
+
+            <p>Sigh.</p>
+
+            <p>So apparently she also owned the phone at some point? Not really sure on that one.</p>
+
+            <h2>In total</h2>
+
+            <p>In total:</p>
+
+            <p>2100 messages were recovered, 243 photos, 15 videos, 113 contacts, 235 voicemails, 10 voice memos, 112 calls, 36 personal events, and 1647 of those messages were recovered after being deleted.</p>
+
+            <p>Every single one of those family members factory reset the phone before handing it to the next person to my knowledge, although I’m not 100% on that. I just know how my uncle was even then, very security cautious. And yet in about three hours I was able to recover 3-4 separate people’s entire footprint on that phone very easily.</p>
+
+            <h2>What this means</h2>
+
+            <p>For anyone wondering, modern iPhone’s are NOT like this. You can’t just pull a tarball and have seven years worth of information. They fixed the specific hardware flaw with the iPhone 5 that lets you run things before it boots meaning you can’t brute force anymore, but the security was so awful with this phone that I was able to get everything off of it without ever booting. I guess their passwords are safe though. That’s what matters I suppose.</p>
+
+            <p>And for the record, I did delete all that information as to not encroach on their privacy any further as none of that is any of my business. I’m about to just wipe the phone since I’ve got all photos off of it, which is what my intention was anyway.</p>
+
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <p class="foot-brand">Ninjahawk's Nest</p>
+            <p>&copy; 2026 Nathan Langley</p>
+        </div>
+    </footer>
+</body>
+</html>
