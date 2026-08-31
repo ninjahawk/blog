@@ -63,6 +63,7 @@ script.
 | `posts/anthropic-open-weights.html` | Their position on open-weights models sucks | July 28, 2026 |
 | `posts/proactive-ai.html` | Proactive V Reactive; From a Startup Founder’s Perspective | Aug 1, 2026 |
 | `posts/accidentally-hacked-family.html` | Accidentally Hacked Three Family Members | Aug 30, 2026 |
+| `posts/existentialism.html` | Existentialism: People Must Create Their Own Purpose | Aug 31, 2026 |
 
 Posts are ordered newest-first in `index.html`.
 
