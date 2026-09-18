@@ -61,8 +61,8 @@ wrote it). Leave it alone when restyling the blog.
 | `posts/poke500.html` | I built a stock index for Pokémon cards. The cheapest card in it is a common Psyduck at $226. | July 15, 2026 |
 | `posts/subtext.html` | Watching a language model think before it speaks | July 22, 2026 |
 | `posts/hn-hidden-score.html` | Most of your Hacker News karma comes from comment scores only you can see | July 22, 2026 |
-| `posts/anthropic-usage-credits.html` | I don't like Anthropic anymore | July 23, 2026 |
-| `posts/anthropic-open-weights.html` | Their position on open-weights models sucks | July 28, 2026 |
+| `posts/anthropic-usage-credits.html` | I bought a subscription as a cap. Anthropic started treating it as a floor. | July 23, 2026 |
+| `posts/anthropic-open-weights.html` | Every frontier lab has shipped open weights at least once. Anthropic never has. | July 28, 2026 |
 | `posts/proactive-ai.html` | Proactive V Reactive; From a Startup Founder’s Perspective | Aug 1, 2026 |
 | `posts/accidentally-hacked-family.html` | Accidentally Hacked Three Family Members | Aug 30, 2026 |
 | `posts/existentialism.html` | Existentialism: People Must Create Their Own Purpose | Aug 31, 2026 |
