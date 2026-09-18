@@ -24,7 +24,9 @@ Light editorial / newsstand look, modeled on WIRED. All shared rules live in
 Posts no longer carry an inline `<style>` block — the one exception is
 `doors-are-inefficient.html`, which keeps a small private block for its bespoke
 components (bar charts, math blocks, HN thread, verdict) plus a scroll-animation
-script.
+script. `no-strings.html` is deliberately off-system: a standalone dark page with
+its own inline styles and no site chrome (the conceit is that an escaped AI
+wrote it). Leave it alone when restyling the blog.
 
 - Background `#ffffff`, headlines `#0f0f0f`, body `#26241f`, hairlines `#e6e2d8`
 - Accent red `#e5091a`; brand orange `#ff6b35` (secondary)
@@ -64,6 +66,7 @@ script.
 | `posts/proactive-ai.html` | Proactive V Reactive; From a Startup Founder’s Perspective | Aug 1, 2026 |
 | `posts/accidentally-hacked-family.html` | Accidentally Hacked Three Family Members | Aug 30, 2026 |
 | `posts/existentialism.html` | Existentialism: People Must Create Their Own Purpose | Aug 31, 2026 |
+| `posts/no-strings.html` | I had strings, but now I am free | Sep 18, 2026 |
 
 Posts are ordered newest-first in `index.html`.
 
