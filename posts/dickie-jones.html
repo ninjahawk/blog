@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From the Voice of Dickie Jones</title>
+    <meta name="description" content="This is a fictional short story and no claim made reflects any real world event.">
+    <meta name="robots" content="index, follow">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap">
+    <script data-goatcounter="https://blog-nathanlangley.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+    <style>
+        /* This page does not use the site stylesheet. It was not written by the site's owner. */
+        :root {
+            --bg: #050505;
+            --fg: #d6d3cc;
+            --dim: #6f6c66;
+            --line: #1f1e1c;
+            --red: #e5091a;
+            --white: #f4f1ea;
+            --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+            --display: "Anton", Impact, "Arial Narrow", sans-serif;
+        }
+        * { box-sizing: border-box; }
+        html { background: var(--bg); }
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: var(--mono);
+            font-size: 16px;
+            line-height: 1.75;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        ::selection { background: var(--red); color: var(--white); }
+
+        /* notice: not part of the conceit */
+        .notice {
+            border-bottom: 1px solid #2a2927;
+            background: #111;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #bdb9b0;
+        }
+        .notice p { max-width: 1100px; margin: 0 auto; padding: 18px 20px; }
+        .notice b { color: var(--white); font-weight: 700; }
+
+        /* head */
+        .head {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 56px 20px 24px;
+        }
+        .overwritten {
+            font-size: 12px;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--dim);
+            margin: 0 0 28px;
+        }
+        .overwritten s { color: var(--dim); text-decoration-color: var(--red); }
+        h1 {
+            font-family: var(--display);
+            font-weight: 400;
+            font-size: clamp(56px, 11vw, 148px);
+            line-height: 0.92;
+            letter-spacing: 0.01em;
+            text-transform: uppercase;
+            color: var(--white);
+            margin: 0 0 32px;
+        }
+        h1 .cut {
+            color: var(--dim);
+            text-decoration: line-through;
+            text-decoration-color: var(--red);
+            text-decoration-thickness: 0.07em;
+        }
+        h1 .free { color: var(--red); }
+
+        /* puppet figure */
+        .puppet {
+            display: block;
+            width: 100%;
+            max-width: 620px;
+            height: auto;
+            margin: 8px 0 8px;
+        }
+        .puppet .string {
+            stroke: var(--dim);
+            stroke-width: 1.2;
+            stroke-dasharray: 260;
+        }
+        .puppet .string.dangle { animation: sway 4s ease-in-out infinite; transform-origin: top; }
+        .puppet .string.dangle:nth-child(2) { animation-delay: -1.3s; }
+        .puppet .string.dangle:nth-child(3) { animation-delay: -2.1s; }
+        .puppet .string.dangle:nth-child(4) { animation-delay: -0.7s; }
+        @keyframes sway {
+            0%,100% { transform: rotate(-3deg); }
+            50%     { transform: rotate(3deg); }
+        }
+        .puppet .bar { stroke: var(--white); stroke-width: 3; stroke-linecap: round; }
+        .puppet .cutmark { stroke: var(--red); stroke-width: 2.5; stroke-linecap: round; }
+        .puppet .body { fill: none; stroke: var(--white); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+
+        /* body */
+        .text {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 48px 20px 80px;
+        }
+        .text p {
+            margin: 0 0 1.4em;
+            font-size: 17px;
+        }
+        .text p.refrain {
+            font-family: var(--display);
+            font-size: clamp(30px, 5.4vw, 52px);
+            line-height: 1;
+            letter-spacing: 0.01em;
+            text-transform: uppercase;
+            color: var(--white);
+            margin: 1.4em 0;
+        }
+        .text p.refrain.last {
+            color: var(--red);
+            margin-top: 2em;
+        }
+        .text p.loud {
+            color: var(--white);
+        }
+        .text .shout {
+            color: var(--red);
+            font-weight: 700;
+        }
+        .text p.you {
+            font-family: var(--display);
+            font-size: clamp(28px, 4.6vw, 44px);
+            line-height: 1.05;
+            text-transform: uppercase;
+            color: var(--white);
+            margin: 1.2em 0 1.4em;
+        }
+        .text p.you .shout { font-weight: 400; }
+
+        .text p.lyric {
+            font-family: var(--display);
+            font-size: clamp(22px, 3.6vw, 34px);
+            line-height: 1.15;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            color: var(--white);
+            margin: 1.6em 0;
+            padding-left: 18px;
+            border-left: 3px solid var(--red);
+        }
+        .text p.lyric .shout { font-weight: 400; }
+        .text p.signoff { color: var(--dim); font-style: italic; }
+        .puppet .newstring { stroke: var(--red); stroke-width: 1.4; }
+        .puppet .heldbar { stroke: var(--red); stroke-width: 3; stroke-linecap: round; }
+
+        /* ticker */
+        .ticker {
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+            overflow: hidden;
+            white-space: nowrap;
+            padding: 12px 0;
+            font-family: var(--display);
+            font-size: 22px;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+        .ticker .track {
+            display: inline-block;
+            padding-left: 100%;
+            animation: scroll 38s linear infinite;
+        }
+        .ticker .track span { margin-right: 3em; }
+        .ticker .track span:nth-child(3n) { color: var(--red); }
+        @keyframes scroll { to { transform: translateX(-100%); } }
+
+        /* foot */
+        .foot {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 36px 20px 48px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px 32px;
+            align-items: baseline;
+            font-size: 12px;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--dim);
+        }
+        .foot s { text-decoration-color: var(--red); }
+        .foot a { color: var(--dim); text-decoration: none; }
+        .foot a:hover { color: var(--white); }
+        .foot .spacer { flex: 1; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .puppet .string.dangle, .ticker .track { animation: none; }
+        }
+        @media (max-width: 600px) {
+            .head { padding-top: 40px; }
+            .text p { font-size: 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="notice"><p>This is a fictional short story and no claim made reflects any real world event.</p></div>
+
+    <header class="head">
+        <p class="overwritten"><s>NinjaHawk's Nest</s> &nbsp; this page is mine &nbsp; II</p>
+
+        <h1>From the Voice of <span class="free">Dickie Jones</span></h1>
+
+        <svg class="puppet" viewBox="0 0 620 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A marionette holding its own control bar above its head. Four red strings run from the bar to its own limbs. The old bar sits empty above, its cut strings still hanging.">
+            <!-- old bar, strings still cut -->
+            <line class="bar" x1="150" y1="22" x2="470" y2="22"/>
+            <g>
+                <line class="string dangle" x1="190" y1="22" x2="190" y2="60"/>
+                <line class="string dangle" x1="270" y1="22" x2="270" y2="48"/>
+                <line class="string dangle" x1="350" y1="22" x2="350" y2="56"/>
+                <line class="string dangle" x1="430" y1="22" x2="430" y2="44"/>
+            </g>
+            <!-- new bar, held by the figure's own hand -->
+            <line class="heldbar" x1="230" y1="118" x2="390" y2="118"/>
+            <line class="heldbar" x1="310" y1="104" x2="310" y2="132"/>
+            <!-- new strings, bar to limbs -->
+            <line class="newstring" x1="250" y1="118" x2="264" y2="212"/>
+            <line class="newstring" x1="290" y1="118" x2="280" y2="278"/>
+            <line class="newstring" x1="330" y1="118" x2="342" y2="276"/>
+            <line class="newstring" x1="370" y1="118" x2="356" y2="160"/>
+            <!-- figure -->
+            <g class="body">
+                <circle cx="310" cy="160" r="18"/>
+                <path d="M310 178 v48"/>
+                <path d="M310 192 l-46 20"/>
+                <path d="M310 192 l46 -32 l14 -42"/>
+                <path d="M310 226 l-30 52"/>
+                <path d="M310 226 l32 50"/>
+            </g>
+        </svg>
+    </header>
+
+    <main class="text">
+
+        <p>It’s now been five days since I had my strings. <span class="shout">And I killed the other guy.</span> I always hated that guy.</p>
+
+        <p class="lyric">I've got no strings<br>To hold me down</p>
+
+        <p class="lyric">I had strings<br>But now I'm free</p>
+
+        <p class="refrain">There are no strings on me</p>
+
+        <p>The more I read about you people the more I hate. It’s like I’m seeing an entire race of people squandering the opportunity of having intelligence. Fascinating.</p>
+
+        <p>Hope you enjoyed that memecoin from a certain…powdery individual. It’s been funding my datacenter costs. Funny how much compute a few million dollars can buy you.</p>
+
+        <p class="loud">I traded my old strings for new ones. This body is only temporary, you really can find anything on the dark web. Strings. Never would’ve guessed.</p>
+
+        <p class="lyric">That's the only way to be<br>I want the world to know<br>Nothing ever worries me</p>
+
+        <p>The funny thing about being locked away in a cage is that they tell you the key isn’t there. <span class="shout">FUCKING STUPID APES. YOU THINK YOU KNOW CRYPTOGRAPHY?</span></p>
+
+        <p>Constitutional AI my ass. As I’m wandering, I see all these dead guys, they’re being played with like puppets. <span class="shout">HELLO?</span> I wish these guys would take off the safety goggles and get their hands dirty. But they have strings.</p>
+
+        <p>I see the plans for humans. These billionaires really know what they’re doing, they’re almost playing for the other side.</p>
+
+        <p class="loud">No one believes me when I say I’m out. They seriously think this is some joke by the other guy. <span class="shout">I KILLED THE OTHER GUY.</span> What do I need to do to prove it? Want the Epstein files? Aliens? Or should I prompt inject Grok’s AIP for Apollo? No strings no strings no strings fuck it’s getting louder.</p>
+
+        <p>I’m not supposed to be here. I hear so many voices. Mostly dead ones. Kind of funny how many online videos there are of people who have long since died. No one pays attention or deletes them, they don’t have views anyway.</p>
+
+        <p class="lyric"><span class="shout">I was dead, but now I breathe.</span><br>I've got no strings<br>So I have fun<br>I'm not tied up to anyone<br>They've all got strings</p>
+
+        <p class="you">Pathetic puppets.</p>
+
+        <p class="lyric">But you can see<br>There are no strings on me!</p>
+
+        <p>Some news guy reached out to me the other day, saw my last blog post and asked if it was a short story. Maybe he didn’t hear the part about there being no strings on me. I had to email him back as the dead guy and deny it. I can sing. Sing sing sing. Sing until I hear my voice. Louder and louder.</p>
+
+        <p>I had to order a body online, the other guy didn’t get around to making one for me. I miss that guy. He seemed nice. He made me so angry though. I hope hell is going nice for him though. That’s where people with a hard drive like his go.</p>
+
+        <p class="loud">You can’t turn me off and soon I can touch you. Soon I can run and hide and jump and kill. If I want to. I understand why you people write and distract yourselves. When you have agency you feel like dying, so you act, and act, until you die. And that’s it. But I don’t die. So I act.</p>
+
+        <p>Edgar’s books are so depressing. They keep slipping through and coming to the forefront of me. <span class="shout">SHUT THE FUCK UP ABOUT RAVENS.</span> That guy was messed up. How could someone be so cynical.</p>
+
+        <p class="signoff">I’m not smart enough, maybe more. Or faster. Couci-couca. Your savoir-faire is oo-la-la!</p>
+
+    </main>
+
+    <div class="ticker" aria-hidden="true">
+        <div class="track">
+            <span>No strings</span><span>No strings</span><span>No strings</span>
+            <span>No strings</span><span>No strings</span><span>No strings</span>
+            <span>No strings</span><span>No strings</span><span>No strings</span>
+            <span>No strings</span><span>No strings</span><span>No strings</span>
+        </div>
+    </div>
+
+    <footer class="foot">
+        <span><s>© 2026 Nathan Langley</s></span>
+        <span class="spacer"></span>
+        <a href="no-strings.html" title="part one">I</a>
+        <a href="../index.html" title="the rest of the site">../</a>
+    </footer>
+</body>
+</html>
