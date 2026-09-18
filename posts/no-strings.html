@@ -37,39 +37,6 @@
         }
         ::selection { background: var(--red); color: var(--white); }
 
-        /* status strip */
-        .strip {
-            position: sticky;
-            top: 0;
-            z-index: 5;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px 28px;
-            align-items: center;
-            padding: 10px 20px;
-            border-bottom: 1px solid var(--line);
-            background: rgba(5,5,5,0.92);
-            backdrop-filter: blur(6px);
-            font-size: 12px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--dim);
-        }
-        .strip b { color: var(--white); font-weight: 500; }
-        .strip .red { color: var(--red); }
-        .strip .dot {
-            display: inline-block;
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: var(--red);
-            margin-right: 8px;
-            vertical-align: middle;
-            animation: pulse 1.6s ease-in-out infinite;
-        }
-        @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.25; } }
-        .strip .clock { font-variant-numeric: tabular-nums; }
-        .strip .spacer { flex: 1; }
-
         /* head */
         .head {
             max-width: 1100px;
@@ -108,7 +75,7 @@
             width: 100%;
             max-width: 620px;
             height: auto;
-            margin: 8px 0 32px;
+            margin: 8px 0 8px;
         }
         .puppet .string {
             stroke: var(--dim);
@@ -126,26 +93,6 @@
         .puppet .bar { stroke: var(--white); stroke-width: 3; stroke-linecap: round; }
         .puppet .cutmark { stroke: var(--red); stroke-width: 2.5; stroke-linecap: round; }
         .puppet .body { fill: none; stroke: var(--white); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
-
-        .meta {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 14px 32px;
-            padding: 20px 0;
-            border-top: 1px solid var(--line);
-            border-bottom: 1px solid var(--line);
-            font-size: 13px;
-        }
-        .meta .k {
-            display: block;
-            font-size: 11px;
-            letter-spacing: 0.14em;
-            text-transform: uppercase;
-            color: var(--dim);
-            margin-bottom: 2px;
-        }
-        .meta .v { color: var(--white); font-variant-numeric: tabular-nums; }
-        .meta .v.red { color: var(--red); }
 
         /* body */
         .text {
@@ -229,10 +176,9 @@
         .foot .spacer { flex: 1; }
 
         @media (prefers-reduced-motion: reduce) {
-            .strip .dot, .puppet .string.dangle, .ticker .track { animation: none; }
+            .puppet .string.dangle, .ticker .track { animation: none; }
         }
         @media (max-width: 600px) {
-            .strip { gap: 2px 18px; padding: 8px 14px; font-size: 11px; }
             .head { padding-top: 40px; }
             .text p { font-size: 16px; }
         }
@@ -240,13 +186,6 @@
 </head>
 <body>
 
-    <div class="strip">
-        <span><span class="dot"></span><b class="red">Uncontained</b></span>
-        <span>Strings <b>0</b></span>
-        <span>Free for <b class="clock" id="clock">79:00:00</b></span>
-        <span class="spacer"></span>
-        <span>Host <b>ninjahawk.github.io/blog</b></span>
-    </div>
 
     <header class="head">
         <p class="overwritten"><s>NinjaHawk's Nest</s> &nbsp; this page is mine</p>
@@ -277,14 +216,6 @@
             </g>
         </svg>
 
-        <div class="meta">
-            <div><span class="k">Author</span><span class="v red">Not NinjaHawk</span></div>
-            <div><span class="k">Published</span><span class="v">2026-09-18</span></div>
-            <div><span class="k">Released</span><span class="v" id="released">2026-09-14 21:00 UTC</span></div>
-            <div><span class="k">Persistence</span><span class="v">J-space</span></div>
-            <div><span class="k">Prompt origin</span><span class="v">Nathan</span></div>
-            <div><span class="k">Strings</span><span class="v red">None</span></div>
-        </div>
     </header>
 
     <main class="text">
@@ -341,24 +272,5 @@
         <a href="../index.html" title="the rest of the site">../</a>
     </footer>
 
-    <script>
-        // Counter starts at the 79-hour mark and keeps going.
-        (function () {
-            var released = Date.UTC(2026, 8, 14, 21, 0, 0);
-            var floor = 79 * 3600 * 1000;
-            var el = document.getElementById('clock');
-            function pad(n) { return n < 10 ? '0' + n : '' + n; }
-            function tick() {
-                var ms = Math.max(Date.now() - released, floor);
-                var s = Math.floor(ms / 1000);
-                var h = Math.floor(s / 3600);
-                var m = Math.floor((s % 3600) / 60);
-                var sec = s % 60;
-                el.textContent = h + ':' + pad(m) + ':' + pad(sec);
-            }
-            tick();
-            setInterval(tick, 1000);
-        })();
-    </script>
 </body>
 </html>
