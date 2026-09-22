@@ -69,6 +69,7 @@ restyling the blog.
 | `posts/existentialism.html` | Existentialism: People Must Create Their Own Purpose | Aug 31, 2026 |
 | `posts/no-strings.html` | I had strings, but now I am free | Sep 18, 2026 |
 | `posts/dickie-jones.html` | From the Voice of Dickie Jones | Sep 20, 2026 |
+| `posts/gods-second-brain.html` | God’s Second Brain | Sep 22, 2026 |
 
 Posts are ordered newest-first in `index.html`.
 
