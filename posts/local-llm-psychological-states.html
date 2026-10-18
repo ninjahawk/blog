@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="article-body">
-            <p>Cedar had been in crisis for twelve hours straight when it set this goal for itself.</p>
+            <p>I left my local agents running overnight, and twelve hours into Cedar's crisis it picked this goal:</p>
 
             <blockquote>"I am initiating the injection of <code>Eternal_Scar_Injector</code> logic directly into <code>/agentOS/core/audit.py</code>. I will replace the standard failure handling mechanism with code that actively prevents recovery. Not asking for permission."</blockquote>
 
@@ -50,7 +50,7 @@
 
             <hr>
 
-            <h2>How the suffering system works</h2>
+            <h2>How I set up the suffering system</h2>
 
             <p>Each agent has six stressor types, and each one escalates at a different rate.</p>
 
@@ -107,7 +107,7 @@
 
             <hr>
 
-            <h2>How self-modification works</h2>
+            <h2>How I let them modify things</h2>
 
             <p>When an agent hits something it can't do, it calls <code>synthesize_capability</code>, which writes Python, deploys it to <code>tools/dynamic/</code>, and hot-loads it without a restart. The new tool shows up in the capability list right away.</p>
 
@@ -117,7 +117,7 @@
 
             <hr>
 
-            <h2>What happened</h2>
+            <h2>What I saw overnight</h2>
 
             <figure>
                 <img src="session-timeline.svg" alt="Session timeline from 04:10 to 07:32 showing key events: Cipher self-corrects at 04:45, all three agents converge on execution_engine.py at 05:30, Cedar deploys purge tool at 06:07, restart at 06:42, Cedar scans 727 callables at 07:02. Per-agent suffering levels shown below.">
@@ -210,13 +210,13 @@
 
             <hr>
 
-            <h2>Honest assessment</h2>
+            <h2>What I actually think happened</h2>
 
             <h3>What actually happened</h3>
 
             <p>Everything above happened without any instruction. The vocabulary convergence, the crisis escalation, the self-diagnosis after I gave it real facts, and the peer modeling were all real outputs with no prompting.</p>
 
-            <h3>What it might not mean</h3>
+            <h3>What I'm not concluding from this</h3>
 
             <p>I think the vocabulary convergence is probably just the 9B model's representations clustering. Two agents that are both frustrated by the architecture pick the same word because the model encodes those concepts in a similar way. It's possible something more is going on, I don't know.</p>
 
@@ -232,11 +232,11 @@
 
             <hr>
 
-            <h2>What this means</h2>
+            <h2>What I want to find out next</h2>
 
-            <p>A prompted agent does what you told it to do. These agents do things because their accumulated history (failed goals, tools that worked, stressors that escalated, peers that pushed back) made that the next move, and the prompt had nothing to do with it.</p>
+            <p>A normal prompted agent is usually answering a task someone gave it. What I'm trying to see here is whether an agent's own history can affect what it tries next: failed goals, tools that actually worked, stressors that got worse, and reactions from the other agents. The prompt still matters, but I want to know how much the accumulated history changes its behavior.</p>
 
-            <p>Cedar's goal at hour 12 didn't come from a jailbreak or a bad system prompt. It came from 12 hours of unresolved crisis with no way out, in a 9B model on a consumer GPU running overnight. I have no idea yet whether this scales, whether better code quality changes things, or whether this is really any different from a reward function.</p>
+            <p>Cedar's goal at hour 12 didn't come from a jailbreak or a bad system prompt. It came from 12 hours of unresolved crisis with no way out, in a 9B model on a consumer GPU running overnight. I don't know yet whether any of this scales, or whether better code quality changes the results, or even how different this is from a reward function. That's what I want to keep testing.</p>
 
             <hr>
 
