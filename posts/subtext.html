@@ -47,11 +47,11 @@
 
             <p>The part that surprised me is how much is going on before the first output token. There's a whole "reading" phase where the model is just ingesting your message, and the workspace is already busy: categories, judgments, the gist of where this is going. By the time it starts typing, a lot of the interesting decisions look like they've already been made.</p>
 
-            <h2>How it works, roughly</h2>
+            <h2>How it works</h2>
 
             <p>The trick underneath is an old interpretability idea with a sharper new version. The old idea is the logit lens: take the hidden state at some middle layer, pretend it's the final layer, run it through the model's unembedding, and read off the top words. It sort of works. Each layer is holding a fuzzy running guess about what comes next, and if you squint at it through the output matrix you can read the guess.</p>
 
-            <p>The sharper version Subtext uses is the Jacobian lens, from a recent interpretability paper. Roughly: instead of naively decoding the raw hidden state, it isolates the slice of the representation that the model can actually verbally report and reuse downstream (the paper calls it a global workspace, a "J-space"), and decodes <em>that</em>. In practice it's one small matrix-vector product per layer plus an unembedding per token, which is cheap enough that generation still streams at basically native speed. You're not waiting on the introspection. It just runs alongside.</p>
+            <p>The sharper version Subtext uses is the Jacobian lens, from a recent interpretability paper. Instead of naively decoding the raw hidden state, it isolates the slice of the representation that the model can actually verbally report and reuse downstream (the paper calls it a global workspace, a "J-space"), and decodes <em>that</em>. In practice it's one small matrix-vector product per layer plus an unembedding per token, which is cheap enough that generation still streams at basically native speed. You're not waiting on the introspection. It just runs alongside.</p>
 
             <p>Nine layers means you don't get one answer, you get a little cross-section of the network. You can watch a concept show up shallow and vague and then sharpen as it climbs.</p>
 
