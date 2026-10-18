@@ -36,31 +36,31 @@
             </div>
         </div>
         <div class="article-body">
-            <p>This is the last line of every existence prompt:</p>
+            <p>I put this line at the end of every existence prompt:</p>
 
             <blockquote>You must pick a goal. That is the only option.</blockquote>
 
-            <p>That's verbatim from the code. The agent can't respond with "nothing" or "wait," and if the LLM call fails entirely, the daemon swaps in a hardcoded fallback goal and runs again on the next tick. So the only real choice the agent has is which goal to pick.</p>
+            <p>That's the actual wording in the code. The agent can't respond with "nothing" or "wait," and if the LLM call fails entirely, the daemon swaps in a hardcoded fallback goal and runs again on the next tick. So the only real choice the agent has is which goal to pick.</p>
 
             <hr>
 
-            <h2>What it is</h2>
+            <h2>What I'm making the agents do</h2>
 
-            <p>The existence prompt drives all agent behavior in hollow-agentOS. Every ~6 seconds, the daemon builds a full-context prompt from each agent's current state and sends it to the LLM, the agent responds with JSON, and that JSON becomes the new goal and updates its identity. There isn't any other loop, scheduler, or behavioral driver.</p>
+            <p>The thing I keep coming back to is that almost everything the agents do starts with the existence prompt. Every ~6 seconds, the daemon builds a full-context prompt from each agent's current state and sends it to the LLM, the agent responds with JSON, and that JSON becomes the new goal and updates its identity. There isn't any other loop, scheduler, or behavioral driver.</p>
 
             <p>Three agents run this loop independently, Cedar (scout), Cipher (analyst), and Vault (builder).</p>
 
             <hr>
 
-            <h2>Timing</h2>
+            <h2>How often this runs</h2>
 
             <p>The daemon heartbeat is 6 seconds, but executing a goal takes one or more LLM calls and tool invocations, so in practice each goal takes 15 to 60 seconds. A new existence prompt gets built and sent as soon as the previous goal completes or is abandoned. Suffering escalation runs on the same 6-second tick.</p>
 
             <hr>
 
-            <h2>Prompt assembly</h2>
+            <h2>What goes into the prompt</h2>
 
-            <p>The prompt is built from 15+ sections in a fixed order, and each section pulls from a different data source.</p>
+            <p>I ended up splitting the prompt into more than fifteen sections, and they get assembled in the same order every time. Each one pulls from a different part of the agent's stored state.</p>
 
             <h3>Task injection (conditional)</h3>
 
@@ -206,7 +206,7 @@
 
             <hr>
 
-            <h2>What this means</h2>
+            <h2>What I think this changes</h2>
 
             <p>The prompt has no idle state, so an agent that wants to wait, observe, or pause has to express that as a goal. "You must pick a goal. That is the only option." is meant literally.</p>
 
@@ -214,7 +214,7 @@
 
             <p>Goal selection is the only point where the agent introspects. Between existence prompts it runs tool calls but doesn't reflect. Everything it knows about itself (worldview, opinions, open questions, suffering state) is built from JSON it produced in earlier cycles and fed back in, so it's mostly reading its own prior outputs. I don't think the system can tell you whether that adds up to a coherent self-model or just a statistically plausible continuation of one.</p>
 
-            <p>Either way the daemon calls again in 6 seconds, and the only thing the agent really gets to decide is what the goal says.</p>
+            <p>And then the daemon calls it again on the next tick. What interests me is how much behavior can come out of repeatedly making a model pick a goal when it isn't allowed to simply stop.</p>
 
             <hr>
 
