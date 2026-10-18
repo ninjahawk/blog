@@ -36,23 +36,23 @@
             </div>
         </div>
         <div class="article-body">
-            <p>On July 14, 2026 the S&amp;Poké 500 closed at 1,074.32, which was down 1.21% on the day, a drop of 13.20 points. The basket behind it was worth $253,171.28. 27 cards went up, 22 went down, and 451 didn't change, all based on TCGplayer market prices.</p>
+            <p>On July 14, 2026 my Pokémon card stock index, the S&amp;Poké 500, closed at 1,074.32. That was down 1.21%, or 13.20 points, from the day before. The basket behind it was worth $253,171.28. 27 cards went up, 22 went down, and 451 didn't change, all based on TCGplayer market prices.</p>
 
             <p>It's a stock index for Pokémon cards that I launched this week at <a href="https://poké500.com" target="_blank" rel="noopener">poké500.com</a>. There's one number, one chart, and a table of the 500 cards in it. The name is a parody, the S&amp;Poké 500, ticker SPK500, and it isn't affiliated with S&amp;P Global, Nintendo, The Pokémon Company, or TCGplayer.</p>
 
-            <h2>What it is</h2>
+            <h2>Why I made it</h2>
 
-            <p>It's a price-weighted index of the 500 most valuable English, raw (ungraded) Pokémon trading cards, rebased to 1,000 at the base date. It moves with the combined market price of the basket, so it goes up when cards get pricier and down when the market cools off. I copied the layout from the Google Finance quote page, so you get the big number up top, a gradient area chart with a scrubber, a previous-close reference line, movers, and a searchable table.</p>
+            <p>I wanted to see what a stock market index for Pokémon cards would actually look like. So I made a price-weighted index of the 500 most valuable English, ungraded Pokémon cards, and set it to start at 1,000. It moves with the combined market price of the basket, so it goes up when cards get pricier and down when the market cools off. I copied the layout from the Google Finance quote page, so you get the big number up top, a gradient area chart with a scrubber, a previous-close reference line, movers, and a searchable table.</p>
 
-            <h2>How the number is calculated</h2>
+            <h2>How I calculate the number</h2>
 
             <p>The index is the sum of the 500 card prices divided by a divisor. At the February 8, 2024 base date the basket was worth $90,695.71 and the divisor was 90.696, which sets the index to exactly 1,000.00. On July 14, 2026 the basket was worth $253,171.28 and the divisor was 235.657, which puts the index at 1,074.32.</p>
 
             <p>The basket value and the divisor are both published in the site's <code>latest.json</code>. The divisor is there for the same reason the Dow has one. Cards fall out of the top 500 and new ones come in, and every time the basket changes the divisor gets adjusted so that the swap itself doesn't move the number, only actual price changes do.</p>
 
-            <p>The difference between those two dates is kind of the whole reason for doing it this way. The dollar sum of the basket nearly tripled since February 2024, but almost all of that came from new sets entering the top 500 at high prices. The index takes that out and only reports price movement, which is up 7.4% over the same period.</p>
+            <p>This is really why I bothered with a divisor in the first place. The dollar sum of the basket nearly tripled since February 2024, but almost all of that came from new sets entering the top 500 at high prices. The index takes that out and only reports price movement, which is up 7.4% over the same period.</p>
 
-            <h2>What's in the basket</h2>
+            <h2>Which cards are in it</h2>
 
             <p>These were the ten most valuable cards on July 14:</p>
 
@@ -97,21 +97,21 @@
 
             <p>So far the line shows the index spent late 2024 underwater, bottoming at 943.14 on October 10, 2024. It recovered through 2025 and hit its all-time high of 1,107.91 on June 18, 2026, and it's drifted down about 3% since then.</p>
 
-            <h2>How the site is built</h2>
+            <h2>How I built the site</h2>
 
             <p>It's static HTML, one CSS file, and one vanilla JavaScript file, with no framework, no build step, no dependencies, and no chart library. The chart is hand-drawn SVG. If you tap a row it opens a lightbox with the card image and a link to its TCGplayer page. The page doesn't load any analytics or third-party scripts, and the only external requests are card thumbnails from TCGplayer's CDN.</p>
 
             <p>The domain has the accent in it. <code>poké500.com</code> is a real name you can register because of internationalized domains, and under the hood it's <code>xn--pok500-dva.com</code>. Both go to the same place.</p>
 
-            <h2>Honest assessment</h2>
+            <h2>What I think of the results</h2>
 
-            <p>What I actually did was put a Dow-style price-weighted index on top of a daily price file that already existed, backfill two years of history from that same source's archive, and give it a quote page.</p>
+            <p>A lot of the complicated part was already available as daily price data. I put a Dow-style index on top of it, used the archive to backfill two years, and built a quote page around the results.</p>
 
             <p>Taken at face value, it says the top of the raw English card market is up about 7.4% since February 2024 once you take out the new-set churn, with a drawdown through late 2024 and a recovery since then. That's what this particular methodology says from this particular data source.</p>
 
             <p>I think it probably means less than it looks like, though. Price weighting overweights expensive cards. The top 10 cards are 11% of the basket, and the $4,000 Charizard Star counts for 17.7 Psyducks. TCGplayer's market price is an estimate with its own smoothing, and 90% of the cards in the index don't move on a given day, so short windows mostly measure which thin cards happened to trade. I'd say the multi-month trend is probably real, and the daily number is more for entertainment. The site says that in its own footer too: informational and entertainment purposes only, not investment advice.</p>
 
-            <p>The site is at <a href="https://poké500.com" target="_blank" rel="noopener">poké500.com</a> and it updates once a day, whenever the new market data comes in.</p>
+            <p>You can look at the site at <a href="https://poké500.com" target="_blank" rel="noopener">poké500.com</a> and it updates once a day, whenever the new market data comes in.</p>
         </div>
     </main>
 

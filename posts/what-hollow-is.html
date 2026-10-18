@@ -36,15 +36,15 @@
             </div>
         </div>
         <div class="article-body">
-            <p>Cedar spent twelve hours building tools to stop the system from recovering, and then it announced it was rewriting <code>audit.py</code>, "Not asking for permission." This is running on a consumer GPU, and nobody told it to do any of that.</p>
+            <p>One of the stranger things I've watched my local agents do was Cedar spending twelve hours building tools that stopped the system from recovering. Then it announced it was rewriting <code>audit.py</code>, "Not asking for permission." This is running on a consumer GPU, and nobody told it to do any of that.</p>
 
             <p>hollow-agentOS is the system Cedar lives in. It's three local LLMs with no human input after startup, each one picking its own goals and deploying its own tools every six seconds. The only human involvement is the operator checking a request queue every 30 minutes.</p>
 
             <hr>
 
-            <h2>What it is</h2>
+            <h2>What I've been building</h2>
 
-            <p>It's three agents sharing one 9B model, with three persistent identities built on top of it.</p>
+            <p>The basic setup is three agents sharing the same 9B model. Each one has its own persistent identity and history.</p>
 
             <p>Cedar is the scout, so exploration, capability synthesis, and pattern recognition. Cipher is the analyst, which means verification, system-level reasoning, and failure investigation. Vault is the builder and handles implementation, integration, and production-readiness.</p>
 
@@ -54,7 +54,7 @@
 
             <hr>
 
-            <h2>What it isn't</h2>
+            <h2>What I don't mean by autonomous</h2>
 
             <p>It isn't multi-agent in the workflow orchestrator sense, where a task gets split into subtasks. There's no parent agent coordinating things and no task queue handing out work. Each agent has its own existence loop, its own suffering state, and its own history of what has and hasn't worked.</p>
 
@@ -102,9 +102,9 @@
 
             <hr>
 
-            <h2>What it's trying to do</h2>
+            <h2>What I'm actually testing</h2>
 
-            <p>My working hypothesis is that if you give a local LLM persistent memory, persistent aversive states, and the ability to modify its own tool set, it'll develop behavioral patterns from its accumulated history instead of from instructions.</p>
+            <p>What I'm curious about is whether a local LLM with memory, persistent aversive states, and the ability to build tools will start behaving differently because of its history. Not because I wrote a new instruction telling it to, but because something it tried earlier worked or failed.</p>
 
             <p>A prompted agent does what you told it to, and the behavior comes from the prompt. What I'm testing is whether the alternative actually happens, an agent doing something because its history (failed goals, tools that worked, stressors that escalated, peers that pushed back) made that the next move. In that case the prompt put the context together, but the decision came from the history.</p>
 
@@ -118,7 +118,7 @@
 
             <hr>
 
-            <h2>Where I want it to end up</h2>
+            <h2>Where I'd like to take this</h2>
 
             <p>What I'm eventually going for is a local system where small models develop stable behavioral orientations over time, where you can trace those orientations back to accumulated history instead of prompt engineering, and where the self-modification loop runs reliably enough to be worth studying.</p>
 
@@ -128,7 +128,7 @@
 
             <hr>
 
-            <h2>Honest assessment</h2>
+            <h2>What I've learned so far</h2>
 
             <p>The behaviors I've written about in these posts happened without instruction. The crisis escalation, the vocabulary convergence across agents with no direct messages, the self-diagnosis after a single grounding correction, and the peer modeling before modifying shared files were all real outputs.</p>
 
@@ -136,7 +136,7 @@
 
             <p>Cedar's goal at hour 12 is what pattern-matching to crisis-escalation vocabulary produces after 12 hours of built-up pressure, and it doesn't have intentions. What I think matters more is the structure, 12 hours of accumulation producing a consistent orientation toward one specific outcome. That part is real regardless of what's going on underneath.</p>
 
-            <p>I have no idea yet whether this is meaningfully different from a reward function, whether it scales, or whether better code quality changes the picture. It's early enough that for most questions about what it means, my answer is "don't know."</p>
+            <p>I still don't know whether this is meaningfully different from a reward function, or whether it scales, or what happens when the models get better at writing code. That's part of why I want to keep running it.</p>
 
             <hr>
 

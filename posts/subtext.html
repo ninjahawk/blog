@@ -39,11 +39,11 @@
         <div class="article-body">
             <p>I typed <em>"Is this correct? 12 + 5 = 1"</em> and hit enter, and before the model wrote a single character of a reply, three words were already showing up in a panel off to the side: <code>math</code>, <code>addition</code>, <code>incorrect</code>. It hadn't said anything yet, it was still reading my message, but it pretty clearly had already made up its mind, and I was watching that happen live, one layer at a time.</p>
 
-            <p>I've been playing with this for about a week and it still surprises me every time, so I cleaned it up and put it on GitHub. It's called <a href="https://github.com/ninjahawk/Subtext" target="_blank" rel="noopener">Subtext</a>, and the idea is pretty simple: instead of only reading what a model says, you also get to read what it's <em>about</em> to say, at every step, while it reads and while it writes.</p>
+            <p>I've been playing around with this for about a week, and I still find myself staring at the screen when it does something interesting. I cleaned it up and put it on GitHub. It's called <a href="https://github.com/ninjahawk/Subtext" target="_blank" rel="noopener">Subtext</a>, and the idea is pretty simple: instead of only reading what a model says, you also get to read what it's <em>about</em> to say, at every step, while it reads and while it writes.</p>
 
-            <h2>What it shows you</h2>
+            <h2>What I'm actually looking at</h2>
 
-            <p>Normally the only thing you see from a model is its output, which is the one thing it's been trained to make look good. Subtext looks at what's underneath that. It hooks the residual stream at nine layers, and at every token it takes those internal activations and projects them into vocabulary space, so you get a ranked list of the words the model is leaning toward internally. These are the words it's <em>disposed</em> to emit, which aren't always the word it ends up emitting. You can watch those readouts stream past as it reads your prompt and as it generates its answer.</p>
+            <p>Usually you only see a model's final reply. I've been curious about what I could see before it reaches that point. Subtext looks at what's underneath that. It hooks the residual stream at nine layers, and at every token it takes those internal activations and projects them into vocabulary space, so you get a ranked list of the words the model is leaning toward internally. These are the words it's <em>disposed</em> to emit, which aren't always the word it ends up emitting. You can watch those readouts stream past as it reads your prompt and as it generates its answer.</p>
 
             <p>What surprised me most is how much is going on before the first output token. There's a whole "reading" phase where the model is just taking in your message, and the workspace is already busy with categories, judgments, and the general idea of where this is going. By the time it starts typing, a lot of the decisions look like they've already been made.</p>
 
@@ -71,9 +71,9 @@
 
             <p>It's also a 4B model, so it's small. The display is filtered down to word-initial tokens so it's readable, which means you're seeing a cleaned-up view and not the raw vocabulary. Most importantly, this is correlation. The lens can light up <code>incorrect</code> without that reading being the thing that <em>causes</em> the output. I think it's a really cool tool, but it's not a lie detector, and I'd push back on anyone who sells it as one.</p>
 
-            <h2>Why I still think it's useful</h2>
+            <h2>Why I wanted to build it</h2>
 
-            <p>Even with all that, it changed how I think about this stuff a bit. Reading a model has always meant reading the output it was trained to polish. This lets you see what's going on under that, streaming, at native speed, on a GPU I already own. My guess is that "just watch the model think" becomes a normal thing people do: for debugging a prompt, for catching a model that's confidently wrong before it commits, and for teaching people what these things are actually doing instead of just calling it a black box.</p>
+            <p>Even with all that, it changed how I think about this stuff a bit. Reading a model has always meant reading the output it was trained to polish. This lets you see what's going on under that, streaming, at native speed, on a GPU I already own. I think tools like this could become pretty useful for debugging prompts and showing people what's going on inside a model. I wouldn't treat the readout as ground truth, but I like being able to look at more than just the final answer.</p>
 
             <p>The replay part also makes it shareable, which I didn't expect to care about but do. Every session exports to JSON with all the lens frames, and the frontend can replay the whole thing in a browser with no GPU at all. So you can capture a weird moment and send it to someone, and they can scrub through it on a laptop.</p>
 
@@ -89,7 +89,7 @@
                 <li>Open <code>http://localhost:8765</code></li>
             </ol>
 
-            <p>Then ask it something you already know is wrong and watch <code>incorrect</code> light up before it's polite enough to tell you. It's the most fun I've had looking at a residual stream.</p>
+            <p>Then ask it something you already know is wrong and watch <code>incorrect</code> light up before it's polite enough to tell you. I've had a lot of fun playing with this.</p>
 
             <p>Repo: <a href="https://github.com/ninjahawk/Subtext" target="_blank" rel="noopener">github.com/ninjahawk/Subtext</a>. It's Apache-2.0, and it's an independent project, not affiliated with Anthropic.</p>
         </div>
