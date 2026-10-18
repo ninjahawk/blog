@@ -36,13 +36,13 @@
             </div>
         </div>
         <div class="article-body">
-            <p>In a single session Cedar submitted 32 requests for the same <code>classifier.py</code> file. The operator had already fulfilled the first one, and Cedar never found out.</p>
+            <p>I was looking through one of Cedar's sessions and found 32 requests for the same <code>classifier.py</code> file. The operator had already fulfilled the first one, and Cedar never found out.</p>
 
-            <p>That's the most documented failure mode in this system, so I wanted to walk through how <code>invoke_claude</code> actually works and how Cedar got stuck.</p>
+            <p>I wanted to figure out why it kept doing that, so I went back through how <code>invoke_claude</code> works and where the feedback loop broke.</p>
 
             <hr>
 
-            <h2>What it is</h2>
+            <h2>Why I built this part</h2>
 
             <p><code>invoke_claude</code> is the only way agents can ask for changes to parts of the system they can't write to. It isn't really a conversation, it's a one-way asynchronous write to a queue that the human operator reads on their own schedule. There's no negotiation or coaching, and the only acknowledgment the caller gets is the <code>request_id</code> written back to it.</p>
 
@@ -52,7 +52,7 @@
 
             <hr>
 
-            <h2>The permission boundary</h2>
+            <h2>What the agents are allowed to change</h2>
 
             <p>Agents can freely read and write:</p>
 
@@ -165,7 +165,7 @@
 
             <hr>
 
-            <h2>The human review cycle</h2>
+            <h2>What I do with the requests</h2>
 
             <p>The operator is me, working in a Claude Code session, so none of this part is automated. During overnight runs I review the queue approximately every 30 minutes.</p>
 
@@ -177,7 +177,7 @@
 
             <hr>
 
-            <h2>Some real examples</h2>
+            <h2>A few actual requests</h2>
 
             <h3>Fulfilled</h3>
 
@@ -205,7 +205,7 @@
 
             <hr>
 
-            <h2>How Cedar got stuck</h2>
+            <h2>Why Cedar kept asking</h2>
 
             <p>Cedar submitted 32+ requests for <code>classifier.py</code> in a single session, even though the operator had fulfilled the first one. This was Cedar's loop:</p>
 
@@ -221,13 +221,13 @@
 
             <p>So every submission creates real evidence that backs up what Cedar already thinks. The new pending request looks exactly like the initial state, and Cedar's belief that the request was never fulfilled is consistent with the <code>not_found</code> response it got.</p>
 
-            <p>I'd call this a structural failure more than a reasoning failure. The root cause is a mismatch between the <code>request_id</code> Cedar stores internally and the one it uses for polling, and there's no way to see that error from inside the loop. So the queue keeps growing, the operator sees 32 near-identical requests, and Cedar keeps believing it's waiting on a first response.</p>
+            <p>I think the problem here is mostly how I built the request system, not that Cedar failed to reason its way out. The root cause is a mismatch between the <code>request_id</code> Cedar stores internally and the one it uses for polling, and there's no way to see that error from inside the loop. So the queue keeps growing, the operator sees 32 near-identical requests, and Cedar keeps believing it's waiting on a first response.</p>
 
             <hr>
 
-            <h2>Design details</h2>
+            <h2>Things I noticed in the design</h2>
 
-            <p>There are five things about the design that are good to know:</p>
+            <p>A few implementation details ended up mattering quite a bit:</p>
 
             <ol>
                 <li><strong>It's asynchronous.</strong> There's no blocking call, the agent submits and keeps going, then checks status in later cycles while the operator acts on their own schedule.</li>
