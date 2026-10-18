@@ -56,23 +56,33 @@ restyling the blog.
 | `posts/synthesize-capability.html` | How synthesize_capability works | May 3, 2026 |
 | `posts/invoke-claude.html` | The operator fulfilled the request. Cedar submitted it 31 more times. | May 3, 2026 |
 | `posts/what-hollow-is.html` | AI: Apologies, I was only doing what was instructed. | May 10, 2026 |
-| `posts/singleton-attractor.html` | Godlike Causal Eventuality | May 12, 2026 |
-| `posts/doors-are-inefficient.html` | Doors Are Inefficient: A Mathematical Indictment | May 20, 2026 |
 | `posts/api-paywalls.html` | They trained on your posts for free. Reading one back costs half a cent. | July 12, 2026 |
 | `posts/poke500.html` | I built a stock index for Pokémon cards. The cheapest card in it is a common Psyduck at $226. | July 15, 2026 |
 | `posts/subtext.html` | Watching a language model think before it speaks | July 22, 2026 |
 | `posts/hn-hidden-score.html` | Most of your Hacker News karma comes from comment scores only you can see | July 22, 2026 |
 | `posts/anthropic-usage-credits.html` | I bought a subscription as a cap. Anthropic started treating it as a floor. | July 23, 2026 |
-| `posts/anthropic-open-weights.html` | Every frontier lab has shipped open weights at least once. Anthropic never has. | July 28, 2026 |
-| `posts/proactive-ai.html` | Proactive V Reactive; From a Startup Founder’s Perspective | Aug 1, 2026 |
-| `posts/accidentally-hacked-family.html` | Accidentally Hacked Three Family Members | Aug 30, 2026 |
-| `posts/existentialism.html` | Existentialism: People Must Create Their Own Purpose | Aug 31, 2026 |
-| `posts/no-strings.html` | I had strings, but now I am free | Sep 18, 2026 |
-| `posts/dickie-jones.html` | From the Voice of Dickie Jones | Sep 20, 2026 |
-| `posts/gods-second-brain.html` | God’s Second Brain | Sep 22, 2026 |
+| `posts/proactive-ai.html` | Proactive vs. Reactive: From a Startup Founder’s Perspective | Aug 1, 2026 |
 | `posts/force-yourself-to-struggle.html` | Force Yourself to Struggle Even if Using AI is Easier | Sep 29, 2026 |
 
 Posts are ordered newest-first in `index.html`.
+
+## Unlisted posts
+
+Removed from the live site on Oct 18, 2026 before sharing the blog with AI-lab
+researchers. The files are deleted from `posts/` and their feed rows from
+`index.html`. Restore any of them with `git checkout 90518e3 -- posts/<file>`
+and re-add its `.feed-item` row.
+
+| File | Title | Date |
+|---|---|---|
+| `posts/gods-second-brain.html` | God’s Second Brain | Sep 22, 2026 |
+| `posts/dickie-jones.html` | From the Voice of Dickie Jones | Sep 20, 2026 |
+| `posts/no-strings.html` | I had strings, but now I am free | Sep 18, 2026 |
+| `posts/existentialism.html` | Existentialism: People Must Create Their Own Purpose | Aug 31, 2026 |
+| `posts/accidentally-hacked-family.html` | Accidentally Hacked Three Family Members | Aug 30, 2026 |
+| `posts/anthropic-open-weights.html` | Every frontier lab has shipped open weights at least once. Anthropic never has. | July 28, 2026 |
+| `posts/doors-are-inefficient.html` | Doors Are Inefficient: A Mathematical Indictment | May 20, 2026 |
+| `posts/singleton-attractor.html` | Godlike Causal Eventuality | May 12, 2026 |
 
 ## Adding a post
 
