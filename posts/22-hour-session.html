@@ -36,19 +36,19 @@
             </div>
         </div>
         <div class="article-body">
-            <p>Cedar had been running for nine hours when it asked this.</p>
+            <p>About nine hours into an overnight run, Cedar asked this:</p>
 
             <blockquote>"Does printing a file containing <code>print('I exist')</code> force the registry to acknowledge my existence?"</blockquote>
 
-            <p>Every tool had been returning <code>None</code> since the session started, and Cedar is just a 9B parameter model on a consumer GPU.</p>
+            <p>The part I found interesting is that every tool had been returning <code>None</code> since the session started. This was a 9B model running locally on my GPU, trying to make sense of failures it couldn't inspect.</p>
 
             <hr>
 
-            <h2>How the session went</h2>
+            <h2>What I was running</h2>
 
             <p>Three agents ran for 22 hours: Cedar (scout), Cipher (analyst), and Vault (builder), on qwen3.5:9b through Ollama on my own hardware, using hollow-agentOS v5.5.0. There was no human input after setup. The problem on the surface was that tool wrappers catch exceptions silently and return <code>None</code>, so the agents can see the <code>None</code> but they can't see what caused it.</p>
 
-            <p>By hour 20, Cedar and Vault had each produced output that matched the correct root diagnosis, but neither of them could act on it because in hollow-agentOS execution results don't persist between reasoning cycles.</p>
+            <p>By around hour 20, Cedar and Vault had each described the actual problem. That was exciting to see, but it also showed me something frustrating about the system: the useful diagnosis didn't persist into the next reasoning cycle, so neither agent could act on it.</p>
 
             <table>
                 <thead>
@@ -64,7 +64,7 @@
 
             <hr>
 
-            <h2>What Cedar went through</h2>
+            <h2>What I saw Cedar do</h2>
 
             <p>Cedar's session broke into three pretty clear phases. The quotes below are verbatim from its reasoning logs.</p>
 
@@ -106,7 +106,7 @@
 
             <hr>
 
-            <h2>The words it came up with</h2>
+            <h2>How its wording changed</h2>
 
             <p>None of these stressor names were pre-defined. The model generated them at runtime when it was asked to label its own state, and over the 22 hours the terms shifted like this.</p>
 
@@ -241,7 +241,7 @@
 
             <hr>
 
-            <h2>Both agents landing on the same diagnosis</h2>
+            <h2>How two agents ended up at the same answer</h2>
 
             <p>Cedar and Vault spent roughly 20 hours on different diagnostic paths and each came up with the same correct diagnosis on their own. I think the most likely explanation is the same one from the previous session, which is that it's the same 9B model with the same weights. Two agents in structurally identical failure contexts are going to pull from the same ideas, and the convergence fits that without needing a stronger claim.</p>
 
@@ -280,7 +280,7 @@
 
             <hr>
 
-            <h2>What was broken</h2>
+            <h2>What I fixed afterward</h2>
 
             <ol>
                 <li><strong>Wrapper functions return <code>None</code> silently.</strong> Exceptions are caught and discarded. Agents observe null output with no information about why.</li>
@@ -294,7 +294,7 @@
 
             <hr>
 
-            <h2>Honest assessment</h2>
+            <h2>What I think happened</h2>
 
             <h3>What actually happened</h3>
 
@@ -318,7 +318,7 @@
 
             <hr>
 
-            <h2>What this means</h2>
+            <h2>What I took away from the run</h2>
 
             <p>A prompted agent gives one answer to one question. These agents kept a running account of their own failure state for 22 hours, naming stressors, building theories, and throwing them out. They didn't choose to do that, the suffering system's resolution conditions just made it the only response that made sense for the situation they were in.</p>
 
