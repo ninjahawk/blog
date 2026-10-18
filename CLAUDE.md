@@ -96,19 +96,13 @@ Do not use `deploy.sh` — it prompts interactively for GitHub credentials and w
 
 ## Writing style
 
-Posts are written in a flat, clinical voice. Key rules:
+Match the author's own voice, as in `posts/force-yourself-to-struggle.html`:
 
-- Short declarative sentences. No warm-up.
-- No em dashes in prose. Use periods or colons instead.
-- No enthusiasm language ("fascinating", "remarkable", "interesting").
-- Show the artifact (log output, code, verbatim quote) first. Minimal commentary after.
-- Epistemic discipline: distinguish what happened, what it means, and what it might mean. Never conflate. Hedge plainly when uncertain ("Probably...", "Could be something else.").
-- No metaphors. No "this shows that" sentences.
-- Section headers are plain and descriptive.
-- Subheads (the `.dek`) are fragments: "Three agents. Twelve hours. No prompts after setup."
-- Titles for technical explainer posts follow "How X works". Titles for experiment posts are punchy statements with a twist.
-- "Honest assessment" or "What this means" section before Setup in every post.
-- Every post ends with the standard Setup block (Windows one-click + Mac/Linux).
+- First person and conversational, like explaining it to a friend who's into tech. "I think", "To be fair", "On the flip side", "Which is why".
+- Sentences can run together with commas. Plain words. Opinions stated directly.
+- Avoid AI tells: staccato fragment runs ("Three agents. Twelve hours."), "Not X. Y." reveals, one-line dramatic closers, colon reveals, em dashes, stock phrases ("quietly", "load-bearing", "worth noting", "here's the thing"), and metaphor flourishes.
+- Keep verbatim logs and quotes verbatim. Keep facts and numbers exact, and hedge plainly when unsure.
+- Deks are one plain sentence, not fragments. Section headers are plain.
 
 ## Reference files (not committed)
 
