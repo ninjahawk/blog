@@ -37,13 +37,13 @@
             </div>
         </div>
         <div class="article-body">
-            <p>Pretty much every large platform keeps a private score on you. Twitter, TikTok, YouTube, there's some internal number attached to your account, computed by a model you never see, and it decides how far your posts travel. You can't read it, and nobody is going to tell you what it is.</p>
+            <p>I've been thinking about how much of what happens on big platforms is decided by numbers you don't get to see. Twitter, TikTok, YouTube, all have systems deciding who sees what you post, and as a user you don't get much visibility into those decisions.</p>
 
             <p>I thought Hacker News might be the exception, mostly because it's old. The site has barely changed in twenty years and it's famously reluctant to add anything. So either it never bothered building a hidden score, or it has one written in such plain, old code that I could probably just read it off the public API. So I went to find mine.</p>
 
             <h2>What the API actually stores</h2>
 
-            <p>The public API returns everything HN stores about an account, and it doesn't need a key or a login. You request a username and get back a small JSON object:</p>
+            <p>HN's public API returns a small account record, and you don't need a key or a login to read it. You request a username and get back a small JSON object:</p>
 
             <ul>
                 <li><code>id</code>, your username.</li>
@@ -55,7 +55,7 @@
 
             <p>That's five fields. I checked a range of accounts and the shape never changes. There's no <code>trust</code>, no <code>score</code>, no <code>rank</code>, nothing with a suggestive name. The only number that grades you is karma, and karma is already printed next to your username.</p>
 
-            <p>So I was wrong going in. There's no hidden reputation model in the page, in old code, or anywhere else, because there isn't a reputation model at all, karma is all there is. I would have stopped there, but karma turned out to be stranger than it looks.</p>
+            <p>So what I expected to find wasn't there. I couldn't see a hidden reputation score in the public account data. That doesn't tell me what HN might use internally, but it did get me looking more closely at karma, which turned out to be stranger than I expected.</p>
 
             <h2>Where karma comes from</h2>
 
@@ -109,11 +109,11 @@
 
             <p>This only works on your own account. Everyone else's comment scores are stripped for you the same way yours are stripped for them. So the only hidden reputation number you can recover on Hacker News is the one you were always allowed to see, just never all in one place.</p>
 
-            <h2>What this means</h2>
+            <h2>What I took from it</h2>
 
-            <p>I expected to find an old site secretly grading its users, and that's not what's happening. HN never built a reputation model, it chose not to, and the one score it does hide, per-comment points, it hides for a reason it has published.</p>
+            <p>I went in expecting to find some secret number grading users, and that's not what I found. At least in the public data I checked, there's no separate reputation number to point to. The scores HN deliberately hides are the individual comment scores, and it's explained why it does that.</p>
 
-            <p>What's actually there is smaller and I think more accurate. The public reputation number is an aggregate of private ones. Karma is real and it unlocks real permissions on the site, and for most people it's mostly a comment score made of pieces they aren't allowed to see. There's no secret file on you, just a public running total over a long list of numbers that each got hidden along the way.</p>
+            <p>What's actually there is smaller and I think more accurate. The public reputation number is an aggregate of private ones. Karma is real and it unlocks real permissions on the site, and for most people it's mostly a comment score made of pieces they aren't allowed to see. I thought I was looking for one hidden number, but what interested me more was how the public total is made from a long list of individual numbers nobody else can see.</p>
 
             <h2>Run it yourself</h2>
 
