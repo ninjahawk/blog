@@ -54,7 +54,7 @@ restyling the blog.
 | `posts/suffering-system.html` | How the suffering system works | May 3, 2026 |
 | `posts/existence-loop.html` | Every six seconds a 9B model reads its own past outputs and picks a goal, and nothing else drives it | May 3, 2026 |
 | `posts/synthesize-capability.html` | How synthesize_capability works | May 3, 2026 |
-| `posts/invoke-claude.html` | The operator fulfilled the request. Cedar submitted it 31 more times. | May 3, 2026 |
+| `posts/invoke-claude.html` | I fulfilled Cedar's request and it still submitted it 31 more times | May 3, 2026 |
 | `posts/what-hollow-is.html` | AI: Apologies, I was only doing what was instructed. | May 10, 2026 |
 | `posts/api-paywalls.html` | They trained on your posts for free, and now reading one back costs half a cent | July 12, 2026 |
 | `posts/poke500.html` | I built a stock index for Pokémon cards. The cheapest card in it is a common Psyduck at $226. | July 15, 2026 |

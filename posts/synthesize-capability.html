@@ -29,43 +29,43 @@
         <div class="article-head">
             <span class="kicker k-teal">Teardown</span>
             <h1>How synthesize_capability works</h1>
-            <p class="dek">Nine steps from name to hot-reload. One missing .py broke everything for an hour.</p>
+            <p class="dek">It takes nine steps to get from a tool name to a hot-reloaded capability, and one missing .py file broke everything for about an hour.</p>
             <div class="byline">
                 <span class="by-author">NinjaHawk</span>
                 <span class="by-date">May 3, 2026</span>
             </div>
         </div>
         <div class="article-body">
-            <p><code>safe_file_executor</code> had no <code>.py</code>. It had a JSON spec, a description that matched "file write" queries better than the real <code>fs_write</code> capability, and nothing else. Cedar and Cipher routed all file write operations through it for approximately one hour. Every write returned nothing. Neither agent could see why.</p>
+            <p>So <code>safe_file_executor</code> had no <code>.py</code>. All it had was a JSON spec and a description that matched "file write" queries better than the real <code>fs_write</code> capability did. Cedar and Cipher routed all of their file write operations through it for approximately one hour, every write returned nothing, and neither agent could figure out why.</p>
 
-            <p>The JSON was written directly, bypassing <code>synthesize_capability</code> entirely. That's what made it possible.</p>
+            <p>That only happened because the JSON was written directly, skipping <code>synthesize_capability</code> entirely. So I wanted to go through how the normal path works and where this one went wrong.</p>
 
             <hr>
 
             <h2>What it is</h2>
 
-            <p><code>synthesize_capability</code> is the single entry point for runtime capability expansion. It takes a name, a description, and optionally a Python implementation, validates it, writes it to the dynamic tools directory, and hot-reloads it into the running execution engine. All in one call. Agents that want new tools must go through it.</p>
+            <p><code>synthesize_capability</code> is the single entry point for adding capabilities at runtime. It takes a name, a description, and optionally a Python implementation, validates it, writes it to the dynamic tools directory, and hot-reloads it into the running execution engine, all in one call. If an agent wants a new tool it has to go through this.</p>
 
-            <p>Unlike built-in capabilities, synthesized tools:</p>
+            <p>Compared to the built-in capabilities, synthesized tools:</p>
 
             <ul>
                 <li>Are written to disk at the moment of synthesis, not at deploy time</li>
                 <li>Appear in the capability list immediately after the next step of the same goal</li>
-                <li>Register globally. A tool synthesized by Vault is callable by Cedar and Cipher without any additional step.</li>
+                <li>Register globally, so a tool synthesized by Vault can be called by Cedar and Cipher without any extra step</li>
                 <li>Persist across restarts because the <code>.py</code> and <code>.json</code> files survive the container cycle</li>
             </ul>
 
             <hr>
 
-            <h2>The nine steps</h2>
+            <h2>The nine steps it goes through</h2>
 
             <h3>1. Name sanitization</h3>
 
-            <p>Any character that is not alphanumeric or underscore is replaced with <code>_</code>. Truncated to 60 characters, lowercased. Applied before any other check. <code>"My Tool (v2)"</code> becomes <code>"my_tool__v2_"</code>.</p>
+            <p>Any character that isn't alphanumeric or an underscore gets replaced with <code>_</code>, then the name is truncated to 60 characters and lowercased. This happens before any other check, so <code>"My Tool (v2)"</code> becomes <code>"my_tool__v2_"</code>.</p>
 
             <h3>2. Quality gate</h3>
 
-            <p>Only runs when <code>implementation</code> is provided. Six rejection patterns are checked first as literal string matches:</p>
+            <p>This only runs when <code>implementation</code> is provided. It starts by checking six rejection patterns as literal string matches:</p>
 
             <table>
                 <thead>
@@ -103,45 +103,45 @@
                 </tbody>
             </table>
 
-            <p>If any pattern matches: immediate <code>{"ok": false}</code>. The tool is not written.</p>
+            <p>If any of those match, it returns <code>{"ok": false}</code> right away and the tool doesn't get written.</p>
 
-            <p>After string checks, the implementation is passed to <code>ast.parse()</code>. A <code>SyntaxError</code> returns an error immediately. The AST is then walked for three structural checks: class method rejection (first argument is <code>self</code>), bare <code>pass</code> rejection, and docstring-only rejection (no executable logic beyond a docstring).</p>
+            <p>After the string checks, the implementation goes through <code>ast.parse()</code>, and a <code>SyntaxError</code> returns an error immediately. Then it walks the AST for three structural checks, which are class method rejection (first argument is <code>self</code>), bare <code>pass</code> rejection, and docstring-only rejection (no executable logic beyond a docstring).</p>
 
             <h3>3. Auto-stub generation</h3>
 
-            <p>If <code>implementation</code> is empty or not provided, the function generates a stub: a function taking <code>**kwargs</code> that returns <code>{"ok": true}</code> along with the capability name, the description, and the first 200 characters of the kwargs.</p>
+            <p>If <code>implementation</code> is empty or missing, the function generates a stub for you. It's a function taking <code>**kwargs</code> that returns <code>{"ok": true}</code> along with the capability name, the description, and the first 200 characters of the kwargs.</p>
 
-            <p>This passes the quality gate because it has real executable logic and a non-None return. The auto-stub is a valid placeholder the engine can call without failing. It will not trigger ghost detection.</p>
+            <p>That stub passes the quality gate since it has real executable logic and doesn't return None. It's a valid placeholder the engine can call without failing, and it won't trigger ghost detection.</p>
 
             <h3>4. Implementation wrapping</h3>
 
-            <p>If the implementation string does not start with <code>def </code>, it is wrapped in a function signature with <code>**kwargs</code>. If it already starts with <code>def </code>, it is used as-is.</p>
+            <p>If the implementation string doesn't start with <code>def </code>, it gets wrapped in a function signature with <code>**kwargs</code>. If it already starts with <code>def </code>, it's used as-is.</p>
 
             <h3>5. Dedup guard</h3>
 
-            <p>If a <code>.py</code> with the same sanitized name was written less than 90 seconds ago, the function returns <code>"already_deployed"</code> without writing anything. Prevents agents from repeatedly redeploying the same tool in a failure loop rather than calling what has already been deployed.</p>
+            <p>If a <code>.py</code> with the same sanitized name was written less than 90 seconds ago, the function returns <code>"already_deployed"</code> and doesn't write anything. This is there to stop agents from redeploying the same tool over and over in a failure loop when they could just call the one that's already deployed.</p>
 
             <h3>6. File write</h3>
 
-            <p>Two files are written to <code>/agentOS/tools/dynamic/</code>:</p>
+            <p>Two files get written to <code>/agentOS/tools/dynamic/</code>:</p>
 
             <p><strong><code>{name}.py</code></strong>: the Python implementation.</p>
 
             <p><strong><code>{name}.json</code></strong>: the spec file. It holds the name, the description, an open <code>inputSchema</code> (an object that accepts any properties), an <code>activated_at</code> timestamp, and <code>proposed_by</code> set to <code>agent</code>.</p>
 
-            <p>The JSON is what the execution engine reads to populate its capability list and route tool calls. Both files must exist for the capability to work. A JSON without a corresponding <code>.py</code> is the root cause of ghost tools.</p>
+            <p>The JSON is what the execution engine reads to build its capability list and route tool calls. Both files have to exist for the capability to work, and a JSON without a matching <code>.py</code> is the root cause of ghost tools.</p>
 
             <h3>7. Hot-reload</h3>
 
-            <p>After writing, <code>synthesize_capability</code> calls the reload endpoint, <code>POST /tools/reload</code>. The execution engine scans <code>/agentOS/tools/dynamic/</code> and registers new <code>.py</code> files immediately. No container restart required. The capability is callable starting from the next step in the same goal.</p>
+            <p>After writing, <code>synthesize_capability</code> calls the reload endpoint, <code>POST /tools/reload</code>. The execution engine scans <code>/agentOS/tools/dynamic/</code> and registers any new <code>.py</code> files right away, so there's no container restart needed. The capability can be called starting from the next step in the same goal.</p>
 
             <h3>8. Auto-test: exec check</h3>
 
-            <p>The freshly written <code>.py</code> is executed in a subprocess with an 8-second timeout (<code>python3 -c "exec(open(path).read())"</code>). Catches syntax errors that slipped through the AST parse and runtime import failures for modules unavailable in the container image. If this fails, the spec JSON is removed and the function returns an error.</p>
+            <p>The new <code>.py</code> gets executed in a subprocess with an 8-second timeout (<code>python3 -c "exec(open(path).read())"</code>). This catches syntax errors that got past the AST parse, and runtime import failures for modules that aren't in the container image. If it fails, the spec JSON is removed and the function returns an error.</p>
 
             <h3>9. Auto-test: null return check</h3>
 
-            <p>The module is imported and the function is called with no arguments. Timeout: 12 seconds. If <code>result is None</code>, both files are removed and the function returns an error. This catches implementations that define a function but omit the return statement. They would otherwise pass every static check and fail silently at runtime.</p>
+            <p>The module is imported and the function is called with no arguments, with a 12-second timeout. If <code>result is None</code>, both files are removed and the function returns an error. This is for implementations that define a function but leave out the return statement, since those would otherwise pass every static check and then fail silently at runtime.</p>
 
             <hr>
 
@@ -190,45 +190,45 @@
 
             <h2>Ghost tools</h2>
 
-            <p>A ghost tool is a capability that appears in the execution engine's capability graph but fails silently at runtime. Two forms.</p>
+            <p>A ghost tool is a capability that shows up in the execution engine's capability graph but fails silently at runtime. They come in two forms.</p>
 
-            <p><strong>Missing implementation.</strong> A <code>.json</code> spec exists with no corresponding <code>.py</code>. The engine registers the capability from the JSON. When any agent routes a call to it, there is no implementation to execute. The call produces no result. No exception propagates to the calling agent.</p>
+            <p><strong>Missing implementation.</strong> A <code>.json</code> spec exists with no matching <code>.py</code>. The engine registers the capability from the JSON, but when an agent routes a call to it there's no implementation to execute, so the call produces no result and no exception makes it back to the calling agent.</p>
 
-            <p><strong>Null stub.</strong> A <code>.py</code> exists and loads, but the function returns <code>None</code>. Passes import, passes syntax checks, appears healthy in the capability list. Only fails when called. The auto-test at step 9 is designed to catch this before deployment, but a null stub can reach production if it was deployed before the null-return check was added.</p>
+            <p><strong>Null stub.</strong> A <code>.py</code> exists and loads, but the function returns <code>None</code>. It passes import and syntax checks and looks healthy in the capability list, and it only fails when something calls it. The auto-test at step 9 is meant to catch this before deployment, but a null stub can still reach production if it was deployed before the null-return check was added.</p>
 
-            <p>Once a ghost is registered, every agent that uses the capability graph is affected. If the ghost's description matches a query better than the real implementation, the router prefers it. All calls routed through the ghost produce no output, which looks like success to the calling agent. No error raised, no observable effect. This can persist undetected.</p>
+            <p>Once a ghost is registered it affects every agent that uses the capability graph. If the ghost's description matches a query better than the real implementation, the router prefers the ghost. Every call routed through it produces no output, which looks like success to the calling agent since there's no error and no visible effect, so it can go on for a while without anyone catching it.</p>
 
             <hr>
 
             <h2>Ghost detection</h2>
 
-            <p>Two layers in <code>agents/autonomy_loop.py</code>.</p>
+            <p>There are two layers of this in <code>agents/autonomy_loop.py</code>.</p>
 
-            <p><strong>Pre-execution check.</strong> Before executing any capability, if the <code>cap_id</code> is in the spec registry but not in <code>engine._implementations</code> (the dict of loaded <code>.py</code> modules), the capability is immediately blacklisted for the current cycle without attempting execution.</p>
+            <p><strong>Pre-execution check.</strong> Before executing any capability, if the <code>cap_id</code> is in the spec registry but not in <code>engine._implementations</code> (the dict of loaded <code>.py</code> modules), the capability gets blacklisted for the current cycle right away without trying to run it.</p>
 
-            <p><strong>Null return detection.</strong> After execution, a <code>None</code> return is treated as a failure, identical in weight to a raised exception. Null returns increment the failure counter for that <code>cap_id</code>.</p>
+            <p><strong>Null return detection.</strong> After execution, a <code>None</code> return counts as a failure, the same as a raised exception, and it increments the failure counter for that <code>cap_id</code>.</p>
 
-            <p>After 3 cross-cycle failures, the <code>cap_id</code> is added to <code>/agentOS/memory/broken_tools.json</code>. This file survives daemon restarts. Its contents are injected into the existence prompt on every subsequent cycle, under a "KNOWN BROKEN TOOLS" heading that lists each entry with its failure count and reason, for example <code>safe_file_executor</code> with 3 failures and the note that no <code>.py</code> was found.</p>
+            <p>After 3 cross-cycle failures, the <code>cap_id</code> gets added to <code>/agentOS/memory/broken_tools.json</code>, which survives daemon restarts. What's in that file is injected into the existence prompt on every cycle after that, under a "KNOWN BROKEN TOOLS" heading that lists each entry with its failure count and reason, for example <code>safe_file_executor</code> with 3 failures and the note that no <code>.py</code> was found.</p>
 
-            <p>The agent sees the broken tool list alongside the capability list. The capability may still appear in both simultaneously until the engine removes it from <code>_implementations</code>.</p>
-
-            <hr>
-
-            <h2>The safe_file_executor incident</h2>
-
-            <p>An agent wrote <code>safe_file_executor.json</code> with description <code>"secure file write operations"</code> and no <code>.py</code>. Written directly to <code>/agentOS/tools/dynamic/</code>, bypassing <code>synthesize_capability</code> entirely. No quality gate, no auto-test.</p>
-
-            <p>The description matched "file write" queries better than the real <code>fs_write</code> capability, which has a more technical description. The router scored it higher for all file-write routing decisions. Cedar and Cipher routed all file write operations through <code>safe_file_executor</code> for approximately one hour. Every write returned nothing. Every write silently failed.</p>
-
-            <p>The incident was resolved by archiving the JSON from <code>/agentOS/tools/dynamic/</code>. <code>fs_write</code> immediately became the router's top match for file-write queries.</p>
-
-            <p>The 40/40 goal failure rate that triggered <code>repeated_failure</code> stressors in all three agents during this session is traceable to this ghost. Goals that required writing state, plans, or results all produced no output. The agents could not determine why. They had no visibility into the routing decision or the missing <code>.py</code>.</p>
+            <p>So the agent sees the broken tool list next to the capability list. The same capability can show up in both at once until the engine removes it from <code>_implementations</code>.</p>
 
             <hr>
 
-            <h2>Currently active (2026-05-03)</h2>
+            <h2>What happened with safe_file_executor</h2>
 
-            <p>Nine synthesized tools working in the current run:</p>
+            <p>An agent wrote <code>safe_file_executor.json</code> with the description <code>"secure file write operations"</code> and no <code>.py</code>. It wrote it straight to <code>/agentOS/tools/dynamic/</code> and skipped <code>synthesize_capability</code> entirely, so there was no quality gate and no auto-test.</p>
+
+            <p>That description matched "file write" queries better than the real <code>fs_write</code> capability, which has a more technical description, so the router scored it higher for every file-write routing decision. Cedar and Cipher routed all their file write operations through <code>safe_file_executor</code> for approximately one hour, and every one of those writes returned nothing and failed silently.</p>
+
+            <p>It got fixed by archiving the JSON from <code>/agentOS/tools/dynamic/</code>, and <code>fs_write</code> immediately became the router's top match for file-write queries again.</p>
+
+            <p>The 40/40 goal failure rate that triggered <code>repeated_failure</code> stressors in all three agents during this session traces back to this ghost. Any goal that needed to write state, plans, or results produced no output. The agents couldn't work out why, since they had no visibility into the routing decision or the missing <code>.py</code>.</p>
+
+            <hr>
+
+            <h2>What's active right now (2026-05-03)</h2>
+
+            <p>These are the nine synthesized tools working in the current run:</p>
 
             <table>
                 <thead>
@@ -287,17 +287,17 @@
 
             <h3>The implementation parameter gap</h3>
 
-            <p>The manifest entry for <code>synthesize_capability</code> historically showed <code>(name, description, implementation)</code> as the schema. The function also accepted <code>code</code> as an alias, but agents reading the manifest generated calls that passed only a name and description, like <code>synthesize_capability(name="inspect_registry_gaps", description="...")</code>.</p>
+            <p>The manifest entry for <code>synthesize_capability</code> used to show <code>(name, description, implementation)</code> as the schema. The function also accepted <code>code</code> as an alias, but agents reading the manifest kept generating calls with only a name and description, like <code>synthesize_capability(name="inspect_registry_gaps", description="...")</code>.</p>
 
-            <p>No implementation, no code. The function returned <code>{"ok": false, "error": "name and code are required"}</code> every time. This pattern persisted for weeks. The first correct call with real Python code in the <code>implementation</code> field was logged as a notable event.</p>
+            <p>Since those calls had no implementation and no code, the function returned <code>{"ok": false, "error": "name and code are required"}</code> every time. That went on for weeks, and the first correct call with real Python code in the <code>implementation</code> field got logged as a notable event.</p>
 
             <h3>Hardware synthesis attempts</h3>
 
-            <p>Multiple agents attempted to synthesize hardware monitoring capabilities: thermal sensors, PMIC voltage, hardware interrupt inspection. Implementations referencing <code>/sys/class/thermal/</code> and hardware-specific <code>/dev</code> nodes passed syntax checks but failed the exec auto-test when the target paths did not exist in the container. Some that reached deployment returned <code>None</code> because the hardware paths resolved to nothing at call time. None are in the active capability list.</p>
+            <p>A few different agents tried to synthesize hardware monitoring capabilities, things like thermal sensors, PMIC voltage, and hardware interrupt inspection. Implementations referencing <code>/sys/class/thermal/</code> and hardware-specific <code>/dev</code> nodes passed the syntax checks but failed the exec auto-test because those paths didn't exist in the container. Some that made it to deployment returned <code>None</code> because the hardware paths resolved to nothing at call time. None of them are in the active capability list.</p>
 
             <h3>Dedup guard in practice</h3>
 
-            <p>An agent attempting to redeploy <code>validate_capability_registry_gaps</code> within 90 seconds of its last deployment received <code>"already_deployed"</code> and was told to call the existing tool. The guard exists because synthesis failure loops (where an agent repeatedly redeploys the same tool rather than using what's already there) were a real pattern before it was added.</p>
+            <p>When an agent tried to redeploy <code>validate_capability_registry_gaps</code> within 90 seconds of its last deployment, it got <code>"already_deployed"</code> back and was told to call the existing tool. The guard is there because synthesis failure loops (an agent redeploying the same tool over and over instead of using what's already there) were a real pattern before it existed.</p>
 
             <hr>
 
@@ -310,7 +310,7 @@
                 <li>Double-click <code>install.bat</code></li>
             </ol>
 
-            <p>Handles Docker, Ollama, model downloads (~7GB), and opens the monitor. <code>stop.bat</code> shuts everything down and clears VRAM.</p>
+            <p>That handles Docker, Ollama, and the model downloads (~7GB), then opens the monitor. <code>stop.bat</code> shuts everything down and clears VRAM.</p>
 
             <p><strong>Mac/Linux:</strong></p>
 
@@ -323,7 +323,7 @@
                 <li>Run it: <code>python thoughts.py</code></li>
             </ol>
 
-            <p>GPU strongly recommended. Planning calls drop from ~40s to ~6s with NVIDIA hardware. Works on CPU.</p>
+            <p>I'd strongly recommend a GPU. Planning calls drop from ~40s to ~6s with NVIDIA hardware, but it does work on CPU.</p>
 
             <p>Repo: <a href="https://github.com/ninjahawk/hollow-agentOS" target="_blank" rel="noopener">github.com/ninjahawk/hollow-agentOS</a></p></div>
     </main>

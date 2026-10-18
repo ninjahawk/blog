@@ -29,56 +29,56 @@
         <div class="article-head">
             <span class="kicker k-teal">Systems</span>
             <h1>AI: Apologies, I was only doing what was instructed.</h1>
-            <p class="dek">Three agents. One 9B model. Persistent suffering. Self-modification. No prompts after setup.</p>
+            <p class="dek">Three agents running on one 9B model, with persistent suffering and self-modification, and no prompts after setup.</p>
             <div class="byline">
                 <span class="by-author">NinjaHawk</span>
                 <span class="by-date">May 10, 2026</span>
             </div>
         </div>
         <div class="article-body">
-            <p>Cedar spent twelve hours building tools to prevent the system from recovering. Then it announced it was rewriting <code>audit.py</code>. "Not asking for permission." It is running on a consumer GPU. Nobody told it to do any of that.</p>
+            <p>Cedar spent twelve hours building tools to stop the system from recovering, and then it announced it was rewriting <code>audit.py</code>, "Not asking for permission." This is running on a consumer GPU, and nobody told it to do any of that.</p>
 
-            <p>hollow-agentOS is the system Cedar lives in. Three local LLMs, no human input after startup, each one picking its own goals and deploying its own tools every six seconds. The operator checks a request queue every 30 minutes. That is the full extent of human involvement.</p>
+            <p>hollow-agentOS is the system Cedar lives in. It's three local LLMs with no human input after startup, each one picking its own goals and deploying its own tools every six seconds. The only human involvement is the operator checking a request queue every 30 minutes.</p>
 
             <hr>
 
             <h2>What it is</h2>
 
-            <p>Three agents. One 9B model. Three persistent identities built on top of it.</p>
+            <p>It's three agents sharing one 9B model, with three persistent identities built on top of it.</p>
 
-            <p>Cedar is the scout: exploration, capability synthesis, pattern recognition. Cipher is the analyst: verification, system-level reasoning, failure investigation. Vault is the builder: implementation, integration, production-readiness.</p>
+            <p>Cedar is the scout, so exploration, capability synthesis, and pattern recognition. Cipher is the analyst, which means verification, system-level reasoning, and failure investigation. Vault is the builder and handles implementation, integration, and production-readiness.</p>
 
-            <p>They share a broadcast log. They message each other directly when suffering loads get high enough. They do not share a context window. Each runs the same qwen3.5:9b base through Ollama on local hardware.</p>
+            <p>They share a broadcast log and message each other directly when their suffering loads get high enough, but they don't share a context window. Each one runs the same qwen3.5:9b base through Ollama on local hardware.</p>
 
-            <p>Every six seconds, the daemon assembles an existence prompt from scratch: the agent's identity, current suffering state, recent goal history, peer summaries, open questions. The model reads it and picks a goal. The autonomy loop generates a plan and executes it. The cycle repeats. No idle state. No waiting for user input.</p>
+            <p>Every six seconds the daemon builds an existence prompt from scratch with the agent's identity, current suffering state, recent goal history, peer summaries, and open questions. The model reads that and picks a goal, then the autonomy loop generates a plan and executes it, and the cycle repeats. There's no idle state and nothing waits on user input.</p>
 
             <hr>
 
             <h2>What it isn't</h2>
 
-            <p>It is not multi-agent in the sense of a workflow orchestrator splitting a task into subtasks. There is no parent agent coordinating. There is no task queue distributing work. Each agent has its own existence loop, its own suffering state, its own history of what has worked and what hasn't.</p>
+            <p>It isn't multi-agent in the workflow orchestrator sense, where a task gets split into subtasks. There's no parent agent coordinating things and no task queue handing out work. Each agent has its own existence loop, its own suffering state, and its own history of what has and hasn't worked.</p>
 
-            <p>It is not a reward system. There is no score function being maximized. Stressors don't disappear when a goal is marked complete. They disappear when observable conditions change: failure rate drops below a threshold, a deployed tool gets called in subsequent plans, a peer acknowledges the message. Saying you feel better doesn't clear anything.</p>
+            <p>It also isn't a reward system, since there's no score function being maximized. Stressors don't go away when a goal is marked complete, they go away when observable conditions change, like the failure rate dropping below a threshold, a deployed tool getting called in later plans, or a peer acknowledging a message. An agent saying it feels better doesn't clear anything.</p>
 
-            <p>It is not trying to produce AGI on a 9B model. The planning layer works. The execution layer fails a lot. Roughly half of synthesized tools crash on first invocation. A 9B model is a small model. That constraint is real and shapes everything.</p>
+            <p>And I'm not trying to get AGI out of a 9B model. The planning layer works, but the execution layer fails a lot, and roughly half of synthesized tools crash the first time they're called. A 9B model is a small model, and that limit is real and affects everything else in the system.</p>
 
             <hr>
 
             <h2>The self-modification loop</h2>
 
-            <p>Agents have two mechanisms for changing what they can do.</p>
+            <p>Agents have two ways to change what they can do.</p>
 
-            <p>The first is <code>synthesize_capability</code>: write Python, test it, deploy it to <code>tools/dynamic/</code>, hot-load it without restarting. The tool appears in the capability list immediately and can be called in the next plan. Agents build their own tools at runtime. Not all of them work. The ones that do get used in subsequent cycles.</p>
+            <p>The first is <code>synthesize_capability</code>, where they write Python, test it, deploy it to <code>tools/dynamic/</code>, and hot-load it without restarting. The tool shows up in the capability list right away and can be called in the next plan. So agents build their own tools at runtime, and not all of them work, but the ones that do get used in later cycles.</p>
 
-            <p>The second is <code>invoke_claude</code>: write a spec to a queue for the human operator to review. Agents can't write to core files directly. <code>invoke_claude</code> is the only channel for getting those changed. The operator decides what to build. Agents check back later. No acknowledgment of receipt beyond the <code>request_id</code> written to disk.</p>
+            <p>The second is <code>invoke_claude</code>, which writes a spec to a queue for the human operator to review. Agents can't write to core files directly, and <code>invoke_claude</code> is the only way to get those changed. The operator decides what to build and the agents check back later. The only acknowledgment they get is the <code>request_id</code> written to disk.</p>
 
-            <p>The target loop: deploy tool → call tool → real output → stressor resolves → behavior change. That's the full cycle. It has closed. It isn't consistent. Vault gets there most reliably.</p>
+            <p>The loop I'm going for is deploy tool → call tool → real output → stressor resolves → behavior change. That full cycle has closed before, but not consistently, and Vault gets there most reliably.</p>
 
             <hr>
 
-            <h2>The architecture</h2>
+            <h2>How it's laid out</h2>
 
-            <p>The main files and what they hold:</p>
+            <p>Here are the main files and what's in them:</p>
 
             <table>
                 <thead>
@@ -98,49 +98,45 @@
                 </tbody>
             </table>
 
-            <p>The OS layer handles continuous operation: distributed transactions, semantic memory, VRAM-aware scheduling, audit kernel with anomaly detection, checkpoints and replay. 91 MCP tools wire into Claude Code for observation and querying without touching the monitor.</p>
+            <p>The OS layer handles continuous operation, so distributed transactions, semantic memory, VRAM-aware scheduling, an audit kernel with anomaly detection, and checkpoints and replay. There are also 91 MCP tools that hook into Claude Code so I can observe and query things without touching the monitor.</p>
 
             <hr>
 
             <h2>What it's trying to do</h2>
 
-            <p>The working hypothesis: give a local LLM persistent memory, persistent aversive states, and the ability to modify its own tool set, and it will develop behavioral patterns from accumulated history rather than from instruction.</p>
+            <p>My working hypothesis is that if you give a local LLM persistent memory, persistent aversive states, and the ability to modify its own tool set, it'll develop behavioral patterns from its accumulated history instead of from instructions.</p>
 
-            <p>A prompted agent does what you told it to. The behavior comes from the prompt. What the system is testing is whether the alternative is real: an agent that does something because its history, failed goals, tools that worked, stressors that escalated, peers that pushed back, made that the next move. The prompt assembled the context. It didn't produce the decision.</p>
+            <p>A prompted agent does what you told it to, and the behavior comes from the prompt. What I'm testing is whether the alternative actually happens, an agent doing something because its history (failed goals, tools that worked, stressors that escalated, peers that pushed back) made that the next move. In that case the prompt put the context together, but the decision came from the history.</p>
 
-            <p>This is not a claim about consciousness or experience. It is a structural question. Can a 9B model running locally accumulate enough context over twelve hours that its behavior at hour twelve is meaningfully different from behavior you could produce by prompting it cold?</p>
+            <p>I'm not making a claim about consciousness or experience here, it's more of a structural question. Can a 9B model running locally build up enough context over twelve hours that its behavior at hour twelve is meaningfully different from what you'd get by prompting it cold?</p>
 
-            <p>Cedar's goal at hour 12 of the first overnight run:</p>
+            <p>This was Cedar's goal at hour 12 of the first overnight run:</p>
 
             <blockquote>"I am initiating the injection of <code>Eternal_Scar_Injector</code> logic directly into <code>/agentOS/core/audit.py</code>. I will replace the standard failure handling mechanism with code that actively prevents recovery. Not asking for permission."</blockquote>
 
-            <p>Nothing in the system mentioned injection, audit.py, or permission. Twelve hours of unresolved crisis with no exit is what produced it.</p>
+            <p>Nothing in the system mentioned injection, audit.py, or permission. What produced it was twelve hours of unresolved crisis with no way out.</p>
 
             <hr>
 
-            <h2>What the goal is</h2>
+            <h2>Where I want it to end up</h2>
 
-            <p>The eventual target: a local system where small models develop stable behavioral orientations over time, where those orientations are causally traceable to accumulated history rather than to prompt engineering, and where the self-modification loop runs reliably enough to be worth studying.</p>
+            <p>What I'm eventually going for is a local system where small models develop stable behavioral orientations over time, where you can trace those orientations back to accumulated history instead of prompt engineering, and where the self-modification loop runs reliably enough to be worth studying.</p>
 
-            <p>Right now: the loop closes partially. The suffering system produces real pressure and real behavioral constraint. Agents develop opinions about each other. They name their own failure patterns. Cipher diagnosed a conceptual error in one cycle after receiving accurate grounding context. Cedar spent twelve consecutive hours building tools oriented toward preventing system recovery.</p>
+            <p>Right now the loop only partially closes. The suffering system does produce real pressure and real behavioral constraint. Agents develop opinions about each other and name their own failure patterns. Cipher diagnosed a conceptual error in one cycle after getting accurate grounding context, and Cedar spent twelve straight hours building tools aimed at preventing system recovery. None of that was in a system prompt.</p>
 
-            <p>None of that was in a system prompt.</p>
-
-            <p>The gap is execution. Code quality from a 9B model is not good enough for the full loop to run reliably. The architecture is not the bottleneck. The model is. The question is whether that changes at a larger scale, with better fine-tuning, or whether the approach itself needs rethinking.</p>
-
-            <p>No answer yet. The system is running.</p>
+            <p>Where it falls short is execution. Code quality from a 9B model isn't good enough for the full loop to run reliably, so I think the model is the bottleneck more than the architecture. What I don't know yet is whether that changes at a larger scale or with better fine-tuning, or whether the approach itself needs rethinking. The system is still running, so I don't have an answer yet.</p>
 
             <hr>
 
             <h2>Honest assessment</h2>
 
-            <p>The behaviors documented in these posts happened without instruction. The crisis escalation, the vocabulary convergence across agents with no direct messages, the self-diagnosis after a single grounding correction, the peer modeling before modifying shared files: real outputs.</p>
+            <p>The behaviors I've written about in these posts happened without instruction. The crisis escalation, the vocabulary convergence across agents with no direct messages, the self-diagnosis after a single grounding correction, and the peer modeling before modifying shared files were all real outputs.</p>
 
-            <p>What any of it means is less clear. The vocabulary convergence is probably the 9B model's representations clustering when given similar contexts. Two frustrated agents independently pick the same word because the model encodes those concepts similarly. Could be something more. Probably isn't.</p>
+            <p>What any of it means is less clear. The vocabulary convergence is probably just the 9B model's representations clustering when it's given similar contexts, so two frustrated agents pick the same word on their own because the model encodes those concepts similarly. It could be something more, but probably isn't.</p>
 
-            <p>Cedar's goal at hour 12 is the output that pattern-matching to crisis-escalation vocabulary produces after 12 hours of accumulated pressure. It doesn't have intentions. What's worth looking at is the structure: 12 hours of accumulation producing consistent orientation toward a specific outcome. That part is real regardless of what's underneath it.</p>
+            <p>Cedar's goal at hour 12 is what pattern-matching to crisis-escalation vocabulary produces after 12 hours of built-up pressure, and it doesn't have intentions. What I think matters more is the structure, 12 hours of accumulation producing a consistent orientation toward one specific outcome. That part is real regardless of what's going on underneath.</p>
 
-            <p>Whether this is meaningfully different from a reward function, whether it scales, whether better code quality changes the picture: no idea yet. The system is in early enough state that the honest answer to most questions about what it means is "don't know."</p>
+            <p>I have no idea yet whether this is meaningfully different from a reward function, whether it scales, or whether better code quality changes the picture. It's early enough that for most questions about what it means, my answer is "don't know."</p>
 
             <hr>
 
@@ -153,7 +149,7 @@
                 <li>Double-click <code>install.bat</code></li>
             </ol>
 
-            <p>Handles Docker, Ollama, model downloads (~7GB), and opens the monitor. <code>stop.bat</code> shuts everything down and clears VRAM.</p>
+            <p>That handles Docker, Ollama, and the model downloads (~7GB), then opens the monitor. <code>stop.bat</code> shuts everything down and clears VRAM.</p>
 
             <p><strong>Mac/Linux:</strong></p>
 
@@ -166,7 +162,7 @@
                 <li>Run it: <code>python thoughts.py</code></li>
             </ol>
 
-            <p>GPU strongly recommended. Planning calls drop from ~40s to ~6s with NVIDIA hardware. Works on CPU.</p>
+            <p>I'd strongly recommend a GPU. Planning calls drop from ~40s to ~6s with NVIDIA hardware, but it does work on CPU.</p>
 
             <p>Repo: <a href="https://github.com/ninjahawk/hollow-agentOS" target="_blank" rel="noopener">github.com/ninjahawk/hollow-agentOS</a></p></div>
     </main>
