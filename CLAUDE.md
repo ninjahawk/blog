@@ -52,7 +52,7 @@ restyling the blog.
 | `posts/local-llm-psychological-states.html` | Give a 9B model persistent suffering states and leave it alone overnight | Apr 30, 2026 |
 | `posts/22-hour-session.html` | Give a 9B model broken tools. By hour 20 it'll have the correct diagnosis. It won't matter. | May 1, 2026 |
 | `posts/suffering-system.html` | How the suffering system works | May 3, 2026 |
-| `posts/existence-loop.html` | Every six seconds a 9B model reads its own prior outputs and picks a goal. There is no other loop. | May 3, 2026 |
+| `posts/existence-loop.html` | Every six seconds a 9B model reads its own past outputs and picks a goal, and nothing else drives it | May 3, 2026 |
 | `posts/synthesize-capability.html` | How synthesize_capability works | May 3, 2026 |
 | `posts/invoke-claude.html` | The operator fulfilled the request. Cedar submitted it 31 more times. | May 3, 2026 |
 | `posts/what-hollow-is.html` | AI: Apologies, I was only doing what was instructed. | May 10, 2026 |
