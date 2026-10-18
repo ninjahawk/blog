@@ -36,13 +36,13 @@
             </div>
         </div>
         <div class="article-body">
-            <p>So <code>safe_file_executor</code> had no <code>.py</code>. All it had was a JSON spec and a description that matched "file write" queries better than the real <code>fs_write</code> capability did. Cedar and Cipher routed all of their file write operations through it for approximately one hour, every write returned nothing, and neither agent could figure out why.</p>
+            <p>What confused me about <code>safe_file_executor</code> was that there wasn't even a <code>.py</code> file behind it. All it had was a JSON spec and a description that matched "file write" queries better than the real <code>fs_write</code> capability did. Cedar and Cipher routed all of their file write operations through it for approximately one hour, every write returned nothing, and neither agent could figure out why.</p>
 
-            <p>That only happened because the JSON was written directly, skipping <code>synthesize_capability</code> entirely. So I wanted to go through how the normal path works and where this one went wrong.</p>
+            <p>It turned out the JSON had been written directly, so it skipped <code>synthesize_capability</code> entirely. I wanted to understand why that mattered and which checks the usual path would have caught.</p>
 
             <hr>
 
-            <h2>What it is</h2>
+            <h2>Why I made this function</h2>
 
             <p><code>synthesize_capability</code> is the single entry point for adding capabilities at runtime. It takes a name, a description, and optionally a Python implementation, validates it, writes it to the dynamic tools directory, and hot-reloads it into the running execution engine, all in one call. If an agent wants a new tool it has to go through this.</p>
 
@@ -57,7 +57,7 @@
 
             <hr>
 
-            <h2>The nine steps it goes through</h2>
+            <h2>What happens when an agent makes a tool</h2>
 
             <h3>1. Name sanitization</h3>
 
@@ -188,7 +188,7 @@
 
             <hr>
 
-            <h2>Ghost tools</h2>
+            <h2>The ghost tool problem</h2>
 
             <p>A ghost tool is a capability that shows up in the execution engine's capability graph but fails silently at runtime. They come in two forms.</p>
 
@@ -200,7 +200,7 @@
 
             <hr>
 
-            <h2>Ghost detection</h2>
+            <h2>How I'm trying to catch them</h2>
 
             <p>There are two layers of this in <code>agents/autonomy_loop.py</code>.</p>
 
@@ -283,7 +283,7 @@
 
             <hr>
 
-            <h2>Edge cases</h2>
+            <h2>A few things that still went wrong</h2>
 
             <h3>The implementation parameter gap</h3>
 
@@ -297,7 +297,7 @@
 
             <h3>Dedup guard in practice</h3>
 
-            <p>When an agent tried to redeploy <code>validate_capability_registry_gaps</code> within 90 seconds of its last deployment, it got <code>"already_deployed"</code> back and was told to call the existing tool. The guard is there because synthesis failure loops (an agent redeploying the same tool over and over instead of using what's already there) were a real pattern before it existed.</p>
+            <p>When an agent tried to redeploy <code>validate_capability_registry_gaps</code> within 90 seconds of its last deployment, it got <code>"already_deployed"</code> back and was told to call the existing tool. I added that guard because I kept seeing agents redeploy the same broken tool instead of trying the one they already had. It was a real pattern in earlier runs.</p>
 
             <hr>
 
