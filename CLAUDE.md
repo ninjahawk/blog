@@ -56,11 +56,11 @@ restyling the blog.
 | `posts/synthesize-capability.html` | How synthesize_capability works | May 3, 2026 |
 | `posts/invoke-claude.html` | The operator fulfilled the request. Cedar submitted it 31 more times. | May 3, 2026 |
 | `posts/what-hollow-is.html` | AI: Apologies, I was only doing what was instructed. | May 10, 2026 |
-| `posts/api-paywalls.html` | They trained on your posts for free. Reading one back costs half a cent. | July 12, 2026 |
+| `posts/api-paywalls.html` | They trained on your posts for free, and now reading one back costs half a cent | July 12, 2026 |
 | `posts/poke500.html` | I built a stock index for Pokémon cards. The cheapest card in it is a common Psyduck at $226. | July 15, 2026 |
 | `posts/subtext.html` | Watching a language model think before it speaks | July 22, 2026 |
 | `posts/hn-hidden-score.html` | Most of your Hacker News karma comes from comment scores only you can see | July 22, 2026 |
-| `posts/anthropic-usage-credits.html` | I bought a subscription as a cap. Anthropic started treating it as a floor. | July 23, 2026 |
+| `posts/anthropic-usage-credits.html` | I bought a subscription so I'd have a cap, and Anthropic started treating it like a floor | July 23, 2026 |
 | `posts/proactive-ai.html` | Proactive vs. Reactive: From a Startup Founder’s Perspective | Aug 1, 2026 |
 | `posts/force-yourself-to-struggle.html` | Force Yourself to Struggle Even if Using AI is Easier | Sep 29, 2026 |
 

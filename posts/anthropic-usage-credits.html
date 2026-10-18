@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>I bought a subscription as a cap. Anthropic started treating it as a floor. - NinjaHawk's Nest</title>
+    <title>I bought a subscription so I'd have a cap, and Anthropic started treating it like a floor - NinjaHawk's Nest</title>
     <meta name="description" content="I've paid for a Max plan for about a year. The screen you hit when you run out used to tell you when to come back. Now it tells you how to pay, and the same settings page offers to take the spending cap off entirely.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -29,25 +29,25 @@
         <a class="back" href="../index.html">&larr;</a>
         <div class="article-head">
             <span class="kicker k-red">Business</span>
-            <h1>I bought a subscription as a cap. Anthropic started treating it as a floor.</h1>
-            <p class="dek">The screen you hit when you run out used to tell you when to come back. Now it tells you how to pay.</p>
+            <h1>I bought a subscription so I'd have a cap, and Anthropic started treating it like a floor</h1>
+            <p class="dek">The screen you hit when you run out used to tell you when to come back, and now it mostly tells you how to pay.</p>
             <div class="byline">
                 <span class="by-author">NinjaHawk</span>
                 <span class="by-date">July 23, 2026</span>
             </div>
         </div>
         <div class="article-body">
-            <p>I've had a Max subscription for about a year. I use Claude Code, which comes with it. I like the models and I'm not here to complain about the models. This is about one screen. The one you hit when you've used up what the plan gives you for the week, and what that screen started asking me for.</p>
+            <p>I've had a Max subscription for about a year. I use Claude Code, which comes with it. I like the models and I'm not here to complain about them. I wanted to talk about one screen, the one you hit when you've used up what the plan gives you for the week, and what that screen started asking me for.</p>
 
-            <p>For most of the year it told you a time. You've hit your limit, it comes back at some hour, go do something else. I hit it plenty. It was annoying and it was honest. I paid for a bucket, the bucket was empty, and it would fill back up on a schedule I could plan around.</p>
+            <p>For most of the year it told you a time. You've hit your limit, it comes back at some hour, go do something else. I hit it plenty. It was annoying, but it was honest, I paid for a set amount, I used it up, and it would come back on a schedule I could plan around.</p>
 
-            <p>Now the same wall leads with a button. What I get, more or less word for word, is "You've reached your usage limit. Turn on usage credits to keep going." The reset time is still in there if you go looking for it. It just isn't the message anymore. The message is that there's a way to keep paying, and it shows up at the one moment you're stuck on something and want to keep going.</p>
+            <p>Now the same wall leads with a button. What I get, more or less word for word, is "You've reached your usage limit. Turn on usage credits to keep going." The reset time is still in there if you go looking for it, it's just not the main message anymore. The main message now is that there's a way to keep paying, and it shows up right when you're in the middle of something and want to keep going.</p>
 
-            <p>That's a small change and it sounds like nothing. It bothered me more the longer I sat with it, so I went and read how the thing it's pointing at actually works.</p>
+            <p>That's a small change and it sounds like nothing. It bothered me more the longer I thought about it though, so I went and read how usage credits actually work.</p>
 
             <h2>What usage credits are</h2>
 
-            <p>This part isn't a rumor. It's in Anthropic's own <a href="https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans" target="_blank" rel="noopener">help center</a>. Once you pass your plan's limit, usage credits let you keep working, billed at standard API rates, charged on their own line separately from the subscription you already pay. You switch them on under Settings &gt; Usage, and the setup runs like this:</p>
+            <p>This part is all in Anthropic's own <a href="https://support.claude.com/en/articles/12429409-manage-usage-credits-for-paid-claude-plans" target="_blank" rel="noopener">help center</a>. Once you pass your plan's limit, usage credits let you keep working, billed at standard API rates, charged on their own line separately from the subscription you already pay. You switch them on under Settings &gt; Usage, and the setup runs like this:</p>
 
             <table>
                 <thead>
@@ -61,41 +61,41 @@
                 </tbody>
             </table>
 
-            <p>The one that stops me is the cap. You can put a ceiling on the month, or you can pick "Set to unlimited," which is their phrasing, and it does what it sounds like. So the same page that warns you you're running low is also the page offering, a click away, to take the ceiling off. The article signs off with the line these pages always end on: "Price and plans are subject to change at Anthropic's discretion."</p>
+            <p>The one that bugs me is the cap. You can put a limit on the month, or you can pick "Set to unlimited," which is their wording, and it does what it sounds like. So the same page that warns you you're running low is also offering, one click away, to take the limit off completely. The article signs off with the line these pages always end on: "Price and plans are subject to change at Anthropic's discretion."</p>
 
-            <p>Selling overflow by the token isn't the problem. Plenty of things work that way and nobody writes a blog post about their electric bill. What changed is what the subscription is for. I bought it as a cap. A fixed number I'd hand over each month and never have to think about again. The product has quietly started treating that number as a floor, and the screen where I used to just wait is now the screen where the spending starts.</p>
+            <p>I don't really have a problem with selling extra usage by the token. Plenty of things work that way and nobody writes a blog post about their electric bill. What bothers me is that what the subscription is for has changed. I bought it as a cap, a fixed number I'd pay each month and never have to think about again. The product has started treating that number as a minimum instead, and the screen where I used to just wait is now the screen where the extra spending starts.</p>
 
-            <h2>The toggle that doesn't stay put</h2>
+            <h2>The toggle can turn itself back on</h2>
 
-            <p>What actually pushed me from annoyed to done was reading that the switch doesn't always stay where you leave it. There's a bug report on the Claude Code repo, issue <a href="https://github.com/anthropics/claude-code/issues/25647" target="_blank" rel="noopener">#25647</a>, filed after an update earlier this year. The opening line:</p>
+            <p>What really pushed me from annoyed to fed up was reading that the switch doesn't always stay where you leave it. There's a bug report on the Claude Code repo, issue <a href="https://github.com/anthropics/claude-code/issues/25647" target="_blank" rel="noopener">#25647</a>, filed after an update earlier this year. The opening line:</p>
 
             <blockquote>The "Extra usage" option on claude.ai was automatically enabled without my explicit consent, resulting in charges exceeding my configured $50 monthly spending limit. I was charged $74.99 (150% of the limit), leaving a negative balance of -$15.92.</blockquote>
 
-            <p>They'd turned it off. An update turned it back on with no notice, and by the time they noticed they were already sitting at a negative balance, charged half again over the fifty-dollar cap they had set specifically so this couldn't happen. The report got closed as invalid, with the note "Issue doesn't seem to be related to Claude Code," because the billing lives on the website and not in the command-line tool. That's technically correct and it's also the part that sticks with me. The charge belongs to a corner of the product that the person hitting it has no clean way to reach.</p>
+            <p>So they'd turned it off, an update turned it back on with no notice, and by the time they caught it they were already sitting at a negative balance, charged half again over the fifty-dollar cap they had set so this exact thing couldn't happen. The report got closed as invalid, with the note "Issue doesn't seem to be related to Claude Code," because the billing lives on the website and not in the command-line tool. That's technically correct, and it's also what sticks with me most, because the charge comes from a corner of the product that the person getting charged has no clean way to reach.</p>
 
-            <p>I want to be careful here, because this is the point where a post like this usually reaches for more than it has. This is one report I can link to, plus the ordinary scatter of people on forums saying some version of the same thing happened to them. I haven't reproduced it and I'm not going to tell you it's happening to everybody. What I'll actually stand behind is narrower. Every piece you'd need for it to happen is real and already shipped: a toggle that can turn on, an unlimited setting sitting right next to it, and an auto-reload that buys more without asking again. Whether it flips itself on, I can't prove. That it could is just how the page is built.</p>
+            <p>To be fair, this is one report I can link to, plus the usual handful of people on forums saying some version of the same thing happened to them. I haven't reproduced it and I'm not going to tell you it's happening to everybody. What I will say is that every piece you'd need for it to happen is real and already shipped, a toggle that can turn on, an unlimited setting right next to it, and an auto-reload that buys more without asking again. I can't prove it flips itself on, but the page is built in a way where it could.</p>
 
             <h2>OpenAI got here first</h2>
 
-            <p>None of this is new, and Anthropic isn't the first to earn it. Two years ago the company everyone was angry at was OpenAI, and the complaints rhyme with these almost line for line.</p>
+            <p>None of this is new, and Anthropic isn't the first company to get these complaints. Two years ago the company everyone was angry at was OpenAI, and the complaints were almost the same, line for line.</p>
 
-            <p>The "Open" in the name turned into a running joke once the models stopped being open and the nonprofit started converting itself into a for-profit. Elon Musk went to court to try to block the conversion. Researchers and law professors, people who don't usually end up on the same page, signed <a href="https://time.com/7279977/openai-for-profit-letter-elon-musk/" target="_blank" rel="noopener">open letters</a> saying the calmer version of the same thing: the mission got quietly sold, and the safeguards went with it.</p>
+            <p>The "Open" in the name turned into a running joke once the models stopped being open and the nonprofit started converting itself into a for-profit. Elon Musk went to court to try to block the conversion. Researchers and law professors, people who don't usually end up on the same page, signed <a href="https://time.com/7279977/openai-for-profit-letter-elon-musk/" target="_blank" rel="noopener">open letters</a> saying a calmer version of the same thing, that the mission got sold off and the safeguards went with it.</p>
 
-            <p>Then the product started reaching into people's pockets directly. Late in 2025, ChatGPT began slipping app suggestions into unrelated conversations. You'd ask about one thing and get nudged toward Peloton or Target, and it happened to people paying two hundred dollars a month for the Pro plan. After a weekend of screenshots, OpenAI's chief research officer said "anything that feels like an ad needs to be handled with care, and we fell short," and they pulled it. Same shape as what I'm describing here. A paid product finds a new surface to monetize, points it at the people already paying, and walks it back only once enough of them say something.</p>
+            <p>Then the product started reaching into people's pockets directly. Late in 2025, ChatGPT began slipping app suggestions into unrelated conversations. You'd ask about one thing and get nudged toward Peloton or Target, and it happened to people paying two hundred dollars a month for the Pro plan. After a weekend of screenshots, OpenAI's chief research officer said "anything that feels like an ad needs to be handled with care, and we fell short," and they pulled it. That's pretty much the same thing I'm describing here, a paid product finds a new place to make money, points it at the people already paying, and only walks it back once enough of them say something.</p>
 
-            <p>The backdrop is money and it isn't a secret. Close to a billion people use ChatGPT every week and only a sliver of them pay. The bills for building this stuff are enormous and at some point have to turn into revenue. So the push to get more out of the paying users isn't a personality flaw in one executive. It's structural, and it lands on whoever happens to be carrying the most people.</p>
+            <p>The reason behind all of it is money, and that isn't a secret. Close to a billion people use ChatGPT every week and only a small slice of them pay. The bills for building this stuff are enormous and at some point have to turn into revenue. So I don't think the push to get more out of paying users comes down to one executive, I think it comes with the position, and it lands on whoever happens to be carrying the most people.</p>
 
-            <p>That's the part I keep turning over. When OpenAI was the default, OpenAI was the greedy one that forgot its users and sold out what it claimed to stand for. Anthropic was the careful, quieter alternative you moved to. Now Anthropic is the one everyone builds on, and the same sentences are getting written about it. This post is one of them. I don't think that's a coincidence and I don't think either company is uniquely villainous. Being number one means the most people depend on you, the most money is sitting on the table, and every small nudge to squeeze a little more out of the plan reaches the biggest crowd there is. You get the leverage and the reason to use it at the same time. Being liked and being on top don't seem to last in the same company for very long.</p>
+            <p>I keep coming back to that. When OpenAI was the default, OpenAI was the greedy one that forgot its users and sold out what it claimed to stand for. Anthropic was the careful alternative you moved to. Now Anthropic is the one everyone builds on, and the same sentences are getting written about it. This post is one of them. I don't think that's a coincidence and I don't think either company is uniquely villainous. Being number one means the most people depend on you, the most money is sitting on the table, and every small nudge to squeeze a little more out of the plan reaches the biggest crowd there is. You get the leverage and the reason to use it at the same time, and being liked and being on top don't seem to last in the same company for very long.</p>
 
             <h2>What this means</h2>
 
-            <p>The part I'm sure of is small and documented. The limit message went from telling you a time to offering you a purchase. Usage credits are real, they bill at API rates on top of the plan, there's an unlimited option, and there's auto-reload. At least one person got charged past a cap they set after the switch came back on by itself. All of that is linked above and none of it is my interpretation.</p>
+            <p>What I'm sure of is pretty small and it's all documented. The limit message went from telling you a time to offering you a purchase. Usage credits are real, they bill at API rates on top of the plan, there's an unlimited option, and there's auto-reload. At least one person got charged past a cap they set after the switch came back on by itself. All of that is linked above, none of it is me reading into things.</p>
 
-            <p>What I think it means is that the subscription stopped being the ceiling. The moment you put a "keep going" button on the wall, the wall turns into the place the next sale starts, and they've placed it in front of you at the exact moment you're mid-task and least inclined to stop and think about it. That's not an accident of the UI. Somebody chose to lead with the button.</p>
+            <p>I think it means the subscription stopped being the ceiling. Once you put a "keep going" button on the limit screen, that screen becomes where the next sale starts, and they've put it in front of you right when you're mid-task and least likely to stop and think about it. I don't think that happened by accident, somebody chose to lead with the button.</p>
 
-            <p>What I don't know is whether this is a growth team trying out a button or the plan being slowly turned into the front door for metered billing. Could be either. My guess is it drifts toward the second, because that's where the money is and nothing in the design is pushing the other way. I can't see their reasons. I can see the incentive, and it only points in one direction.</p>
+            <p>What I don't know is whether this is a growth team trying out a button or the plan slowly being turned into the way in to metered billing. Could be either. My guess is it drifts toward the second, because that's where the money is and nothing in the design is pushing the other way. I can't see their reasons, but I can see the incentive, and it only goes one direction.</p>
 
-            <p>I still pay them. I'll probably pay them again next month, because the alternatives are worse and the work is real. But I read the billing page every week now, and a year ago it never once occurred to me that I'd need to. That's the whole change. It's small, and it turned out to be enough.</p>
+            <p>I still pay them. I'll probably pay them again next month, because the alternatives are worse and the work is real. But I check the billing page every week now, and a year ago it never once crossed my mind that I'd need to, which is a small change but it was enough to bug me.</p>
         </div>
     </main>
 
