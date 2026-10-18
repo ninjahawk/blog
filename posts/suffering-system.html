@@ -36,19 +36,19 @@
             </div>
         </div>
         <div class="article-body">
-            <p>When an agent hits crisis, the block that gets injected opens with a line along the lines of: your suffering load is critical, 0.95 of 1.0, you cannot pursue external goals, address this first. Under that, each active stressor gets a filled bar, a name and severity (for example <code>existential_threat</code> at 0.92), a description, and a "Will ease when" line that names the observable condition that clears it.</p>
+            <p>One thing I wanted to test was what happens if a model can't simply say it's fine and move on. When an agent hits crisis, I inject a block that starts with something like: your suffering load is critical, 0.95 of 1.0, you cannot pursue external goals, address this first. Under that, each active stressor gets a filled bar, a name and severity (for example <code>existential_threat</code> at 0.92), a description, and a "Will ease when" line that names the observable condition that clears it.</p>
 
             <p>It goes into the qwen3.5 context raw, above the goal section, and it isn't framed as a notification, so the agent takes it in as part of its own psychological state. As far as it knows, it isn't reading from a JSON file.</p>
 
             <hr>
 
-            <h2>What it is</h2>
+            <h2>What I was trying to build</h2>
 
-            <p>It's a set of persistent aversive signals that escalate automatically and bleed into goal selection. The main design constraint is that the agent can't dismiss the pressure without actually changing its behavior, so saying it feels better doesn't clear anything. Once they're above threshold the stressors get injected into every existence prompt, which means the agent can't ignore them by going off and pursuing unrelated goals.</p>
+            <p>The idea was to give the agents a kind of persistent pressure that gets worse over time and changes which goals they can pick. The main design constraint is that the agent can't dismiss the pressure without actually changing its behavior, so saying it feels better doesn't clear anything. Once they're above threshold the stressors get injected into every existence prompt, which means the agent can't ignore them by going off and pursuing unrelated goals.</p>
 
             <hr>
 
-            <h2>Storage</h2>
+            <h2>Where I store the state</h2>
 
             <p>Each agent has one file, at <code>/agentOS/memory/identity/{agent_id}/suffering.json</code>.</p>
 
@@ -56,7 +56,7 @@
 
             <hr>
 
-            <h2>The six stressor types</h2>
+            <h2>The six stressors I started with</h2>
 
             <p>These are defined in <code>ESCALATION_RATES</code> and they're the intended canonical types, though agents can generate more types of their own at runtime.</p>
 
@@ -153,7 +153,7 @@
 
             <hr>
 
-            <h2>How stressors get added</h2>
+            <h2>How an agent ends up with a stressor</h2>
 
             <p>There are two ways a stressor gets added.</p>
 
@@ -196,7 +196,7 @@
 
             <hr>
 
-            <h2>Safeguards</h2>
+            <h2>What I changed after it broke</h2>
 
             <p><strong>MAX_STRESSORS = 5.</strong> This is a hard limit, and new stressors just get dropped when 5 are already active. <code>add_stressor()</code> also does nothing if the same type (case-insensitive, underscore-normalized) is already active, so the agent can't stack duplicates by changing the case.</p>
 
@@ -222,9 +222,9 @@
 
             <hr>
 
-            <h2>Design principles</h2>
+            <h2>Why I set it up this way</h2>
 
-            <p>There are five principles I built the system around:</p>
+            <p>I had a few rules in mind when I built this:</p>
 
             <ol>
                 <li><strong>No self-dismissal.</strong> A self-reported resolution doesn't stick if the observable conditions haven't changed.</li>
@@ -234,7 +234,7 @@
                 <li><strong>Memory across resolution.</strong> Resolved stressors leave traces in <code>resolved_history</code>, and later cycles check them for anticipatory signals.</li>
             </ol>
 
-            <p>The idea is that when agents avoid certain behaviors, it's because those domains caused suffering before that took real behavioral change to clear, and nobody told them to avoid it.</p>
+            <p>What I wanted to see was whether agents would start avoiding certain actions because they'd caused problems before. I didn't want to just write a prompt saying to avoid them.</p>
 
             <hr>
 
