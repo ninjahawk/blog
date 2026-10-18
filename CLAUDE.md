@@ -50,7 +50,7 @@ restyling the blog.
 | File | Title | Date |
 |---|---|---|
 | `posts/local-llm-psychological-states.html` | Give a 9B model persistent suffering states and leave it alone overnight | Apr 30, 2026 |
-| `posts/22-hour-session.html` | Give a 9B model broken tools. By hour 20 it'll have the correct diagnosis. It won't matter. | May 1, 2026 |
+| `posts/22-hour-session.html` | I gave a 9B model broken tools and by hour 20 it had the right diagnosis, it just couldn't do anything with it | May 1, 2026 |
 | `posts/suffering-system.html` | How the suffering system works | May 3, 2026 |
 | `posts/existence-loop.html` | Every six seconds a 9B model reads its own past outputs and picks a goal, and nothing else drives it | May 3, 2026 |
 | `posts/synthesize-capability.html` | How synthesize_capability works | May 3, 2026 |
