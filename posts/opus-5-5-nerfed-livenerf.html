@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Was Opus 5.5 nerfed? Looks like it was not, according to LiveNerf. - NinjaHawk's Nest</title>
+    <meta name="description" content="I built LiveNerf to measure whether AI models get worse over time. Here's what our initial Opus 5.5 testing found, and what it doesn't prove.">
+    <link rel="canonical" href="https://blog.nathanlangley.dev/posts/opus-5-5-nerfed-livenerf.html">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Was Opus 5.5 nerfed? Looks like it was not, according to LiveNerf.">
+    <meta property="og:description" content="We tested the Opus nerf hypothesis with LiveNerf. The initial results didn't support it, but the details matter.">
+    <meta property="og:url" content="https://blog.nathanlangley.dev/posts/opus-5-5-nerfed-livenerf.html">
+    <meta name="twitter:card" content="summary">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+    <link rel="stylesheet" href="../style.css">
+    <script data-goatcounter="https://blog-nathanlangley.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+    <script defer src="../nest.js"></script>
+</head>
+<body>
+    <header class="site-header"><div class="wrap nav-inner">
+        <a class="brand" href="../index.html">NINJAHAWK<span>'S NEST</span></a>
+        <nav class="site-nav"><a href="../index.html">Home</a><a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a><a href="https://nathanlangley.dev" target="_blank" rel="noopener">Contact</a></nav>
+    </div></header>
+    <main class="article">
+        <a class="back" href="../index.html">&larr;</a>
+        <div class="article-head">
+            <span class="kicker k-blue">Research</span>
+            <h1>Was Opus 5.5 nerfed? Looks like it was not, according to LiveNerf.</h1>
+            <div class="byline"><span class="by-author">NinjaHawk</span><span class="by-date">October 22, 2026</span></div>
+        </div>
+        <div class="article-body">
+            <p>A few weeks ago, I started working on a project called <a href="https://github.com/ninjahawk/livenerf">LiveNerf</a>, which attempts to answer a pretty simple question: are AI models actually getting worse over time, or are people just perceiving them that way?</p>
+
+            <p>If you've spent much time in AI communities, you've probably seen people complaining about models being silently nerfed. Claude in particular seems to get these accusations pretty frequently. People report that tasks their models previously handled without much trouble suddenly require more prompting, more corrections, or just don't work as well anymore.</p>
+
+            <p>I've experienced things that made me wonder about this myself, but the problem is that it's incredibly difficult to distinguish an actual regression from normal variation in model behavior. I wanted to see if we could measure it.</p>
+
+            <h2>What is LiveNerf?</h2>
+
+            <p>The idea behind LiveNerf is to continuously benchmark models rather than evaluating them once when they're released. Most benchmarks give us a snapshot of model performance. A new model comes out, everyone compares it against the previous generation, and we get some idea of how much better it is. But what happens after that?</p>
+
+            <p>If a provider changes something about how a model is served, or if its performance starts drifting for some other reason, there's not really a standardized way for people outside the company to notice. That's what LiveNerf is intended to address.</p>
+
+            <p>We repeatedly evaluate models against established benchmarks and compare the results over time. The goal is to identify changes in performance, whether they're improvements, regressions, or just ordinary statistical noise. It's also entirely open source, so people can inspect the methodology and point out problems with it.</p>
+
+            <h2>So, was Opus 5.5 actually nerfed?</h2>
+
+            <p>Based on the evidence we've collected so far, it doesn't look like it.</p>
+
+            <p>One of the more interesting findings from our initial testing was that Opus 5 and Opus 5.5 produced nearly indistinguishable results in the comparisons we examined, with approximately 99% agreement.</p>
+
+            <p>That doesn't mean they're literally the same model, and it doesn't establish that no changes have occurred behind the scenes. It does, however, suggest that the dramatic degradation some people have been reporting isn't reflected in these particular evaluations.</p>
+
+            <p>We've been using benchmarks including SWE-bench and SciCode, which cover software engineering and scientific problem-solving respectively. These give us something more consistent to measure than whether a model <em>feels</em> smarter or dumber on a particular day.</p>
+
+            <p>There's an important limitation here, though. Agreement between two model versions isn't the same thing as demonstrating that one version has remained stable over time. The stronger evidence for or against a nerf comes from repeated measurements of the same model.</p>
+
+            <p>Our current conclusion is therefore fairly narrow: we haven't found convincing evidence of a regression in the behavior we've measured. That might not be the most exciting outcome, but I think it's a pretty interesting one.</p>
+
+            <h2>We also found problems with the benchmarks</h2>
+
+            <p>Something I wasn't expecting when I started working on LiveNerf was how much time we'd end up spending investigating the evaluations themselves.</p>
+
+            <p>During validation, we examined 78 answer keys and found that eight were incorrect, with roughly another 30 cases containing some degree of ambiguity. That's a pretty significant problem when you're trying to detect relatively small performance changes.</p>
+
+            <p>Imagine you're measuring a model over several weeks and notice that its score has dropped by a few percentage points. You might reasonably suspect that something changed. But if the benchmark contains incorrect answers, ambiguous grading criteria, or tasks with multiple defensible solutions, you need to account for those problems before drawing conclusions.</p>
+
+            <p>Otherwise, you can end up measuring the weaknesses of your evaluation rather than changes in the model. Building a system that repeatedly runs benchmarks is one thing. Building one that can reliably distinguish actual changes in model capability from noise is considerably harder.</p>
+
+            <h2>Why do so many people think Claude is getting worse?</h2>
+
+            <p>I don't think the reports should just be dismissed because our initial results haven't supported them. There are several possible explanations, and they aren't mutually exclusive.</p>
+
+            <p>For one, the model itself is only part of what you're interacting with. There's also the system prompt, context management, inference settings, and whatever other infrastructure the provider has built around it. Changes to any of those things could potentially affect the experience without requiring changes to the model's weights.</p>
+
+            <p>There's also the issue of how people use these systems. If you've been using Claude for months, there's a decent chance that the tasks you're giving it today are more complicated than the ones you were giving it when you started. As you become more comfortable with what a model can do, you naturally start pushing it further.</p>
+
+            <p>That could create the impression that the model is getting worse even if its underlying capabilities haven't changed. And of course, it's possible that some regressions are real but don't appear in the benchmarks we're currently using.</p>
+
+            <p>A model could become worse at following certain instructions, handling long conversations, or performing a specific kind of task while maintaining essentially identical scores on SWE-bench. This is part of why I don't think any single benchmark is sufficient to settle the question.</p>
+
+            <h2>Why I think continuous benchmarking matters</h2>
+
+            <p>The more I've worked on this, the stranger it seems that continuous evaluation isn't already a standard practice.</p>
+
+            <p>We have an enormous amount of infrastructure dedicated to comparing new AI models. There are leaderboards, benchmark suites, independent evaluations, and entire communities devoted to figuring out which model is best. But relatively little of that infrastructure is focused on verifying that a model continues performing the same way after release.</p>
+
+            <p>People aren't just asking these models random questions anymore. They're using them to write software, conduct research, operate businesses, and increasingly perform tasks autonomously. If a capability that someone depends on changes significantly, they should ideally have some way of knowing.</p>
+
+            <p>I also think there's a broader transparency issue. AI providers have access to much more information about their models than the people using them. That's understandable, but it means users are often left trying to infer changes from their own experiences.</p>
+
+            <p>Independent evaluations can't eliminate that information gap, but they can help narrow it. And importantly, they can also establish when the evidence <em>doesn't</em> support a popular claim. I think that's just as valuable as finding a regression.</p>
+
+            <h2>Where LiveNerf goes from here</h2>
+
+            <p>The project is still in its early stages, and there's a lot left to improve. I want to expand the number of models and benchmarks we're tracking, improve how we handle ambiguous evaluation results, and develop better methods for detecting statistically meaningful changes over time.</p>
+
+            <p>I'm particularly interested in tracking more specific capabilities rather than relying exclusively on aggregate benchmark scores. A model's overall performance might remain stable while a particular capability changes substantially. If we're only looking at the average, we could miss that entirely.</p>
+
+            <p>I'd also like to make it easier for other people to reproduce our findings and contribute their own evaluations. One of the things I've enjoyed most about releasing LiveNerf has been watching people examine the project, question the methodology, and suggest ways to improve it.</p>
+
+            <p>Ultimately, I want LiveNerf to be useful regardless of whether it finds that models are improving, degrading, or staying exactly the same.</p>
+
+            <p>I didn't build it because I was certain that AI companies were secretly nerfing their models. I built it because I thought the question was worth investigating, and I couldn't find an existing project doing quite what I had in mind.</p>
+
+            <p>So far, the results for Opus 5.5 haven't supported the nerf hypothesis. We'll keep measuring.</p>
+
+            <p>If you're interested in the project, want to examine the methodology, or think we've missed something, I'd be interested in hearing your thoughts.</p>
+
+            <p><strong>GitHub:</strong> <a href="https://github.com/ninjahawk/livenerf">github.com/ninjahawk/livenerf</a></p>
+        </div>
+    </main>
+    <footer class="site-footer"><div class="wrap"><p class="foot-brand">Ninjahawk's Nest</p><p>&copy; 2026 Nathan Langley</p></div></footer>
+</body>
+</html>
