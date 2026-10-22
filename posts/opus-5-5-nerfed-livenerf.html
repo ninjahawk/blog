@@ -49,7 +49,18 @@
 
             <p>Based on the evidence we've collected so far, it doesn't look like it.</p>
 
-            <p>One of the more interesting findings from our initial testing was that Opus 5 and Opus 5.5 produced nearly indistinguishable results in the comparisons we examined, with approximately 99% agreement.</p>
+            <figure>
+                <a href="https://github.com/ninjahawk/livenerf/blob/master/media/livenerf-dark.svg" title="View the original LiveNerf graph and source">
+                    <img src="https://raw.githubusercontent.com/ninjahawk/livenerf/master/media/livenerf-dark.svg" alt="LiveNerf daily Opus 5.5 benchmark scores from September 24 to October 22, with 95% confidence intervals and a 10-day baseline average of 58.4%. Scores fluctuate around the baseline; latest score 59.0%." loading="eager" decoding="async">
+                </a>
+                <figcaption>Opus 5.5's daily score against its first 10 days, measured on the same frozen 78-question panel. <a href="https://github.com/ninjahawk/livenerf">Source and methodology on GitHub</a>.</figcaption>
+            </figure>
+
+            <p>This is Opus 5.5's performance on the same frozen 78-question panel, measured daily against its first 10 days. Across 2,262 samples as of October 22, the scores fluctuate, but there's no obvious sustained decline. The latest score is 59.0%, compared with a baseline average of 58.4%.</p>
+
+            <p>There are some pretty substantial day-to-day swings, which is part of why I wanted to build LiveNerf in the first place. Looking at one bad day could easily make you think something had changed. Looking at the full history tells a different story.</p>
+
+            <p>Separately, one of the more interesting findings from our initial testing was that Opus 5 and Opus 5.5 produced nearly indistinguishable results in the comparisons we examined, with approximately 99% agreement.</p>
 
             <p>That doesn't mean they're literally the same model, and it doesn't establish that no changes have occurred behind the scenes. It does, however, suggest that the dramatic degradation some people have been reporting isn't reflected in these particular evaluations.</p>
 
