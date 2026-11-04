@@ -44,9 +44,9 @@
 
             <p>I expected the advantage to disappear by depth 3.</p>
 
-            <p>After 152 runs with five seeds each, the sparse model still had an accuracy advantage at every depth I tested up to 4 layers, at width 2,000. That wasn't what I predicted, however when I looked at what the models were actually remembering, the result was a lot less encouraging.</p>
+            <p>After 152 runs with five seeds each, the sparse model still had an accuracy advantage at every depth I tested up to 4 layers, at width 2,000 in the class-incremental scenario I'd chosen as primary. That wasn't what I predicted, however when I looked at what the models were actually remembering, the result was a lot less encouraging.</p>
 
-            <p>By depth 2, almost everything they had learned from the earlier tasks was gone.</p>
+            <p>By depth 2, even the small amount the sparse model had kept from earlier tasks was gone.</p>
 
             <h2>How the model works</h2>
 
@@ -160,7 +160,7 @@
 
             <figure>
 
-                <img src="fruit-fly-retained.svg" alt="Stacked bars for sparse and dense arms at depths 1 to 4, class-incremental. Every bar is about 0.18 to 0.20 of last-task accuracy. Only the depth-1 sparse bar has a visible red segment for retained earlier tasks, +0.0366. Every other bar is labelled +0.0000 to +0.0029.">
+                <img src="fruit-fly-retained.svg" alt="Stacked bars for sparse and dense arms at depths 1 to 4, class-incremental. Every bar is about 0.18 to 0.20 of last-task accuracy. Only the depth-1 sparse bar has a clearly visible red segment for retained earlier tasks, +0.0366. Every other bar is labelled +0.0000 to +0.0029.">
 
                 <figcaption>Class-incremental, width 2,000. The red segment is the contribution from tasks 1 to 4 after training on the last task.</figcaption>
 
@@ -220,7 +220,7 @@
 
             <p>However, at width 2,000 the advantage was +0.0372, which was actually lower than both.</p>
 
-            <p>The width figure shows that the advantage stays roughly flat across a 16-fold increase in width rather than consistently increasing.</p>
+            <p>The width figure shows that at depth 1 the advantage stays roughly flat across a 16-fold increase in width rather than consistently increasing.</p>
 
             <figure>
 
@@ -306,7 +306,7 @@
 
             <p>The sparse model maintained an advantage, which initially looked like a positive result. But once I looked at how much of that accuracy came from earlier tasks, it became clear that the model was still forgetting almost everything.</p>
 
-            <p>For now, I have a mechanism that continues to learn new things and maintains a small accuracy advantage over its dense control, but doesn't preserve earlier learning once I start adding layers.</p>
+            <p>For now, I have a mechanism that continues to learn new things and maintains a small accuracy advantage over its dense control, but keeps only a little earlier learning even at one layer, and none once I add more.</p>
 
             <p>That's a useful result, even if it wasn't the one I was hoping for.</p>
 
@@ -332,7 +332,7 @@
 
             <pre><code>.venv/Scripts/python -m pytest tests/test_continual.py -q</code></pre>
 
-            <p>On Mac or Linux, use <code>.venv/bin/python</code> instead. The results are committed under <code>results/continual/depth-scaling/</code>, along with the figures and the full report.</p>
+            <p>On Mac or Linux, use <code>.venv/bin/python</code> instead. The results are committed under <code>results/continual/depth-scaling/</code>, along with the figures; the full report is <code>REPORT_DEPTH.md</code> at the repo root.</p>
 
             <p>The project is available at <a href="https://github.com/ninjahawk/fruit-fly" target="_blank" rel="noopener">github.com/ninjahawk/fruit-fly</a>.</p>
         </div>
