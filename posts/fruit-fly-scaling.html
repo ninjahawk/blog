@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A fly-inspired learner still won at four layers. It had almost nothing left of the earlier tasks. - NinjaHawk's Nest</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+    <link rel="stylesheet" href="../style.css">
+    <script data-goatcounter="https://blog-nathanlangley.goatcounter.com/count"
+            async src="//gc.zgo.at/count.js"></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="wrap nav-inner">
+            <a class="brand" href="../index.html">NINJAHAWK<span>'S NEST</span></a>
+            <nav class="site-nav">
+                <a href="../index.html">Home</a>
+                <a href="https://github.com/ninjahawk" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://nathanlangley.dev" target="_blank" rel="noopener">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="article">
+        <a class="back" href="../index.html">&larr;</a>
+        <div class="article-head">
+            <span class="kicker k-slate">Experiment</span>
+            <h1>A fly-inspired learner still won at four layers. It had almost nothing left of the earlier tasks.</h1>
+            <p class="dek">152 runs. Five seeds. Sparse coding kept an accuracy advantage through four layers. Almost all of the memory was gone by the second.</p>
+            <div class="byline">
+                <span class="by-author">NinjaHawk</span>
+                <span class="by-date">Oct 31, 2026</span>
+            </div>
+        </div>
+        <div class="article-body">
+            <p>At four layers, the sparse model beat its dense control in all five seeds. Its final accuracies on the earlier tasks were 0.0001, 0.0000, 0.0000, 0.0000. It was ahead because it learned the last task better. Almost everything before that was gone.</p>
+
+            <p>I had predicted the advantage would disappear by depth 3. It survived every depth I tested at width 2,000 on class-incremental split-MNIST. The primary hypothesis was falsified. The part of the advantage that came from remembering earlier tasks had already disappeared almost entirely at depth 2.</p>
+
+            <p>This is the depth experiment from my <a href="https://github.com/ninjahawk/fruit-fly" target="_blank" rel="noopener">fruit-fly project</a>. The question was whether a sparse learning mechanism borrowed from the fly keeps helping as the network gets bigger. The answer depends on what you count as helping.</p>
+
+            <hr>
+
+            <h2>The mechanism</h2>
+
+            <p>The project started with the FlyWire wiring diagram of <em>Drosophila</em>, FAFB v783: 139,255 proofread neurons and 2,700,513 connections with at least five synapses. The earlier work loaded the released tables and checked their structure against the published numbers. This experiment uses none of that wiring.</p>
+
+            <p>What it takes from the fly is a mechanism from the mushroom body. Input expands into a larger population through fixed, sparse, random connections. Only the most active units stay on. The output layer learns with a local three-factor rule, without backpropagation.</p>
+
+            <p>Here, each expansion unit reads 12 inputs. The projection never changes. A rule called k-winners-take-all, or k-WTA, keeps 5% of the units active. At width 2,000, that is 100 units.</p>
+
+            <p>The control is the same model with k-WTA removed. Same projection, same widths, same learning rule, same seeds, same budget. I call them sparse and dense. The experiment measures what that switch contributes.</p>
+
+            <p>At one plastic layer, an earlier run found that sparse beat dense on split-MNIST. Ten digits, split into five two-digit tasks, learned in order. At test time the model gets no task label. It has to recognize digits it learned before the most recent task. That is where the forgetting shows up.</p>
+
+            <hr>
+
+            <h2>Adding layers</h2>
+
+            <p>The mushroom body has one plastic layer, from Kenyon cells to output neurons. The fly does not supply a learning rule for the extra hidden layers in this experiment. I had to supply one.</p>
+
+            <p>Those layers use direct feedback alignment. The output error is sent to each hidden layer through a fixed random matrix that is never trained. There is no backward pass and no copied weight. The update stays local, but the deeper model is now a combination of sparse expansion, a local readout, and a machine-learning method for the hidden layers. Results at depth 2 and above are about that combination. They are not evidence about the fly.</p>
+
+            <p>The sparse-versus-dense comparison still changes one thing at every depth. Both arms get the same learning-rate grid: 0.002, 0.01, 0.05, 0.25. Each is evaluated at its own best rate in each cell.</p>
+
+            <p>The main sweep covers depths 1 to 4 at width 2,000. Class-incremental is the primary scenario: identify the digit. Domain-incremental uses the same sequence of digit pairs but asks only whether the digit is even or odd. Neither supplies task identity at test time. A separate width sweep tests 500, 2,000 and 8,000 units at depths 1 and 4, class-incremental only.</p>
+
+            <p>Four MLP baselines run at every depth: joint training on all tasks, experience replay with 200 stored examples, EWC, and naive sequential training. Joint is the ceiling. Naive is the floor. These are a different model family. Depth in the fly arms counts plastic weight matrices, including the readout; depth in the MLPs counts hidden layers. Their layer counts and parameter counts are not matched across families.</p>
+
+            <p>The grid ran on 2026-09-13. 152 runs, five seeds each, 52.9 minutes of measured run time. The fly arms used one RTX 5070; the baselines used four CPU cores. Every arm got 3 epochs per task. That is the budget these numbers describe. They are not comparable to published split-MNIST accuracies.</p>
+
+            <h2>What I predicted</h2>
+
+            <p>The hypotheses were committed before any cell ran. Every results file records the hash of that pre-run file.</p>
+
+            <p>The primary prediction, H1: the sparse advantage stops separating from dense at some depth of 4 or less. My point prediction was depth 3. "Separates" has a fixed definition here: the paired mean difference exceeds twice the pooled standard error, and sparse wins in at least 4 of 5 seeds. Each arm uses its best learning rate. If it separates at every depth, H1 is falsified.</p>
+
+            <p>The other predictions covered loss of plasticity, baseline ordering, width, and whether the new code reproduced the earlier depth-1 result. Those checks matter, but H1 was the question the depth sweep existed to answer.</p>
+
+            <hr>
+
+            <h2>What happened</h2>
+
+            <figure>
+                <img src="fruit-fly-depth-advantage.svg" alt="Two panels. Left, class-incremental: the per-seed advantage of the sparse arm over the dense arm at depths 1 to 4. Depth 1 mean +0.0372, then +0.0077, +0.0103, +0.0146, each above its dashed separation bar. Right, domain-incremental: +0.0683 and +0.0253 at depths 1 and 2, then -0.0370 at depth 3, and a wide spread of seeds at depth 4 with mean +0.0319.">
+                <figcaption>Each dot is one seed. Black bar: paired mean. Dashed: the preregistered bar it has to clear. Width 2,000.</figcaption>
+            </figure>
+
+            <p>Class-incremental, width 2,000:</p>
+
+            <pre><code>depth   sparse - dense   2 x pooled SE   seeds ahead   separates?
+  1       +0.0372          0.0100          5 / 5          yes
+  2       +0.0077          0.0076          5 / 5          yes
+  3       +0.0103          0.0059          5 / 5          yes
+  4       +0.0146          0.0081          5 / 5          yes</code></pre>
+
+            <p>Every row passes. There is no breaking point at or below four plastic layers in this sweep. H1 is falsified.</p>
+
+            <p>The advantage drops by a factor of 4.8 between depth 1 and depth 2, then stays roughly flat. The depth-2 result clears its threshold by 0.0001. That is enough under the rule I wrote down. It is also how close the result is.</p>
+
+            <h3>What was left of the earlier tasks</h3>
+
+            <p>The score, ACC, averages accuracy across all five tasks after training on the last one. A model can raise that number by remembering earlier tasks or by getting better at the last task. I split the score into those contributions after seeing the results. This analysis was not preregistered and does not change the H1 verdict.</p>
+
+            <figure>
+                <img src="fruit-fly-retained.svg" alt="Stacked bars for sparse and dense arms at depths 1 to 4, class-incremental. Every bar is about 0.18 to 0.20 of last-task accuracy. Only the depth-1 sparse bar has a visible red segment for retained earlier tasks, +0.0366. Every other bar is labelled +0.0000 to +0.0029.">
+                <figcaption>Class-incremental, width 2,000. The red segment is the contribution from tasks 1 to 4 after training on the last task.</figcaption>
+            </figure>
+
+            <p>At depth 1, the sparse model scores 0.2303. Earlier tasks contribute 0.0366 of that. The dense model's retained contribution is 0.0000. The sparse model has kept a little of what it learned, and that accounts for its advantage.</p>
+
+            <p>At depths 2 to 4, the sparse model's retained contribution is between 0.0000 and 0.0001. At depth 4, it gets 0.9670 on the last task; dense gets 0.8941. That is where the remaining difference comes from.</p>
+
+            <h3>The other scenario</h3>
+
+            <p>Domain-incremental gives a different result. At depth 3, the difference is -0.0370. Dense is ahead, and sparse wins only 1 of 5 seeds. At depth 4, sparse has a positive mean difference of +0.0319, but the individual differences run from -0.1257 to +0.2198. The separation threshold is 0.1150. It does not clear it.</p>
+
+            <p>That last result is dominated by variance. It does not establish that the arms are equal.</p>
+
+            <p>Had domain-incremental been primary, H1 would have been supported at exactly the depth I predicted. Class-incremental was primary. I fixed that before the run, so the domain result does not rescue the prediction.</p>
+
+            <hr>
+
+            <h2>Can it still learn?</h2>
+
+            <p>Forgetting old tasks and losing the ability to learn new ones are different failures. H2 predicted that loss of plasticity would grow with depth. The sparse model's mean new-task accuracy is 0.9832 at depth 1 and 0.9831 at depth 4 in class-incremental. It can still learn the task in front of it.</p>
+
+            <p>The loss-of-plasticity measure changed by +0.0006 in class-incremental and +0.0003 in domain-incremental, against a 0.10 threshold. Both land in the preregistered middle band: neither supported nor falsified. Across the sixteen depth, arm and scenario cells, loss of plasticity was declared in one: dense, domain-incremental, depth 4.</p>
+
+            <p>Five tasks is a short sequence for measuring this. The result says little about what happens over a long stream.</p>
+
+            <h2>Making it wider</h2>
+
+            <figure>
+                <img src="fruit-fly-width.svg" alt="Horizontal bars of the sparse-minus-dense advantage in class-incremental. Depth 1 at widths 500, 2,000 and 8,000: +0.0467, +0.0372, +0.0495. Depth 4 at the same widths: +0.0146, +0.0146, +0.0063, the last one below its dashed bar. Two depth-1 capacity controls widened to match deep cells' trainable parameters: +0.0505 and +0.0543.">
+                <figcaption>Class-incremental. The grey bar is the only cell in this scenario's grid that did not separate. The bottom two rows are depth-1 models with a deep model's parameter count.</figcaption>
+            </figure>
+
+            <p>At depth 1, the advantage is +0.0467 at width 500 and +0.0495 at width 8,000. That passes H4, which compares those endpoints. Width 2,000 sits below both at +0.0372. Across a 16-fold range, the advantage is roughly flat. It does not grow steadily with width.</p>
+
+            <p>The largest class-incremental model is also the only one in that grid that does not separate: depth 4, width 8,000. Its advantage is +0.0063 against a threshold of 0.0109. One cell, five seeds. Enough to report, not enough to call a trend.</p>
+
+            <h3>The parameter problem</h3>
+
+            <p>Adding layers also adds trainable parameters. At width 2,000, the fly arms go from 20,010 at depth 1 to 12,026,010 at depth 4. That leaves a question: is the smaller advantage caused by depth, or by the change in parameter count?</p>
+
+            <p>The control is a depth-1 model widened until its trainable count exactly matches a deeper model. Two controls fit on the GPU. They match depth 4 at width 500 and depth 2 at width 2,000. Both keep the full depth-1 advantage: +0.0505 and +0.0543.</p>
+
+            <p>In those two comparisons, the shrinkage is a depth effect. The other six controls were infeasible here. The parameter confound remains uncontrolled everywhere else, including the whole domain sweep.</p>
+
+            <hr>
+
+            <h2>The checks and the failures</h2>
+
+            <p>H3 passed. Joint training beats replay, and replay beats naive, at every depth in both scenarios. The joint ceiling barely changes: 0.9603 at depth 1 and 0.9598 at depth 4 in class-incremental. The MLP baselines can still be optimized at this budget. That is the check this establishes. They are a different architecture, so it does not establish the same thing for the fly arms.</p>
+
+            <p>H5 passed too. The refactored code reproduced the old depth-1 result to within 8.2e-05, against an allowed 0.005.</p>
+
+            <p>Eight of the 144 core grid cells produced non-finite weights. All were at depth 4 with learning rate 0.05 or 0.25. Seven were dense. The stopping rule required reporting failed cells as missing, so I left them missing. Learning-rate selection uses the rates that survived; a failed run is never counted as zero.</p>
+
+            <p>Experience replay remains the best continual learner in the grid. In class-incremental at depth 4, it scores 0.7156 with a 200-example buffer. The sparse model scores 0.1934. The sparse-versus-dense win does not close that gap.</p>
+
+            <hr>
+
+            <h2>Honest assessment</h2>
+
+            <p>What happened: the sparse model cleared the preregistered separation threshold at every depth from 1 to 4, at width 2,000, in the primary scenario. The prediction that it would stop was wrong.</p>
+
+            <p>What the score contained changed. At depth 1, the sparse model retained a little of the earlier tasks. From depth 2 onward, almost all of its score came from the last task. It kept learning and kept forgetting. Zero forgetting was not reached at any depth.</p>
+
+            <p>Why the retention disappears between depth 1 and depth 2 is still unanswered. Splitting the score tells me where the difference comes from. It does not explain the mechanism. The deeper models use direct feedback alignment, so the result belongs to that choice as much as to sparse coding.</p>
+
+            <p>This also does not answer whether a local learning rule can keep pace with backpropagation at depth. There is no backprop-trained version of the same architecture in the experiment. The MLP baselines cannot answer that question for it.</p>
+
+            <p>The scope is one benchmark, one task order, a 3-epoch budget, one sparsity, one learning-rate grid and five seeds. Nothing beyond depth 4 was measured. The width sweep and domain sweep already show why the primary result should not be read as a general claim that the advantage survives scaling.</p>
+
+            <p>The next comparison, Phase 3.5 in RESEARCH_DIRECTION.md, is a local learning rule against backpropagation on the same architecture. This run does not answer that. It establishes that an accuracy advantage can survive after almost all retention of earlier tasks is gone.</p>
+
+            <hr>
+
+            <h2>Running it</h2>
+
+            <p>The repo contains the preregistration, all 152 results JSONs, the verdict code, and <code>REPORT_DEPTH.md</code> with the full tables. The README has the environment setup. One cell of the grid:</p>
+
+            <pre><code>.venv/Scripts/python -m continual.run --config fly-sparse-local \
+    --benchmark split-mnist --scenario class --seeds 0 1 2 3 4 --epochs 3 \
+    --n-tasks 5 --depth 4 --width 2000 --lr 0.002 --device cuda --threads 4 \
+    --prereg preregistration/2026-09-13-depth-scaling.md \
+    --out-dir results/continual/depth-scaling
+
+# evaluate the preregistered hypotheses
+.venv/Scripts/python -m continual.hypotheses \
+    --results-dir results/continual/depth-scaling \
+    --out results/continual/depth-scaling/hypotheses.json
+
+.venv/Scripts/python -m pytest tests/test_continual.py -q</code></pre>
+
+            <p>On Mac/Linux, use <code>.venv/bin/python</code>. Results are committed under <code>results/continual/depth-scaling/</code>. The figures above come from <a href="fruit-fly-scaling-figures.py">this script</a>, which checks selected numbers against values from the report.</p>
+
+            <p>Repo: <a href="https://github.com/ninjahawk/fruit-fly" target="_blank" rel="noopener">github.com/ninjahawk/fruit-fly</a></p>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <p class="foot-brand">Ninjahawk's Nest</p>
+            <p>&copy; 2026 Nathan Langley</p>
+        </div>
+    </footer>
+</body>
+</html>
