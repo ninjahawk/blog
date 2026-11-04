@@ -63,6 +63,7 @@ restyling the blog.
 | `posts/anthropic-usage-credits.html` | I bought a subscription so I'd have a cap, and Anthropic started treating it like a floor | July 23, 2026 |
 | `posts/proactive-ai.html` | Proactive vs. Reactive: From a Startup Founder’s Perspective | Aug 1, 2026 |
 | `posts/force-yourself-to-struggle.html` | Force Yourself to Struggle Even if Using AI is Easier | Sep 29, 2026 |
+| `posts/fruit-fly-scaling.html` | I Tried Scaling a Fruit-Fly-Inspired Learning System. It Kept Learning, but Forgot Almost Everything. | Oct 31, 2026 |
 
 Posts are ordered newest-first in `index.html`.
 
